@@ -1,0 +1,1312 @@
+Apache Maven 3.5.0 (ff8f5e7444045639af65f6095c62210b5713f426; 2017-04-04T03:39:06+08:00)
+Maven home: D:\maven\bin\..
+Java version: 1.8.0_131, vendor: Oracle Corporation
+Java home: C:\Program Files\Java\jdk1.8.0_131\jre
+Default locale: zh_CN, platform encoding: GBK
+OS name: "windows 10", version: "10.0", arch: "amd64", family: "windows"
+[DEBUG] Created new class realm maven.api
+[DEBUG] Importing foreign packages into class realm maven.api
+[DEBUG]   Imported: javax.enterprise.inject.* < plexus.core
+[DEBUG]   Imported: javax.enterprise.util.* < plexus.core
+[DEBUG]   Imported: javax.inject.* < plexus.core
+[DEBUG]   Imported: org.apache.maven.* < plexus.core
+[DEBUG]   Imported: org.apache.maven.artifact < plexus.core
+[DEBUG]   Imported: org.apache.maven.classrealm < plexus.core
+[DEBUG]   Imported: org.apache.maven.cli < plexus.core
+[DEBUG]   Imported: org.apache.maven.configuration < plexus.core
+[DEBUG]   Imported: org.apache.maven.exception < plexus.core
+[DEBUG]   Imported: org.apache.maven.execution < plexus.core
+[DEBUG]   Imported: org.apache.maven.execution.scope < plexus.core
+[DEBUG]   Imported: org.apache.maven.lifecycle < plexus.core
+[DEBUG]   Imported: org.apache.maven.model < plexus.core
+[DEBUG]   Imported: org.apache.maven.monitor < plexus.core
+[DEBUG]   Imported: org.apache.maven.plugin < plexus.core
+[DEBUG]   Imported: org.apache.maven.profiles < plexus.core
+[DEBUG]   Imported: org.apache.maven.project < plexus.core
+[DEBUG]   Imported: org.apache.maven.reporting < plexus.core
+[DEBUG]   Imported: org.apache.maven.repository < plexus.core
+[DEBUG]   Imported: org.apache.maven.rtinfo < plexus.core
+[DEBUG]   Imported: org.apache.maven.settings < plexus.core
+[DEBUG]   Imported: org.apache.maven.toolchain < plexus.core
+[DEBUG]   Imported: org.apache.maven.usability < plexus.core
+[DEBUG]   Imported: org.apache.maven.wagon.* < plexus.core
+[DEBUG]   Imported: org.apache.maven.wagon.authentication < plexus.core
+[DEBUG]   Imported: org.apache.maven.wagon.authorization < plexus.core
+[DEBUG]   Imported: org.apache.maven.wagon.events < plexus.core
+[DEBUG]   Imported: org.apache.maven.wagon.observers < plexus.core
+[DEBUG]   Imported: org.apache.maven.wagon.proxy < plexus.core
+[DEBUG]   Imported: org.apache.maven.wagon.repository < plexus.core
+[DEBUG]   Imported: org.apache.maven.wagon.resource < plexus.core
+[DEBUG]   Imported: org.codehaus.classworlds < plexus.core
+[DEBUG]   Imported: org.codehaus.plexus.* < plexus.core
+[DEBUG]   Imported: org.codehaus.plexus.classworlds < plexus.core
+[DEBUG]   Imported: org.codehaus.plexus.component < plexus.core
+[DEBUG]   Imported: org.codehaus.plexus.configuration < plexus.core
+[DEBUG]   Imported: org.codehaus.plexus.container < plexus.core
+[DEBUG]   Imported: org.codehaus.plexus.context < plexus.core
+[DEBUG]   Imported: org.codehaus.plexus.lifecycle < plexus.core
+[DEBUG]   Imported: org.codehaus.plexus.logging < plexus.core
+[DEBUG]   Imported: org.codehaus.plexus.personality < plexus.core
+[DEBUG]   Imported: org.codehaus.plexus.util.xml.Xpp3Dom < plexus.core
+[DEBUG]   Imported: org.codehaus.plexus.util.xml.pull.XmlPullParser < plexus.core
+[DEBUG]   Imported: org.codehaus.plexus.util.xml.pull.XmlPullParserException < plexus.core
+[DEBUG]   Imported: org.codehaus.plexus.util.xml.pull.XmlSerializer < plexus.core
+[DEBUG]   Imported: org.eclipse.aether.* < plexus.core
+[DEBUG]   Imported: org.eclipse.aether.artifact < plexus.core
+[DEBUG]   Imported: org.eclipse.aether.collection < plexus.core
+[DEBUG]   Imported: org.eclipse.aether.deployment < plexus.core
+[DEBUG]   Imported: org.eclipse.aether.graph < plexus.core
+[DEBUG]   Imported: org.eclipse.aether.impl < plexus.core
+[DEBUG]   Imported: org.eclipse.aether.installation < plexus.core
+[DEBUG]   Imported: org.eclipse.aether.internal.impl < plexus.core
+[DEBUG]   Imported: org.eclipse.aether.metadata < plexus.core
+[DEBUG]   Imported: org.eclipse.aether.repository < plexus.core
+[DEBUG]   Imported: org.eclipse.aether.resolution < plexus.core
+[DEBUG]   Imported: org.eclipse.aether.spi < plexus.core
+[DEBUG]   Imported: org.eclipse.aether.transfer < plexus.core
+[DEBUG]   Imported: org.eclipse.aether.version < plexus.core
+[DEBUG]   Imported: org.fusesource.jansi.* < plexus.core
+[DEBUG]   Imported: org.slf4j.* < plexus.core
+[DEBUG]   Imported: org.slf4j.helpers.* < plexus.core
+[DEBUG]   Imported: org.slf4j.spi.* < plexus.core
+[DEBUG] Populating class realm maven.api
+[INFO] Error stacktraces are turned on.
+[DEBUG] Message scheme: color
+[DEBUG] Message styles: debug info warning error success failure strong mojo project
+[DEBUG] Reading global settings from D:\maven\bin\..\conf\settings.xml
+[DEBUG] Reading user settings from C:\Users\Administrator\.m2\settings.xml
+[DEBUG] Reading global toolchains from D:\maven\bin\..\conf\toolchains.xml
+[DEBUG] Reading user toolchains from C:\Users\Administrator\.m2\toolchains.xml
+[DEBUG] Using local repository at C:\Users\Administrator\.m2\repository
+[DEBUG] Using manager EnhancedLocalRepositoryManager with priority 10.0 for C:\Users\Administrator\.m2\repository
+[INFO] Scanning for projects...
+[DEBUG] Using mirror alimaven (http://maven.aliyun.com/nexus/content/groups/public/) for central (https://repo.maven.apache.org/maven2).
+[DEBUG] Extension realms for project com.cross:common:jar:0.0.6-release: (none)
+[DEBUG] Looking up lifecycle mappings for packaging jar from ClassRealm[plexus.core, parent: null]
+[DEBUG] Extension realms for project com.cross:qianxiaohao:pom:0.0.1-SNAPSHOT: (none)
+[DEBUG] Looking up lifecycle mappings for packaging pom from ClassRealm[plexus.core, parent: null]
+[DEBUG] Extension realms for project org.springframework.boot:spring-boot-starter-parent:pom:1.5.3.RELEASE: (none)
+[DEBUG] Looking up lifecycle mappings for packaging pom from ClassRealm[plexus.core, parent: null]
+[DEBUG] Extension realms for project org.springframework.boot:spring-boot-dependencies:pom:1.5.3.RELEASE: (none)
+[DEBUG] Looking up lifecycle mappings for packaging pom from ClassRealm[plexus.core, parent: null]
+[WARNING] 
+[WARNING] Some problems were encountered while building the effective model for com.cross:common:jar:0.0.6-release
+[WARNING] 'dependencies.dependency.(groupId:artifactId:type:classifier)' must be unique: commons-codec:commons-codec:jar -> duplicate declaration of version 1.9 @ line 526, column 21
+[WARNING] 
+[WARNING] It is highly recommended to fix these problems because they threaten the stability of your build.
+[WARNING] 
+[WARNING] For this reason, future Maven versions might no longer support building such malformed projects.
+[WARNING] 
+[DEBUG] Resolving plugin prefix dependency from [org.apache.maven.plugins, org.codehaus.mojo]
+[DEBUG] Resolved plugin prefix dependency to org.apache.maven.plugins:maven-dependency-plugin from POM com.cross:common:jar:0.0.6-release
+[DEBUG] === REACTOR BUILD PLAN ================================================
+[DEBUG] Project: com.cross:common:jar:0.0.6-release
+[DEBUG] Tasks:   [dependency:tree]
+[DEBUG] Style:   Regular
+[DEBUG] =======================================================================
+[INFO] 
+[INFO] ------------------------------------------------------------------------
+[INFO] Building common 0.0.6-release
+[INFO] ------------------------------------------------------------------------
+[DEBUG] Resolving plugin prefix dependency from [org.apache.maven.plugins, org.codehaus.mojo]
+[DEBUG] Resolved plugin prefix dependency to org.apache.maven.plugins:maven-dependency-plugin from POM com.cross:common:jar:0.0.6-release
+[DEBUG] Lifecycle default -> [validate, initialize, generate-sources, process-sources, generate-resources, process-resources, compile, process-classes, generate-test-sources, process-test-sources, generate-test-resources, process-test-resources, test-compile, process-test-classes, test, prepare-package, package, pre-integration-test, integration-test, post-integration-test, verify, install, deploy]
+[DEBUG] Lifecycle clean -> [pre-clean, clean, post-clean]
+[DEBUG] Lifecycle site -> [pre-site, site, post-site, site-deploy]
+[DEBUG] === PROJECT BUILD PLAN ================================================
+[DEBUG] Project:       com.cross:common:0.0.6-release
+[DEBUG] Dependencies (collect): []
+[DEBUG] Dependencies (resolve): [test]
+[DEBUG] Repositories (dependencies): [alimaven (http://maven.aliyun.com/nexus/content/groups/public/, default, releases)]
+[DEBUG] Repositories (plugins)     : [alimaven (http://maven.aliyun.com/nexus/content/groups/public/, default, releases)]
+[DEBUG] -----------------------------------------------------------------------
+[DEBUG] Goal:          org.apache.maven.plugins:maven-dependency-plugin:2.10:tree (default-cli)
+[DEBUG] Style:         Regular
+[DEBUG] Configuration: <?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+  <appendOutput default-value="false">${appendOutput}</appendOutput>
+  <excludes>${excludes}</excludes>
+  <includes>${includes}</includes>
+  <localRepository default-value="${localRepository}"/>
+  <output>${output}</output>
+  <outputFile>${outputFile}</outputFile>
+  <outputType default-value="text">${outputType}</outputType>
+  <project default-value="${project}"/>
+  <scope>${scope}</scope>
+  <skip default-value="false">${skip}</skip>
+  <tokens default-value="standard">${tokens}</tokens>
+  <verbose default-value="false">${verbose}</verbose>
+</configuration>
+[DEBUG] =======================================================================
+[DEBUG] Could not find metadata net.coobird:thumbnailator/maven-metadata.xml in local (C:\Users\Administrator\.m2\repository)
+[DEBUG] Skipped remote request for net.coobird:thumbnailator/maven-metadata.xml, locally cached metadata up-to-date.
+[DEBUG] Could not find metadata net.coobird:thumbnailator/maven-metadata.xml in local (C:\Users\Administrator\.m2\repository)
+[DEBUG] Skipped remote request for net.coobird:thumbnailator/maven-metadata.xml, locally cached metadata up-to-date.
+[DEBUG] Dependency collection stats: {ConflictMarker.analyzeTime=8, ConflictMarker.markTime=1, ConflictMarker.nodeCount=1536, ConflictIdSorter.graphTime=5, ConflictIdSorter.topsortTime=1, ConflictIdSorter.conflictIdCount=340, ConflictIdSorter.conflictIdCycleCount=0, ConflictResolver.totalTime=67, ConflictResolver.conflictItemCount=870, DefaultDependencyCollector.collectTime=4928, DefaultDependencyCollector.transformTime=84}
+[DEBUG] com.cross:common:jar:0.0.6-release
+[DEBUG]    org.apache.poi:poi-ooxml:jar:3.9:compile
+[DEBUG]       org.apache.poi:poi:jar:3.9:compile
+[DEBUG]       org.apache.poi:poi-ooxml-schemas:jar:3.9:compile
+[DEBUG]          org.apache.xmlbeans:xmlbeans:jar:2.3.0:compile
+[DEBUG]             stax:stax-api:jar:1.0.1:compile
+[DEBUG]       dom4j:dom4j:jar:1.6.1:compile (version managed from 1.6.1) (optionality managed from false)
+[DEBUG]          xml-apis:xml-apis:jar:1.4.01:compile (version managed from 1.0.b2) (optionality managed from false)
+[DEBUG]    javax.servlet:jsp-api:jar:2.0:provided
+[DEBUG]       javax.servlet:servlet-api:jar:2.4:provided
+[DEBUG]    io.github.jhipster:jhipster:jar:1.1.3:compile
+[DEBUG]    io.dropwizard.metrics:metrics-core:jar:3.2.2:compile
+[DEBUG]       org.slf4j:slf4j-api:jar:1.7.25:compile (version managed from 1.7.22) (optionality managed from false)
+[DEBUG]    io.dropwizard.metrics:metrics-annotation:jar:3.2.2:compile
+[DEBUG]    io.dropwizard.metrics:metrics-json:jar:3.2.2:compile
+[DEBUG]       com.fasterxml.jackson.core:jackson-databind:jar:2.8.8:compile (version managed from 2.6.6) (optionality managed from false)
+[DEBUG]    io.dropwizard.metrics:metrics-jvm:jar:3.2.2:compile
+[DEBUG]    io.dropwizard.metrics:metrics-servlet:jar:3.2.2:compile
+[DEBUG]    io.dropwizard.metrics:metrics-servlets:jar:3.2.2:compile
+[DEBUG]       io.dropwizard.metrics:metrics-healthchecks:jar:3.2.2:compile
+[DEBUG]       com.papertrail:profiler:jar:1.0.2:compile
+[DEBUG]          joda-time:joda-time:jar:2.9.9:compile (version managed from 2.9.1) (optionality managed from false)
+[DEBUG]    com.fasterxml.jackson.datatype:jackson-datatype-hibernate5:jar:2.8.8:compile
+[DEBUG]       com.fasterxml.jackson.core:jackson-core:jar:2.8.8:compile (version managed from 2.8.8) (optionality managed from false)
+[DEBUG]       javax.transaction:jta:jar:1.1:compile
+[DEBUG]    com.fasterxml.jackson.datatype:jackson-datatype-hppc:jar:2.8.8:compile
+[DEBUG]       com.carrotsearch:hppc:jar:0.7.1:compile
+[DEBUG]    com.fasterxml.jackson.datatype:jackson-datatype-jsr310:jar:2.8.8:compile
+[DEBUG]       com.fasterxml.jackson.core:jackson-annotations:jar:2.8.0:compile (version managed from 2.8.0) (optionality managed from false)
+[DEBUG]    com.fasterxml.jackson.datatype:jackson-datatype-json-org:jar:2.8.8:compile
+[DEBUG]       org.apache.geronimo.bundles:json:jar:20090211_1:compile
+[DEBUG]    com.h2database:h2:jar:1.4.194:compile
+[DEBUG]    com.hazelcast:hazelcast:jar:3.7.7:compile
+[DEBUG]    com.hazelcast:hazelcast-hibernate52:jar:1.2:compile
+[DEBUG]    com.hazelcast:hazelcast-spring:jar:3.7.7:compile
+[DEBUG]    com.hazelcast:hazelcast-wm:jar:3.7:compile
+[DEBUG]    org.awaitility:awaitility:jar:2.0.0:test
+[DEBUG]       org.hamcrest:hamcrest-library:jar:1.3:test (version managed from 1.3) (optionality managed from false)
+[DEBUG]       org.hamcrest:hamcrest-core:jar:1.3:test (version managed from 1.3) (optionality managed from false)
+[DEBUG]       cglib:cglib-nodep:jar:3.1:test
+[DEBUG]       org.objenesis:objenesis:jar:2.1:test
+[DEBUG]    com.jayway.jsonpath:json-path:jar:2.2.0:test
+[DEBUG]       net.minidev:json-smart:jar:2.2.1:test
+[DEBUG]          net.minidev:accessors-smart:jar:1.1:test
+[DEBUG]    io.springfox:springfox-swagger2:jar:2.6.1:compile
+[DEBUG]       io.swagger:swagger-annotations:jar:1.5.10:compile
+[DEBUG]       io.swagger:swagger-models:jar:1.5.10:compile
+[DEBUG]       io.springfox:springfox-spi:jar:2.6.1:compile
+[DEBUG]          io.springfox:springfox-core:jar:2.6.1:compile
+[DEBUG]       io.springfox:springfox-schema:jar:2.6.1:compile
+[DEBUG]       io.springfox:springfox-swagger-common:jar:2.6.1:compile
+[DEBUG]       io.springfox:springfox-spring-web:jar:2.6.1:compile
+[DEBUG]       com.google.guava:guava:jar:18.0:compile (version managed from 18.0) (optionality managed from false)
+[DEBUG]       com.fasterxml:classmate:jar:1.3.3:compile (version managed from 1.3.1) (optionality managed from false)
+[DEBUG]       org.springframework.plugin:spring-plugin-core:jar:1.2.0.RELEASE:compile (version managed from 1.2.0.RELEASE) (optionality managed from false)
+[DEBUG]       org.springframework.plugin:spring-plugin-metadata:jar:1.2.0.RELEASE:compile (version managed from 1.2.0.RELEASE) (optionality managed from false)
+[DEBUG]    io.springfox:springfox-bean-validators:jar:2.6.1:compile
+[DEBUG]    com.mattbertolini:liquibase-slf4j:jar:2.0.0:compile
+[DEBUG]    com.ryantenney.metrics:metrics-spring:jar:3.1.3:compile
+[DEBUG]       org.springframework:spring-core:jar:4.3.8.RELEASE:compile (version managed from 4.1.6.RELEASE) (optionality managed from false) (exclusions managed)
+[DEBUG]       org.springframework:spring-beans:jar:4.3.8.RELEASE:compile (version managed from 4.1.6.RELEASE) (optionality managed from false)
+[DEBUG]       org.springframework:spring-aop:jar:4.3.8.RELEASE:compile (version managed from 4.1.6.RELEASE) (optionality managed from false)
+[DEBUG]    com.zaxxer:HikariCP:jar:2.6.0:compile
+[DEBUG]    commons-io:commons-io:jar:2.5:compile
+[DEBUG]    org.apache.commons:commons-lang3:jar:3.5:compile
+[DEBUG]    io.gatling.highcharts:gatling-charts-highcharts:jar:2.2.3:test
+[DEBUG]       org.scala-lang:scala-library:jar:2.11.8:test
+[DEBUG]       io.gatling:gatling-charts:jar:2.2.3:test
+[DEBUG]          io.gatling:gatling-core:jar:2.2.3:test
+[DEBUG]             io.gatling:gatling-commons:jar:2.2.3:test
+[DEBUG]                org.scala-lang:scala-reflect:jar:2.11.8:test
+[DEBUG]                com.typesafe:config:jar:1.3.1:test
+[DEBUG]                com.dongxiguo:fastring_2.11:jar:0.2.4:test
+[DEBUG]                com.softwaremill.quicklens:quicklens_2.11:jar:1.4.8:test
+[DEBUG]                org.asynchttpclient:async-http-client-netty-utils:jar:2.0.24:test
+[DEBUG]                com.typesafe.scala-logging:scala-logging_2.11:jar:3.5.0:test
+[DEBUG]             com.typesafe.akka:akka-actor_2.11:jar:2.4.12:test
+[DEBUG]             com.typesafe.akka:akka-slf4j_2.11:jar:2.4.12:test
+[DEBUG]             com.fasterxml.jackson.dataformat:jackson-dataformat-csv:jar:2.8.8:test (version managed from 2.8.4) (optionality managed from false)
+[DEBUG]             me.chrons:boopickle_2.11:jar:1.2.4:test
+[DEBUG]             org.scala-lang.modules:scala-java8-compat_2.11:jar:0.8.0-RC7:test
+[DEBUG]             com.github.ben-manes.caffeine:caffeine:jar:2.3.5:test (version managed from 2.3.5) (optionality managed from false)
+[DEBUG]             org.scala-lang.modules:scala-parser-combinators_2.11:jar:1.0.4:test
+[DEBUG]             com.github.scopt:scopt_2.11:jar:3.5.0:test
+[DEBUG]             io.gatling:jsonpath_2.11:jar:0.6.8:test
+[DEBUG]             io.advantageous.boon:boon-json:jar:0.6.6:test
+[DEBUG]                io.advantageous.boon:boon-reflekt:jar:0.6.6:test
+[DEBUG]             net.sf.saxon:Saxon-HE:jar:9.7.0-10:test
+[DEBUG]             org.jodd:jodd-lagarto:jar:3.8.0:test
+[DEBUG]                org.jodd:jodd-core:jar:3.8.0:test
+[DEBUG]                org.jodd:jodd-log:jar:3.8.0:test
+[DEBUG]          com.tdunning:t-digest:jar:3.1:compile
+[DEBUG]       io.gatling:gatling-app:jar:2.2.3:test
+[DEBUG]          io.gatling:gatling-http:jar:2.2.3:test
+[DEBUG]             org.asynchttpclient:async-http-client:jar:2.0.24:test
+[DEBUG]                org.asynchttpclient:netty-resolver-dns:jar:2.0.24:test
+[DEBUG]                   org.asynchttpclient:netty-resolver:jar:2.0.24:test
+[DEBUG]                   org.asynchttpclient:netty-codec-dns:jar:2.0.24:test
+[DEBUG]                org.reactivestreams:reactive-streams:jar:1.0.0:test
+[DEBUG]                com.typesafe.netty:netty-reactive-streams:jar:1.0.8:test
+[DEBUG]             io.netty:netty-transport-native-epoll:jar:linux-x86_64:4.0.42.Final:test
+[DEBUG]                io.netty:netty-common:jar:4.0.42.Final:runtime
+[DEBUG]                io.netty:netty-buffer:jar:4.0.42.Final:runtime
+[DEBUG]                io.netty:netty-transport:jar:4.0.42.Final:runtime
+[DEBUG]             org.scala-lang.modules:scala-xml_2.11:jar:1.0.5:test
+[DEBUG]          io.gatling:gatling-jms:jar:2.2.3:test
+[DEBUG]             org.apache.geronimo.specs:geronimo-jms_1.1_spec:jar:1.1.1:test
+[DEBUG]          io.gatling:gatling-jdbc:jar:2.2.3:test
+[DEBUG]          io.gatling:gatling-redis:jar:2.2.3:test
+[DEBUG]             net.debasishg:redisclient_2.11:jar:3.2:test
+[DEBUG]                commons-pool:commons-pool:jar:1.6:test (version managed from 1.6) (optionality managed from false)
+[DEBUG]          io.gatling:gatling-metrics:jar:2.2.3:test
+[DEBUG]       io.gatling:gatling-recorder:jar:2.2.3:test
+[DEBUG]          org.scala-lang.modules:scala-swing_2.11:jar:1.0.2:test
+[DEBUG]          io.netty:netty-codec-http:jar:4.0.42.Final:runtime
+[DEBUG]             io.netty:netty-codec:jar:4.0.42.Final:runtime
+[DEBUG]             io.netty:netty-handler:jar:4.0.42.Final:runtime
+[DEBUG]    com.jcraft:jzlib:jar:1.1.3:compile
+[DEBUG]    javax.cache:cache-api:jar:1.0.0:compile
+[DEBUG]    mysql:mysql-connector-java:jar:5.1.41:compile
+[DEBUG]    org.assertj:assertj-core:jar:3.6.2:test
+[DEBUG]    org.hibernate:hibernate-envers:jar:5.2.8.Final:compile
+[DEBUG]       org.jboss.logging:jboss-logging:jar:3.3.1.Final:compile (version managed from 3.3.0.Final) (optionality managed from false)
+[DEBUG]       org.hibernate:hibernate-core:jar:5.2.8.Final:compile (version managed from 5.2.8.Final) (optionality managed from false) (exclusions managed)
+[DEBUG]          org.hibernate.javax.persistence:hibernate-jpa-2.1-api:jar:1.0.0.Final:compile
+[DEBUG]          org.javassist:javassist:jar:3.21.0-GA:compile (version managed from 3.20.0-GA) (optionality managed from false)
+[DEBUG]          antlr:antlr:jar:2.7.7:compile (version managed from 2.7.7) (optionality managed from false)
+[DEBUG]          org.jboss.spec.javax.transaction:jboss-transaction-api_1.2_spec:jar:1.0.1.Final:compile
+[DEBUG]          org.jboss:jandex:jar:2.0.3.Final:compile
+[DEBUG]          org.hibernate.common:hibernate-commons-annotations:jar:5.0.1.Final:compile
+[DEBUG]    org.hibernate:hibernate-validator:jar:5.3.5.Final:compile
+[DEBUG]       javax.validation:validation-api:jar:1.1.0.Final:compile (version managed from 1.1.0.Final) (optionality managed from false)
+[DEBUG]    org.liquibase:liquibase-core:jar:3.5.3:compile
+[DEBUG]       org.yaml:snakeyaml:jar:1.17:compile (version managed from 1.17) (optionality managed from false)
+[DEBUG]    org.mapstruct:mapstruct-jdk8:jar:1.1.0.Final:compile
+[DEBUG]    org.springframework:spring-context-support:jar:4.3.8.RELEASE:compile
+[DEBUG]       org.springframework:spring-context:jar:4.3.8.RELEASE:compile (version managed from 4.3.8.RELEASE) (optionality managed from false)
+[DEBUG]    org.springframework.boot:spring-boot-actuator:jar:1.5.3.RELEASE:compile
+[DEBUG]       org.springframework.boot:spring-boot:jar:1.5.3.RELEASE:compile (version managed from 1.5.3.RELEASE) (optionality managed from false)
+[DEBUG]    org.springframework.boot:spring-boot-autoconfigure:jar:1.5.3.RELEASE:compile
+[DEBUG]    org.springframework.boot:spring-boot-configuration-processor:jar:1.5.3.RELEASE:compile
+[DEBUG]       com.vaadin.external.google:android-json:jar:0.0.20131108.vaadin1:compile
+[DEBUG]    org.springframework.boot:spring-boot-loader-tools:jar:1.5.3.RELEASE:compile
+[DEBUG]    org.springframework.boot:spring-boot-starter-aop:jar:1.5.3.RELEASE:compile
+[DEBUG]       org.springframework.boot:spring-boot-starter:jar:1.5.3.RELEASE:compile (version managed from 1.5.3.RELEASE) (optionality managed from false) (exclusions managed)
+[DEBUG]       org.aspectj:aspectjweaver:jar:1.8.10:compile (version managed from 1.8.10) (optionality managed from false)
+[DEBUG]    org.springframework.boot:spring-boot-starter-data-jpa:jar:1.5.3.RELEASE:compile
+[DEBUG]       org.springframework.boot:spring-boot-starter-jdbc:jar:1.5.3.RELEASE:compile (version managed from 1.5.3.RELEASE) (optionality managed from false)
+[DEBUG]          org.apache.tomcat:tomcat-jdbc:jar:8.5.14:compile (version managed from 8.5.14) (optionality managed from false)
+[DEBUG]             org.apache.tomcat:tomcat-juli:jar:8.5.14:compile
+[DEBUG]          org.springframework:spring-jdbc:jar:4.3.8.RELEASE:compile (version managed from 4.3.8.RELEASE) (optionality managed from false)
+[DEBUG]       org.hibernate:hibernate-entitymanager:jar:5.2.8.Final:compile (version managed from 5.0.12.Final) (optionality managed from false) (exclusions managed)
+[DEBUG]          net.bytebuddy:byte-buddy:jar:1.6.6:compile
+[DEBUG]       javax.transaction:javax.transaction-api:jar:1.2:compile (version managed from 1.2) (optionality managed from false)
+[DEBUG]       org.springframework.data:spring-data-jpa:jar:1.11.3.RELEASE:compile (version managed from 1.11.3.RELEASE) (optionality managed from false)
+[DEBUG]          org.springframework:spring-orm:jar:4.3.8.RELEASE:compile (version managed from 4.3.8.RELEASE) (optionality managed from false)
+[DEBUG]       org.springframework:spring-aspects:jar:4.3.8.RELEASE:compile (version managed from 4.3.8.RELEASE) (optionality managed from false)
+[DEBUG]    org.springframework.boot:spring-boot-starter-data-elasticsearch:jar:1.5.3.RELEASE:compile
+[DEBUG]       org.springframework.data:spring-data-elasticsearch:jar:2.1.3.RELEASE:compile (version managed from 2.1.3.RELEASE) (optionality managed from false)
+[DEBUG]          commons-lang:commons-lang:jar:2.6:compile
+[DEBUG]          org.elasticsearch:elasticsearch:jar:2.4.4:compile (version managed from 2.4.0) (optionality managed from false)
+[DEBUG]             org.apache.lucene:lucene-core:jar:5.5.2:compile
+[DEBUG]             org.apache.lucene:lucene-backward-codecs:jar:5.5.2:compile
+[DEBUG]             org.apache.lucene:lucene-analyzers-common:jar:5.5.2:compile
+[DEBUG]             org.apache.lucene:lucene-queries:jar:5.5.2:compile
+[DEBUG]             org.apache.lucene:lucene-memory:jar:5.5.2:compile
+[DEBUG]             org.apache.lucene:lucene-highlighter:jar:5.5.2:compile
+[DEBUG]             org.apache.lucene:lucene-queryparser:jar:5.5.2:compile
+[DEBUG]                org.apache.lucene:lucene-sandbox:jar:5.5.2:compile
+[DEBUG]             org.apache.lucene:lucene-suggest:jar:5.5.2:compile
+[DEBUG]                org.apache.lucene:lucene-misc:jar:5.5.2:compile
+[DEBUG]             org.apache.lucene:lucene-join:jar:5.5.2:compile
+[DEBUG]                org.apache.lucene:lucene-grouping:jar:5.5.2:compile
+[DEBUG]             org.apache.lucene:lucene-spatial:jar:5.5.2:compile
+[DEBUG]                org.apache.lucene:lucene-spatial3d:jar:5.5.2:compile
+[DEBUG]                com.spatial4j:spatial4j:jar:0.5:compile
+[DEBUG]             org.elasticsearch:securesm:jar:1.0:compile
+[DEBUG]             com.fasterxml.jackson.dataformat:jackson-dataformat-smile:jar:2.8.8:compile (version managed from 2.8.1) (optionality managed from false)
+[DEBUG]             com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:jar:2.8.8:compile (version managed from 2.8.1) (optionality managed from false)
+[DEBUG]             com.fasterxml.jackson.dataformat:jackson-dataformat-cbor:jar:2.8.8:compile (version managed from 2.8.1) (optionality managed from false)
+[DEBUG]             io.netty:netty:jar:3.10.6.Final:compile
+[DEBUG]             com.ning:compress-lzf:jar:1.0.2:compile
+[DEBUG]             commons-cli:commons-cli:jar:1.3.1:compile
+[DEBUG]             com.twitter:jsr166e:jar:1.1.0:compile
+[DEBUG]    net.java.dev.jna:jna:jar:4.2.2:compile
+[DEBUG]    org.springframework.boot:spring-boot-starter-logging:jar:1.5.3.RELEASE:compile
+[DEBUG]       ch.qos.logback:logback-classic:jar:1.1.11:compile (version managed from 1.1.11) (optionality managed from false)
+[DEBUG]          ch.qos.logback:logback-core:jar:1.1.11:compile (version managed from 1.1.11) (optionality managed from false)
+[DEBUG]       org.slf4j:jcl-over-slf4j:jar:1.7.25:compile (version managed from 1.7.25) (optionality managed from false)
+[DEBUG]       org.slf4j:jul-to-slf4j:jar:1.7.25:compile (version managed from 1.7.25) (optionality managed from false)
+[DEBUG]       org.slf4j:log4j-over-slf4j:jar:1.7.25:compile (version managed from 1.7.25) (optionality managed from false)
+[DEBUG]    org.springframework.boot:spring-boot-starter-mail:jar:1.5.3.RELEASE:compile
+[DEBUG]       com.sun.mail:javax.mail:jar:1.5.6:compile (version managed from 1.5.6) (optionality managed from false)
+[DEBUG]          javax.activation:activation:jar:1.1:compile
+[DEBUG]    org.springframework.boot:spring-boot-starter-security:jar:1.5.3.RELEASE:compile
+[DEBUG]       org.springframework.security:spring-security-config:jar:4.2.2.RELEASE:compile (version managed from 4.2.2.RELEASE) (optionality managed from false)
+[DEBUG]       org.springframework.security:spring-security-web:jar:4.2.2.RELEASE:compile (version managed from 4.2.2.RELEASE) (optionality managed from false)
+[DEBUG]    org.springframework.boot:spring-boot-starter-test:jar:1.5.3.RELEASE:test (exclusions managed)
+[DEBUG]       org.springframework.boot:spring-boot-test-autoconfigure:jar:1.5.3.RELEASE:test (version managed from 1.5.3.RELEASE) (optionality managed from false)
+[DEBUG]       junit:junit:jar:4.12:test (version managed from 4.12) (optionality managed from false)
+[DEBUG]       org.mockito:mockito-core:jar:1.10.19:test (version managed from 1.10.19) (optionality managed from false)
+[DEBUG]       org.skyscreamer:jsonassert:jar:1.4.0:test (version managed from 1.4.0) (optionality managed from false)
+[DEBUG]       org.springframework:spring-test:jar:4.3.8.RELEASE:test (version managed from 4.3.8.RELEASE) (optionality managed from false)
+[DEBUG]    org.springframework.security:spring-security-test:jar:4.2.2.RELEASE:test
+[DEBUG]       org.springframework.security:spring-security-core:jar:4.2.2.RELEASE:compile (version managed from 4.2.2.RELEASE) (optionality managed from false)
+[DEBUG]    org.springframework.boot:spring-boot-test:jar:1.5.3.RELEASE:test
+[DEBUG]    org.springframework.boot:spring-boot-starter-thymeleaf:jar:1.5.3.RELEASE:compile
+[DEBUG]       org.thymeleaf:thymeleaf-spring4:jar:2.1.5.RELEASE:compile (version managed from 2.1.5.RELEASE) (optionality managed from false)
+[DEBUG]          org.thymeleaf:thymeleaf:jar:2.1.5.RELEASE:compile (version managed from 2.1.5.RELEASE) (optionality managed from false)
+[DEBUG]             ognl:ognl:jar:3.0.8:compile
+[DEBUG]             org.unbescape:unbescape:jar:1.1.0.RELEASE:compile
+[DEBUG]       nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect:jar:1.4.0:compile (version managed from 1.4.0) (optionality managed from false)
+[DEBUG]          org.codehaus.groovy:groovy:jar:2.4.10:compile (version managed from 2.4.3) (optionality managed from false)
+[DEBUG]    org.springframework.boot:spring-boot-starter-web:jar:1.5.3.RELEASE:compile
+[DEBUG]       org.springframework:spring-web:jar:4.3.8.RELEASE:compile (version managed from 4.3.8.RELEASE) (optionality managed from false)
+[DEBUG]       org.springframework:spring-webmvc:jar:4.3.8.RELEASE:compile (version managed from 4.3.8.RELEASE) (optionality managed from false)
+[DEBUG]    org.springframework.boot:spring-boot-starter-websocket:jar:1.5.3.RELEASE:compile
+[DEBUG]       org.springframework:spring-messaging:jar:4.3.8.RELEASE:compile (version managed from 4.3.8.RELEASE) (optionality managed from false)
+[DEBUG]       org.springframework:spring-websocket:jar:4.3.8.RELEASE:compile (version managed from 4.3.8.RELEASE) (optionality managed from false)
+[DEBUG]    org.springframework.security.oauth:spring-security-oauth2:jar:2.0.13.RELEASE:compile
+[DEBUG]       org.codehaus.jackson:jackson-mapper-asl:jar:1.9.13:compile
+[DEBUG]          org.codehaus.jackson:jackson-core-asl:jar:1.9.13:compile
+[DEBUG]    org.springframework.security:spring-security-jwt:jar:1.0.7.RELEASE:compile
+[DEBUG]       org.bouncycastle:bcpkix-jdk15on:jar:1.55:compile
+[DEBUG]          org.bouncycastle:bcprov-jdk15on:jar:1.55:compile
+[DEBUG]    org.springframework.cloud:spring-cloud-security:jar:1.2.0.RELEASE:compile
+[DEBUG]    io.jsonwebtoken:jjwt:jar:0.7.0:compile
+[DEBUG]    org.springframework.cloud:spring-cloud-starter-zuul:jar:1.3.0.RELEASE:compile
+[DEBUG]       org.springframework.boot:spring-boot-starter-actuator:jar:1.5.3.RELEASE:compile (version managed from 1.5.2.RELEASE) (optionality managed from false)
+[DEBUG]       org.springframework.cloud:spring-cloud-starter-archaius:jar:1.3.0.RELEASE:compile (version managed from 1.3.0.RELEASE) (optionality managed from false)
+[DEBUG]          com.netflix.archaius:archaius-core:jar:0.7.4:compile (version managed from 0.7.4) (optionality managed from false) (exclusions managed)
+[DEBUG]             com.google.code.findbugs:jsr305:jar:3.0.1:runtime
+[DEBUG]          commons-configuration:commons-configuration:jar:1.8:compile (version managed from 1.8) (optionality managed from false)
+[DEBUG]       com.netflix.zuul:zuul-core:jar:1.3.0:compile (version managed from 1.3.0) (optionality managed from false) (exclusions managed)
+[DEBUG]          com.netflix.servo:servo-core:jar:0.10.1:compile (version managed from 0.7.2) (optionality managed from false) (exclusions managed)
+[DEBUG]             com.netflix.servo:servo-internal:jar:0.10.1:runtime
+[DEBUG]          com.netflix.netflix-commons:netflix-commons-util:jar:0.1.1:runtime (version managed from 0.1.1) (optionality managed from false)
+[DEBUG]    com.github.vladimir-bukhtoyarov:bucket4j-core:jar:2.0.1:compile
+[DEBUG]    com.github.vladimir-bukhtoyarov:bucket4j-jcache:jar:2.0.1:compile
+[DEBUG]    org.springframework.cloud:spring-cloud-starter:jar:1.2.0.RELEASE:compile
+[DEBUG]       org.springframework.cloud:spring-cloud-context:jar:1.2.0.RELEASE:compile (version managed from 1.2.0.RELEASE) (optionality managed from false)
+[DEBUG]          org.springframework.security:spring-security-crypto:jar:4.2.2.RELEASE:compile (version managed from 4.2.2.RELEASE) (optionality managed from false)
+[DEBUG]       org.springframework.cloud:spring-cloud-commons:jar:1.2.0.RELEASE:compile (version managed from 1.2.0.RELEASE) (optionality managed from false)
+[DEBUG]       org.springframework.security:spring-security-rsa:jar:1.0.3.RELEASE:compile (version managed from 1.0.3.RELEASE) (optionality managed from false) (exclusions managed)
+[DEBUG]    org.springframework.cloud:spring-cloud-starter-ribbon:jar:1.3.0.RELEASE:compile
+[DEBUG]       org.springframework.cloud:spring-cloud-netflix-core:jar:1.3.0.RELEASE:compile (version managed from 1.3.0.RELEASE) (optionality managed from false)
+[DEBUG]       com.netflix.ribbon:ribbon:jar:2.2.2:compile (version managed from 2.2.2) (optionality managed from false) (exclusions managed)
+[DEBUG]          com.netflix.ribbon:ribbon-transport:jar:2.2.2:runtime
+[DEBUG]             io.reactivex:rxnetty-contexts:jar:0.4.9:runtime
+[DEBUG]             io.reactivex:rxnetty-servo:jar:0.4.9:runtime
+[DEBUG]          javax.inject:javax.inject:jar:1:runtime (version managed from 1) (optionality managed from false)
+[DEBUG]          io.reactivex:rxnetty:jar:0.4.9:runtime
+[DEBUG]       com.netflix.ribbon:ribbon-core:jar:2.2.2:compile (version managed from 2.2.2) (optionality managed from false) (exclusions managed)
+[DEBUG]       com.netflix.ribbon:ribbon-httpclient:jar:2.2.2:compile (version managed from 2.2.2) (optionality managed from false) (exclusions managed)
+[DEBUG]          com.sun.jersey:jersey-client:jar:1.19.1:runtime (version managed from 1.19.1) (optionality managed from false)
+[DEBUG]          com.sun.jersey.contribs:jersey-apache-client4:jar:1.19.1:runtime (version managed from 1.19.1) (optionality managed from false)
+[DEBUG]       com.netflix.ribbon:ribbon-loadbalancer:jar:2.2.2:compile (version managed from 2.2.2) (optionality managed from false) (exclusions managed)
+[DEBUG]          com.netflix.netflix-commons:netflix-statistics:jar:0.1.1:runtime
+[DEBUG]       io.reactivex:rxjava:jar:1.1.10:compile (version managed from 1.1.10) (optionality managed from false)
+[DEBUG]    org.springframework.cloud:spring-cloud-starter-hystrix:jar:1.3.0.RELEASE:compile
+[DEBUG]       com.netflix.hystrix:hystrix-core:jar:1.5.10:compile (version managed from 1.5.10) (optionality managed from false) (exclusions managed)
+[DEBUG]          org.hdrhistogram:HdrHistogram:jar:2.1.9:compile
+[DEBUG]       com.netflix.hystrix:hystrix-metrics-event-stream:jar:1.5.10:compile (version managed from 1.5.10) (optionality managed from false) (exclusions managed)
+[DEBUG]          com.netflix.hystrix:hystrix-serialization:jar:1.5.10:runtime
+[DEBUG]             com.fasterxml.jackson.module:jackson-module-afterburner:jar:2.8.8:runtime (version managed from 2.7.5) (optionality managed from false)
+[DEBUG]       com.netflix.hystrix:hystrix-javanica:jar:1.5.10:compile (version managed from 1.5.10) (optionality managed from false) (exclusions managed)
+[DEBUG]          org.ow2.asm:asm:jar:5.0.4:runtime
+[DEBUG]    org.springframework.cloud:spring-cloud-starter-spectator:jar:1.3.0.RELEASE:compile
+[DEBUG]       org.springframework.cloud:spring-cloud-netflix-spectator:jar:1.3.0.RELEASE:compile (version managed from 1.3.0.RELEASE) (optionality managed from false)
+[DEBUG]          com.netflix.spectator:spectator-api:jar:0.30.0:compile
+[DEBUG]          com.netflix.spectator:spectator-reg-servo:jar:0.30.0:compile
+[DEBUG]    org.springframework.retry:spring-retry:jar:1.2.0.RELEASE:compile
+[DEBUG]    org.springframework.cloud:spring-cloud-starter-eureka:jar:1.3.0.RELEASE:compile
+[DEBUG]       org.springframework.cloud:spring-cloud-netflix-eureka-client:jar:1.3.0.RELEASE:compile (version managed from 1.3.0.RELEASE) (optionality managed from false)
+[DEBUG]       com.netflix.eureka:eureka-client:jar:1.6.2:compile (version managed from 1.6.2) (optionality managed from false) (exclusions managed)
+[DEBUG]          org.codehaus.jettison:jettison:jar:1.3.7:runtime
+[DEBUG]          com.netflix.netflix-commons:netflix-eventbus:jar:0.3.0:runtime
+[DEBUG]             com.netflix.netflix-commons:netflix-infix:jar:0.3.0:runtime
+[DEBUG]                commons-jxpath:commons-jxpath:jar:1.3:runtime
+[DEBUG]                org.antlr:antlr-runtime:jar:3.4:runtime
+[DEBUG]                   org.antlr:stringtemplate:jar:3.2.1:runtime
+[DEBUG]             org.apache.commons:commons-math:jar:2.2:runtime
+[DEBUG]          javax.ws.rs:jsr311-api:jar:1.1.1:runtime
+[DEBUG]          com.sun.jersey:jersey-core:jar:1.19.1:runtime (version managed from 1.19.1) (optionality managed from false)
+[DEBUG]          com.google.inject:guice:jar:4.1.0:runtime
+[DEBUG]       com.netflix.eureka:eureka-core:jar:1.6.2:compile (version managed from 1.6.2) (optionality managed from false) (exclusions managed)
+[DEBUG]          org.codehaus.woodstox:woodstox-core-asl:jar:4.4.1:runtime
+[DEBUG]             javax.xml.stream:stax-api:jar:1.0-2:runtime
+[DEBUG]             org.codehaus.woodstox:stax2-api:jar:3.1.4:runtime
+[DEBUG]       com.netflix.ribbon:ribbon-eureka:jar:2.2.2:compile (version managed from 2.2.2) (optionality managed from false) (exclusions managed)
+[DEBUG]       com.thoughtworks.xstream:xstream:jar:1.4.9:compile (version managed from 1.4.9) (optionality managed from false)
+[DEBUG]          xmlpull:xmlpull:jar:1.1.3.1:compile
+[DEBUG]          xpp3:xpp3_min:jar:1.1.4c:compile
+[DEBUG]    org.springframework.cloud:spring-cloud-starter-config:jar:1.3.0.RELEASE:compile
+[DEBUG]       org.springframework.cloud:spring-cloud-config-client:jar:1.3.0.RELEASE:compile (version managed from 1.3.0.RELEASE) (optionality managed from false)
+[DEBUG]    org.springframework.cloud:spring-cloud-starter-feign:jar:1.3.0.RELEASE:compile
+[DEBUG]       io.github.openfeign:feign-core:jar:9.4.0:compile (version managed from 9.4.0) (optionality managed from false)
+[DEBUG]          org.jvnet:animal-sniffer-annotation:jar:1.0:compile
+[DEBUG]       io.github.openfeign:feign-slf4j:jar:9.4.0:compile (version managed from 9.4.0) (optionality managed from false)
+[DEBUG]       io.github.openfeign:feign-hystrix:jar:9.4.0:compile (version managed from 9.4.0) (optionality managed from false)
+[DEBUG]    net.logstash.logback:logstash-logback-encoder:jar:4.9:compile
+[DEBUG]    org.springframework.boot:spring-boot-starter-cloud-connectors:jar:1.5.3.RELEASE:compile
+[DEBUG]       org.springframework.cloud:spring-cloud-spring-service-connector:jar:1.2.3.RELEASE:compile (version managed from 1.2.3.RELEASE) (optionality managed from false) (exclusions managed)
+[DEBUG]          org.springframework.cloud:spring-cloud-core:jar:1.2.3.RELEASE:compile (version managed from 1.2.3.RELEASE) (optionality managed from false)
+[DEBUG]       org.springframework.cloud:spring-cloud-cloudfoundry-connector:jar:1.2.3.RELEASE:compile (version managed from 1.2.3.RELEASE) (optionality managed from false)
+[DEBUG]       org.springframework.cloud:spring-cloud-heroku-connector:jar:1.2.3.RELEASE:compile (version managed from 1.2.3.RELEASE) (optionality managed from false)
+[DEBUG]       org.springframework.cloud:spring-cloud-localconfig-connector:jar:1.2.3.RELEASE:compile (version managed from 1.2.3.RELEASE) (optionality managed from false)
+[DEBUG]    org.springframework.security:spring-security-data:jar:4.2.2.RELEASE:compile
+[DEBUG]       org.springframework.data:spring-data-commons:jar:1.13.3.RELEASE:compile (version managed from 1.12.2.RELEASE) (optionality managed from false)
+[DEBUG]    org.springframework.security:spring-security-messaging:jar:4.2.2.RELEASE:compile
+[DEBUG]       aopalliance:aopalliance:jar:1.0:compile
+[DEBUG]       org.springframework:spring-expression:jar:4.3.8.RELEASE:compile (version managed from 4.3.5.RELEASE) (optionality managed from false)
+[DEBUG]    info.cukes:cucumber-junit:jar:1.2.4:test
+[DEBUG]       info.cukes:cucumber-core:jar:1.2.4:test
+[DEBUG]          info.cukes:cucumber-html:jar:0.2.3:test
+[DEBUG]          info.cukes:cucumber-jvm-deps:jar:1.0.5:test
+[DEBUG]          info.cukes:gherkin:jar:2.12.2:test
+[DEBUG]    info.cukes:cucumber-spring:jar:1.2.4:test
+[DEBUG]       info.cukes:cucumber-java:jar:1.2.4:test
+[DEBUG]    com.ali.taobao:dayu:jar:1.0.0:compile
+[DEBUG]    commons-codec:commons-codec:jar:1.9:compile
+[DEBUG]    com.google.code.gson:gson:jar:2.8.1:compile
+[DEBUG]    org.apache.httpcomponents:httpclient:jar:4.5.3:compile (exclusions managed)
+[DEBUG]       org.apache.httpcomponents:httpcore:jar:4.4.6:compile (version managed from 4.4.6) (optionality managed from false)
+[DEBUG]    io.github.openfeign.form:feign-form:jar:2.1.0:compile
+[DEBUG]       org.projectlombok:lombok:jar:1.16.16:compile (version managed from 1.16.12) (optionality managed from false)
+[DEBUG]    io.github.openfeign.form:feign-form-spring:jar:2.1.0:compile
+[DEBUG]    net.coobird:thumbnailator:jar:RELEASE:compile
+[DEBUG]    com.google.zxing:core:jar:3.3.0:compile
+[DEBUG]    org.springframework.data:spring-data-redis:jar:1.8.9.RELEASE:compile
+[DEBUG]       org.springframework.data:spring-data-keyvalue:jar:1.2.3.RELEASE:compile (version managed from 1.2.9.RELEASE) (optionality managed from false)
+[DEBUG]       org.springframework:spring-tx:jar:4.3.8.RELEASE:compile (version managed from 4.3.13.RELEASE) (optionality managed from false)
+[DEBUG]       org.springframework:spring-oxm:jar:4.3.8.RELEASE:compile (version managed from 4.3.13.RELEASE) (optionality managed from false)
+[DEBUG]    commons-beanutils:commons-beanutils:jar:1.9.3:compile (exclusions managed)
+[DEBUG]       commons-collections:commons-collections:jar:3.2.2:compile (version managed from 3.2.2) (optionality managed from false)
+[INFO] 
+[INFO] --- maven-dependency-plugin:2.10:tree (default-cli) @ common ---
+[DEBUG] Using mirror alimaven (http://maven.aliyun.com/nexus/content/groups/public/) for central (http://repo1.maven.org/maven2).
+[DEBUG] Dependency collection stats: {ConflictMarker.analyzeTime=0, ConflictMarker.markTime=0, ConflictMarker.nodeCount=335, ConflictIdSorter.graphTime=0, ConflictIdSorter.topsortTime=1, ConflictIdSorter.conflictIdCount=82, ConflictIdSorter.conflictIdCycleCount=0, ConflictResolver.totalTime=2, ConflictResolver.conflictItemCount=199, DefaultDependencyCollector.collectTime=1137, DefaultDependencyCollector.transformTime=3}
+[DEBUG] org.apache.maven.plugins:maven-dependency-plugin:jar:2.10:
+[DEBUG]    org.apache.maven:maven-artifact:jar:2.2.1:compile
+[DEBUG]    org.apache.maven:maven-plugin-api:jar:2.2.1:compile
+[DEBUG]    org.apache.maven:maven-project:jar:2.2.1:compile
+[DEBUG]       org.apache.maven:maven-settings:jar:2.2.1:compile
+[DEBUG]       org.apache.maven:maven-profile:jar:2.2.1:compile
+[DEBUG]       org.apache.maven:maven-plugin-registry:jar:2.2.1:compile
+[DEBUG]       org.codehaus.plexus:plexus-interpolation:jar:1.11:compile
+[DEBUG]       org.codehaus.plexus:plexus-container-default:jar:1.0-alpha-9-stable-1:compile
+[DEBUG]          junit:junit:jar:3.8.1:compile
+[DEBUG]    org.apache.maven:maven-model:jar:2.2.1:compile
+[DEBUG]    org.apache.maven:maven-core:jar:2.2.1:compile
+[DEBUG]       org.apache.maven:maven-plugin-parameter-documenter:jar:2.2.1:compile
+[DEBUG]       org.slf4j:slf4j-jdk14:jar:1.5.6:runtime
+[DEBUG]          org.slf4j:slf4j-api:jar:1.5.6:runtime
+[DEBUG]       org.slf4j:jcl-over-slf4j:jar:1.5.6:runtime
+[DEBUG]       org.apache.maven:maven-error-diagnostics:jar:2.2.1:compile
+[DEBUG]       commons-cli:commons-cli:jar:1.2:compile
+[DEBUG]       org.apache.maven:maven-plugin-descriptor:jar:2.2.1:compile
+[DEBUG]       org.codehaus.plexus:plexus-interactivity-api:jar:1.0-alpha-4:compile
+[DEBUG]       org.apache.maven:maven-monitor:jar:2.2.1:compile
+[DEBUG]       org.sonatype.plexus:plexus-sec-dispatcher:jar:1.3:compile
+[DEBUG]          org.sonatype.plexus:plexus-cipher:jar:1.4:compile
+[DEBUG]    org.apache.maven:maven-artifact-manager:jar:2.2.1:compile
+[DEBUG]       backport-util-concurrent:backport-util-concurrent:jar:3.1:compile
+[DEBUG]    org.apache.maven:maven-repository-metadata:jar:2.2.1:compile
+[DEBUG]    org.apache.maven.reporting:maven-reporting-api:jar:3.0:compile
+[DEBUG]    org.apache.maven.reporting:maven-reporting-impl:jar:2.2:compile
+[DEBUG]       org.apache.maven.doxia:doxia-core:jar:1.2:compile
+[DEBUG]          xerces:xercesImpl:jar:2.9.1:compile
+[DEBUG]             xml-apis:xml-apis:jar:1.3.04:compile
+[DEBUG]          org.apache.httpcomponents:httpclient:jar:4.0.2:compile
+[DEBUG]             org.apache.httpcomponents:httpcore:jar:4.0.1:compile
+[DEBUG]             commons-codec:commons-codec:jar:1.3:compile
+[DEBUG]       commons-validator:commons-validator:jar:1.3.1:compile
+[DEBUG]          commons-beanutils:commons-beanutils:jar:1.7.0:compile
+[DEBUG]          commons-digester:commons-digester:jar:1.6:compile
+[DEBUG]          commons-logging:commons-logging:jar:1.0.4:compile
+[DEBUG]    commons-io:commons-io:jar:1.4:compile
+[DEBUG]    org.apache.maven.doxia:doxia-sink-api:jar:1.4:compile
+[DEBUG]       org.apache.maven.doxia:doxia-logging-api:jar:1.4:compile
+[DEBUG]    org.apache.maven.doxia:doxia-site-renderer:jar:1.4:compile
+[DEBUG]       org.apache.maven.doxia:doxia-decoration-model:jar:1.4:compile
+[DEBUG]       org.apache.maven.doxia:doxia-module-xhtml:jar:1.4:compile
+[DEBUG]       org.apache.maven.doxia:doxia-module-fml:jar:1.4:compile
+[DEBUG]       org.codehaus.plexus:plexus-i18n:jar:1.0-beta-7:compile
+[DEBUG]       org.codehaus.plexus:plexus-velocity:jar:1.1.7:compile
+[DEBUG]       org.apache.velocity:velocity:jar:1.5:compile
+[DEBUG]          oro:oro:jar:2.0.8:compile
+[DEBUG]       org.apache.velocity:velocity-tools:jar:2.0:compile
+[DEBUG]          commons-chain:commons-chain:jar:1.1:compile
+[DEBUG]          dom4j:dom4j:jar:1.1:compile
+[DEBUG]          sslext:sslext:jar:1.2-0:compile
+[DEBUG]          org.apache.struts:struts-core:jar:1.3.8:compile
+[DEBUG]             antlr:antlr:jar:2.7.2:compile
+[DEBUG]          org.apache.struts:struts-taglib:jar:1.3.8:compile
+[DEBUG]          org.apache.struts:struts-tiles:jar:1.3.8:compile
+[DEBUG]       org.codehaus.plexus:plexus-component-annotations:jar:1.5.5:compile
+[DEBUG]    org.codehaus.plexus:plexus-archiver:jar:2.9:compile
+[DEBUG]       org.apache.commons:commons-compress:jar:1.9:compile
+[DEBUG]    org.codehaus.plexus:plexus-utils:jar:3.0.20:compile
+[DEBUG]    org.apache.maven.shared:file-management:jar:1.2.1:compile
+[DEBUG]       org.apache.maven.shared:maven-shared-io:jar:1.1:compile
+[DEBUG]          org.apache.maven.wagon:wagon-provider-api:jar:1.0-alpha-6:compile
+[DEBUG]    org.codehaus.plexus:plexus-io:jar:2.4:compile
+[DEBUG]    org.apache.maven.shared:maven-dependency-analyzer:jar:1.6:compile
+[DEBUG]       org.ow2.asm:asm:jar:5.0.2:compile
+[DEBUG]    org.apache.maven.shared:maven-dependency-tree:jar:2.2:compile
+[DEBUG]       org.eclipse.aether:aether-util:jar:0.9.0.M2:compile
+[DEBUG]    org.apache.maven.shared:maven-common-artifact-filters:jar:1.4:compile
+[DEBUG]    org.apache.maven.shared:maven-invoker:jar:2.1.1:compile
+[DEBUG]    commons-lang:commons-lang:jar:2.6:compile
+[DEBUG]    commons-collections:commons-collections:jar:3.2.1:compile
+[DEBUG]    classworlds:classworlds:jar:1.1:compile
+[DEBUG] Created new class realm plugin>org.apache.maven.plugins:maven-dependency-plugin:2.10
+[DEBUG] Importing foreign packages into class realm plugin>org.apache.maven.plugins:maven-dependency-plugin:2.10
+[DEBUG]   Imported:  < maven.api
+[DEBUG] Populating class realm plugin>org.apache.maven.plugins:maven-dependency-plugin:2.10
+[DEBUG]   Included: org.apache.maven.plugins:maven-dependency-plugin:jar:2.10
+[DEBUG]   Included: org.codehaus.plexus:plexus-interpolation:jar:1.11
+[DEBUG]   Included: junit:junit:jar:3.8.1
+[DEBUG]   Included: org.slf4j:slf4j-jdk14:jar:1.5.6
+[DEBUG]   Included: org.slf4j:jcl-over-slf4j:jar:1.5.6
+[DEBUG]   Included: commons-cli:commons-cli:jar:1.2
+[DEBUG]   Included: org.codehaus.plexus:plexus-interactivity-api:jar:1.0-alpha-4
+[DEBUG]   Included: org.sonatype.plexus:plexus-sec-dispatcher:jar:1.3
+[DEBUG]   Included: org.sonatype.plexus:plexus-cipher:jar:1.4
+[DEBUG]   Included: backport-util-concurrent:backport-util-concurrent:jar:3.1
+[DEBUG]   Included: org.apache.maven.reporting:maven-reporting-api:jar:3.0
+[DEBUG]   Included: org.apache.maven.reporting:maven-reporting-impl:jar:2.2
+[DEBUG]   Included: org.apache.maven.doxia:doxia-core:jar:1.2
+[DEBUG]   Included: xerces:xercesImpl:jar:2.9.1
+[DEBUG]   Included: xml-apis:xml-apis:jar:1.3.04
+[DEBUG]   Included: org.apache.httpcomponents:httpclient:jar:4.0.2
+[DEBUG]   Included: org.apache.httpcomponents:httpcore:jar:4.0.1
+[DEBUG]   Included: commons-codec:commons-codec:jar:1.3
+[DEBUG]   Included: commons-validator:commons-validator:jar:1.3.1
+[DEBUG]   Included: commons-beanutils:commons-beanutils:jar:1.7.0
+[DEBUG]   Included: commons-digester:commons-digester:jar:1.6
+[DEBUG]   Included: commons-logging:commons-logging:jar:1.0.4
+[DEBUG]   Included: commons-io:commons-io:jar:1.4
+[DEBUG]   Included: org.apache.maven.doxia:doxia-sink-api:jar:1.4
+[DEBUG]   Included: org.apache.maven.doxia:doxia-logging-api:jar:1.4
+[DEBUG]   Included: org.apache.maven.doxia:doxia-site-renderer:jar:1.4
+[DEBUG]   Included: org.apache.maven.doxia:doxia-decoration-model:jar:1.4
+[DEBUG]   Included: org.apache.maven.doxia:doxia-module-xhtml:jar:1.4
+[DEBUG]   Included: org.apache.maven.doxia:doxia-module-fml:jar:1.4
+[DEBUG]   Included: org.codehaus.plexus:plexus-i18n:jar:1.0-beta-7
+[DEBUG]   Included: org.codehaus.plexus:plexus-velocity:jar:1.1.7
+[DEBUG]   Included: org.apache.velocity:velocity:jar:1.5
+[DEBUG]   Included: oro:oro:jar:2.0.8
+[DEBUG]   Included: org.apache.velocity:velocity-tools:jar:2.0
+[DEBUG]   Included: commons-chain:commons-chain:jar:1.1
+[DEBUG]   Included: dom4j:dom4j:jar:1.1
+[DEBUG]   Included: sslext:sslext:jar:1.2-0
+[DEBUG]   Included: org.apache.struts:struts-core:jar:1.3.8
+[DEBUG]   Included: antlr:antlr:jar:2.7.2
+[DEBUG]   Included: org.apache.struts:struts-taglib:jar:1.3.8
+[DEBUG]   Included: org.apache.struts:struts-tiles:jar:1.3.8
+[DEBUG]   Included: org.codehaus.plexus:plexus-component-annotations:jar:1.5.5
+[DEBUG]   Included: org.codehaus.plexus:plexus-archiver:jar:2.9
+[DEBUG]   Included: org.apache.commons:commons-compress:jar:1.9
+[DEBUG]   Included: org.codehaus.plexus:plexus-utils:jar:3.0.20
+[DEBUG]   Included: org.apache.maven.shared:file-management:jar:1.2.1
+[DEBUG]   Included: org.apache.maven.shared:maven-shared-io:jar:1.1
+[DEBUG]   Included: org.codehaus.plexus:plexus-io:jar:2.4
+[DEBUG]   Included: org.apache.maven.shared:maven-dependency-analyzer:jar:1.6
+[DEBUG]   Included: org.ow2.asm:asm:jar:5.0.2
+[DEBUG]   Included: org.apache.maven.shared:maven-dependency-tree:jar:2.2
+[DEBUG]   Included: org.eclipse.aether:aether-util:jar:0.9.0.M2
+[DEBUG]   Included: org.apache.maven.shared:maven-common-artifact-filters:jar:1.4
+[DEBUG]   Included: org.apache.maven.shared:maven-invoker:jar:2.1.1
+[DEBUG]   Included: commons-lang:commons-lang:jar:2.6
+[DEBUG]   Included: commons-collections:commons-collections:jar:3.2.1
+[DEBUG] Configuring mojo org.apache.maven.plugins:maven-dependency-plugin:2.10:tree from plugin realm ClassRealm[plugin>org.apache.maven.plugins:maven-dependency-plugin:2.10, parent: sun.misc.Launcher$AppClassLoader@55f96302]
+[DEBUG] Configuring mojo 'org.apache.maven.plugins:maven-dependency-plugin:2.10:tree' with basic configurator -->
+[DEBUG]   (f) appendOutput = false
+[DEBUG]   (f) localRepository =       id: local
+      url: file:///C:/Users/Administrator/.m2/repository/
+   layout: default
+snapshots: [enabled => true, update => always]
+ releases: [enabled => true, update => always]
+
+[DEBUG]   (f) outputType = text
+[DEBUG]   (f) project = MavenProject: com.cross:common:0.0.6-release @ E:\pay\qianxiaohao\common\pom.xml
+[DEBUG]   (s) skip = false
+[DEBUG]   (f) tokens = standard
+[DEBUG]   (f) verbose = false
+[DEBUG] -- end configuration --
+[DEBUG] building maven31 dependency graph for com.cross:common:jar:0.0.6-release with Maven31DependencyGraphBuilder
+[DEBUG] Dependency collection stats: {ConflictMarker.analyzeTime=1, ConflictMarker.markTime=2, ConflictMarker.nodeCount=1536, ConflictIdSorter.graphTime=0, ConflictIdSorter.topsortTime=0, ConflictIdSorter.conflictIdCount=340, ConflictIdSorter.conflictIdCycleCount=0, ConflictResolver.totalTime=61, ConflictResolver.conflictItemCount=870, DefaultDependencyCollector.collectTime=66, DefaultDependencyCollector.transformTime=64}
+[DEBUG] com.cross:common:jar:0.0.6-release
+[DEBUG]    org.apache.poi:poi-ooxml:jar:3.9:compile
+[DEBUG]       org.apache.poi:poi:jar:3.9:compile
+[DEBUG]       org.apache.poi:poi-ooxml-schemas:jar:3.9:compile
+[DEBUG]          org.apache.xmlbeans:xmlbeans:jar:2.3.0:compile
+[DEBUG]             stax:stax-api:jar:1.0.1:compile
+[DEBUG]       dom4j:dom4j:jar:1.6.1:compile (version managed from 1.6.1) (optionality managed from false)
+[DEBUG]          xml-apis:xml-apis:jar:1.4.01:compile (version managed from 1.0.b2) (optionality managed from false)
+[DEBUG]    javax.servlet:jsp-api:jar:2.0:provided
+[DEBUG]       javax.servlet:servlet-api:jar:2.4:provided
+[DEBUG]    io.github.jhipster:jhipster:jar:1.1.3:compile
+[DEBUG]    io.dropwizard.metrics:metrics-core:jar:3.2.2:compile
+[DEBUG]       org.slf4j:slf4j-api:jar:1.7.25:compile (version managed from 1.7.22) (optionality managed from false)
+[DEBUG]    io.dropwizard.metrics:metrics-annotation:jar:3.2.2:compile
+[DEBUG]    io.dropwizard.metrics:metrics-json:jar:3.2.2:compile
+[DEBUG]       com.fasterxml.jackson.core:jackson-databind:jar:2.8.8:compile (version managed from 2.6.6) (optionality managed from false)
+[DEBUG]    io.dropwizard.metrics:metrics-jvm:jar:3.2.2:compile
+[DEBUG]    io.dropwizard.metrics:metrics-servlet:jar:3.2.2:compile
+[DEBUG]    io.dropwizard.metrics:metrics-servlets:jar:3.2.2:compile
+[DEBUG]       io.dropwizard.metrics:metrics-healthchecks:jar:3.2.2:compile
+[DEBUG]       com.papertrail:profiler:jar:1.0.2:compile
+[DEBUG]          joda-time:joda-time:jar:2.9.9:compile (version managed from 2.9.1) (optionality managed from false)
+[DEBUG]    com.fasterxml.jackson.datatype:jackson-datatype-hibernate5:jar:2.8.8:compile
+[DEBUG]       com.fasterxml.jackson.core:jackson-core:jar:2.8.8:compile (version managed from 2.8.8) (optionality managed from false)
+[DEBUG]       javax.transaction:jta:jar:1.1:compile
+[DEBUG]    com.fasterxml.jackson.datatype:jackson-datatype-hppc:jar:2.8.8:compile
+[DEBUG]       com.carrotsearch:hppc:jar:0.7.1:compile
+[DEBUG]    com.fasterxml.jackson.datatype:jackson-datatype-jsr310:jar:2.8.8:compile
+[DEBUG]       com.fasterxml.jackson.core:jackson-annotations:jar:2.8.0:compile (version managed from 2.8.0) (optionality managed from false)
+[DEBUG]    com.fasterxml.jackson.datatype:jackson-datatype-json-org:jar:2.8.8:compile
+[DEBUG]       org.apache.geronimo.bundles:json:jar:20090211_1:compile
+[DEBUG]    com.h2database:h2:jar:1.4.194:compile
+[DEBUG]    com.hazelcast:hazelcast:jar:3.7.7:compile
+[DEBUG]    com.hazelcast:hazelcast-hibernate52:jar:1.2:compile
+[DEBUG]    com.hazelcast:hazelcast-spring:jar:3.7.7:compile
+[DEBUG]    com.hazelcast:hazelcast-wm:jar:3.7:compile
+[DEBUG]    org.awaitility:awaitility:jar:2.0.0:test
+[DEBUG]       org.hamcrest:hamcrest-library:jar:1.3:test (version managed from 1.3) (optionality managed from false)
+[DEBUG]       org.hamcrest:hamcrest-core:jar:1.3:test (version managed from 1.3) (optionality managed from false)
+[DEBUG]       cglib:cglib-nodep:jar:3.1:test
+[DEBUG]       org.objenesis:objenesis:jar:2.1:test
+[DEBUG]    com.jayway.jsonpath:json-path:jar:2.2.0:test
+[DEBUG]       net.minidev:json-smart:jar:2.2.1:test
+[DEBUG]          net.minidev:accessors-smart:jar:1.1:test
+[DEBUG]    io.springfox:springfox-swagger2:jar:2.6.1:compile
+[DEBUG]       io.swagger:swagger-annotations:jar:1.5.10:compile
+[DEBUG]       io.swagger:swagger-models:jar:1.5.10:compile
+[DEBUG]       io.springfox:springfox-spi:jar:2.6.1:compile
+[DEBUG]          io.springfox:springfox-core:jar:2.6.1:compile
+[DEBUG]       io.springfox:springfox-schema:jar:2.6.1:compile
+[DEBUG]       io.springfox:springfox-swagger-common:jar:2.6.1:compile
+[DEBUG]       io.springfox:springfox-spring-web:jar:2.6.1:compile
+[DEBUG]       com.google.guava:guava:jar:18.0:compile (version managed from 18.0) (optionality managed from false)
+[DEBUG]       com.fasterxml:classmate:jar:1.3.3:compile (version managed from 1.3.1) (optionality managed from false)
+[DEBUG]       org.springframework.plugin:spring-plugin-core:jar:1.2.0.RELEASE:compile (version managed from 1.2.0.RELEASE) (optionality managed from false)
+[DEBUG]       org.springframework.plugin:spring-plugin-metadata:jar:1.2.0.RELEASE:compile (version managed from 1.2.0.RELEASE) (optionality managed from false)
+[DEBUG]    io.springfox:springfox-bean-validators:jar:2.6.1:compile
+[DEBUG]    com.mattbertolini:liquibase-slf4j:jar:2.0.0:compile
+[DEBUG]    com.ryantenney.metrics:metrics-spring:jar:3.1.3:compile
+[DEBUG]       org.springframework:spring-core:jar:4.3.8.RELEASE:compile (version managed from 4.1.6.RELEASE) (optionality managed from false) (exclusions managed)
+[DEBUG]       org.springframework:spring-beans:jar:4.3.8.RELEASE:compile (version managed from 4.1.6.RELEASE) (optionality managed from false)
+[DEBUG]       org.springframework:spring-aop:jar:4.3.8.RELEASE:compile (version managed from 4.1.6.RELEASE) (optionality managed from false)
+[DEBUG]    com.zaxxer:HikariCP:jar:2.6.0:compile
+[DEBUG]    commons-io:commons-io:jar:2.5:compile
+[DEBUG]    org.apache.commons:commons-lang3:jar:3.5:compile
+[DEBUG]    io.gatling.highcharts:gatling-charts-highcharts:jar:2.2.3:test
+[DEBUG]       org.scala-lang:scala-library:jar:2.11.8:test
+[DEBUG]       io.gatling:gatling-charts:jar:2.2.3:test
+[DEBUG]          io.gatling:gatling-core:jar:2.2.3:test
+[DEBUG]             io.gatling:gatling-commons:jar:2.2.3:test
+[DEBUG]                org.scala-lang:scala-reflect:jar:2.11.8:test
+[DEBUG]                com.typesafe:config:jar:1.3.1:test
+[DEBUG]                com.dongxiguo:fastring_2.11:jar:0.2.4:test
+[DEBUG]                com.softwaremill.quicklens:quicklens_2.11:jar:1.4.8:test
+[DEBUG]                org.asynchttpclient:async-http-client-netty-utils:jar:2.0.24:test
+[DEBUG]                com.typesafe.scala-logging:scala-logging_2.11:jar:3.5.0:test
+[DEBUG]             com.typesafe.akka:akka-actor_2.11:jar:2.4.12:test
+[DEBUG]             com.typesafe.akka:akka-slf4j_2.11:jar:2.4.12:test
+[DEBUG]             com.fasterxml.jackson.dataformat:jackson-dataformat-csv:jar:2.8.8:test (version managed from 2.8.4) (optionality managed from false)
+[DEBUG]             me.chrons:boopickle_2.11:jar:1.2.4:test
+[DEBUG]             org.scala-lang.modules:scala-java8-compat_2.11:jar:0.8.0-RC7:test
+[DEBUG]             com.github.ben-manes.caffeine:caffeine:jar:2.3.5:test (version managed from 2.3.5) (optionality managed from false)
+[DEBUG]             org.scala-lang.modules:scala-parser-combinators_2.11:jar:1.0.4:test
+[DEBUG]             com.github.scopt:scopt_2.11:jar:3.5.0:test
+[DEBUG]             io.gatling:jsonpath_2.11:jar:0.6.8:test
+[DEBUG]             io.advantageous.boon:boon-json:jar:0.6.6:test
+[DEBUG]                io.advantageous.boon:boon-reflekt:jar:0.6.6:test
+[DEBUG]             net.sf.saxon:Saxon-HE:jar:9.7.0-10:test
+[DEBUG]             org.jodd:jodd-lagarto:jar:3.8.0:test
+[DEBUG]                org.jodd:jodd-core:jar:3.8.0:test
+[DEBUG]                org.jodd:jodd-log:jar:3.8.0:test
+[DEBUG]          com.tdunning:t-digest:jar:3.1:compile
+[DEBUG]       io.gatling:gatling-app:jar:2.2.3:test
+[DEBUG]          io.gatling:gatling-http:jar:2.2.3:test
+[DEBUG]             org.asynchttpclient:async-http-client:jar:2.0.24:test
+[DEBUG]                org.asynchttpclient:netty-resolver-dns:jar:2.0.24:test
+[DEBUG]                   org.asynchttpclient:netty-resolver:jar:2.0.24:test
+[DEBUG]                   org.asynchttpclient:netty-codec-dns:jar:2.0.24:test
+[DEBUG]                org.reactivestreams:reactive-streams:jar:1.0.0:test
+[DEBUG]                com.typesafe.netty:netty-reactive-streams:jar:1.0.8:test
+[DEBUG]             io.netty:netty-transport-native-epoll:jar:linux-x86_64:4.0.42.Final:test
+[DEBUG]                io.netty:netty-common:jar:4.0.42.Final:runtime
+[DEBUG]                io.netty:netty-buffer:jar:4.0.42.Final:runtime
+[DEBUG]                io.netty:netty-transport:jar:4.0.42.Final:runtime
+[DEBUG]             org.scala-lang.modules:scala-xml_2.11:jar:1.0.5:test
+[DEBUG]          io.gatling:gatling-jms:jar:2.2.3:test
+[DEBUG]             org.apache.geronimo.specs:geronimo-jms_1.1_spec:jar:1.1.1:test
+[DEBUG]          io.gatling:gatling-jdbc:jar:2.2.3:test
+[DEBUG]          io.gatling:gatling-redis:jar:2.2.3:test
+[DEBUG]             net.debasishg:redisclient_2.11:jar:3.2:test
+[DEBUG]                commons-pool:commons-pool:jar:1.6:test (version managed from 1.6) (optionality managed from false)
+[DEBUG]          io.gatling:gatling-metrics:jar:2.2.3:test
+[DEBUG]       io.gatling:gatling-recorder:jar:2.2.3:test
+[DEBUG]          org.scala-lang.modules:scala-swing_2.11:jar:1.0.2:test
+[DEBUG]          io.netty:netty-codec-http:jar:4.0.42.Final:runtime
+[DEBUG]             io.netty:netty-codec:jar:4.0.42.Final:runtime
+[DEBUG]             io.netty:netty-handler:jar:4.0.42.Final:runtime
+[DEBUG]    com.jcraft:jzlib:jar:1.1.3:compile
+[DEBUG]    javax.cache:cache-api:jar:1.0.0:compile
+[DEBUG]    mysql:mysql-connector-java:jar:5.1.41:compile
+[DEBUG]    org.assertj:assertj-core:jar:3.6.2:test
+[DEBUG]    org.hibernate:hibernate-envers:jar:5.2.8.Final:compile
+[DEBUG]       org.jboss.logging:jboss-logging:jar:3.3.1.Final:compile (version managed from 3.3.0.Final) (optionality managed from false)
+[DEBUG]       org.hibernate:hibernate-core:jar:5.2.8.Final:compile (version managed from 5.2.8.Final) (optionality managed from false) (exclusions managed)
+[DEBUG]          org.hibernate.javax.persistence:hibernate-jpa-2.1-api:jar:1.0.0.Final:compile
+[DEBUG]          org.javassist:javassist:jar:3.21.0-GA:compile (version managed from 3.20.0-GA) (optionality managed from false)
+[DEBUG]          antlr:antlr:jar:2.7.7:compile (version managed from 2.7.7) (optionality managed from false)
+[DEBUG]          org.jboss.spec.javax.transaction:jboss-transaction-api_1.2_spec:jar:1.0.1.Final:compile
+[DEBUG]          org.jboss:jandex:jar:2.0.3.Final:compile
+[DEBUG]          org.hibernate.common:hibernate-commons-annotations:jar:5.0.1.Final:compile
+[DEBUG]    org.hibernate:hibernate-validator:jar:5.3.5.Final:compile
+[DEBUG]       javax.validation:validation-api:jar:1.1.0.Final:compile (version managed from 1.1.0.Final) (optionality managed from false)
+[DEBUG]    org.liquibase:liquibase-core:jar:3.5.3:compile
+[DEBUG]       org.yaml:snakeyaml:jar:1.17:compile (version managed from 1.17) (optionality managed from false)
+[DEBUG]    org.mapstruct:mapstruct-jdk8:jar:1.1.0.Final:compile
+[DEBUG]    org.springframework:spring-context-support:jar:4.3.8.RELEASE:compile
+[DEBUG]       org.springframework:spring-context:jar:4.3.8.RELEASE:compile (version managed from 4.3.8.RELEASE) (optionality managed from false)
+[DEBUG]    org.springframework.boot:spring-boot-actuator:jar:1.5.3.RELEASE:compile
+[DEBUG]       org.springframework.boot:spring-boot:jar:1.5.3.RELEASE:compile (version managed from 1.5.3.RELEASE) (optionality managed from false)
+[DEBUG]    org.springframework.boot:spring-boot-autoconfigure:jar:1.5.3.RELEASE:compile
+[DEBUG]    org.springframework.boot:spring-boot-configuration-processor:jar:1.5.3.RELEASE:compile
+[DEBUG]       com.vaadin.external.google:android-json:jar:0.0.20131108.vaadin1:compile
+[DEBUG]    org.springframework.boot:spring-boot-loader-tools:jar:1.5.3.RELEASE:compile
+[DEBUG]    org.springframework.boot:spring-boot-starter-aop:jar:1.5.3.RELEASE:compile
+[DEBUG]       org.springframework.boot:spring-boot-starter:jar:1.5.3.RELEASE:compile (version managed from 1.5.3.RELEASE) (optionality managed from false) (exclusions managed)
+[DEBUG]       org.aspectj:aspectjweaver:jar:1.8.10:compile (version managed from 1.8.10) (optionality managed from false)
+[DEBUG]    org.springframework.boot:spring-boot-starter-data-jpa:jar:1.5.3.RELEASE:compile
+[DEBUG]       org.springframework.boot:spring-boot-starter-jdbc:jar:1.5.3.RELEASE:compile (version managed from 1.5.3.RELEASE) (optionality managed from false)
+[DEBUG]          org.apache.tomcat:tomcat-jdbc:jar:8.5.14:compile (version managed from 8.5.14) (optionality managed from false)
+[DEBUG]             org.apache.tomcat:tomcat-juli:jar:8.5.14:compile
+[DEBUG]          org.springframework:spring-jdbc:jar:4.3.8.RELEASE:compile (version managed from 4.3.8.RELEASE) (optionality managed from false)
+[DEBUG]       org.hibernate:hibernate-entitymanager:jar:5.2.8.Final:compile (version managed from 5.0.12.Final) (optionality managed from false) (exclusions managed)
+[DEBUG]          net.bytebuddy:byte-buddy:jar:1.6.6:compile
+[DEBUG]       javax.transaction:javax.transaction-api:jar:1.2:compile (version managed from 1.2) (optionality managed from false)
+[DEBUG]       org.springframework.data:spring-data-jpa:jar:1.11.3.RELEASE:compile (version managed from 1.11.3.RELEASE) (optionality managed from false)
+[DEBUG]          org.springframework:spring-orm:jar:4.3.8.RELEASE:compile (version managed from 4.3.8.RELEASE) (optionality managed from false)
+[DEBUG]       org.springframework:spring-aspects:jar:4.3.8.RELEASE:compile (version managed from 4.3.8.RELEASE) (optionality managed from false)
+[DEBUG]    org.springframework.boot:spring-boot-starter-data-elasticsearch:jar:1.5.3.RELEASE:compile
+[DEBUG]       org.springframework.data:spring-data-elasticsearch:jar:2.1.3.RELEASE:compile (version managed from 2.1.3.RELEASE) (optionality managed from false)
+[DEBUG]          commons-lang:commons-lang:jar:2.6:compile
+[DEBUG]          org.elasticsearch:elasticsearch:jar:2.4.4:compile (version managed from 2.4.0) (optionality managed from false)
+[DEBUG]             org.apache.lucene:lucene-core:jar:5.5.2:compile
+[DEBUG]             org.apache.lucene:lucene-backward-codecs:jar:5.5.2:compile
+[DEBUG]             org.apache.lucene:lucene-analyzers-common:jar:5.5.2:compile
+[DEBUG]             org.apache.lucene:lucene-queries:jar:5.5.2:compile
+[DEBUG]             org.apache.lucene:lucene-memory:jar:5.5.2:compile
+[DEBUG]             org.apache.lucene:lucene-highlighter:jar:5.5.2:compile
+[DEBUG]             org.apache.lucene:lucene-queryparser:jar:5.5.2:compile
+[DEBUG]                org.apache.lucene:lucene-sandbox:jar:5.5.2:compile
+[DEBUG]             org.apache.lucene:lucene-suggest:jar:5.5.2:compile
+[DEBUG]                org.apache.lucene:lucene-misc:jar:5.5.2:compile
+[DEBUG]             org.apache.lucene:lucene-join:jar:5.5.2:compile
+[DEBUG]                org.apache.lucene:lucene-grouping:jar:5.5.2:compile
+[DEBUG]             org.apache.lucene:lucene-spatial:jar:5.5.2:compile
+[DEBUG]                org.apache.lucene:lucene-spatial3d:jar:5.5.2:compile
+[DEBUG]                com.spatial4j:spatial4j:jar:0.5:compile
+[DEBUG]             org.elasticsearch:securesm:jar:1.0:compile
+[DEBUG]             com.fasterxml.jackson.dataformat:jackson-dataformat-smile:jar:2.8.8:compile (version managed from 2.8.1) (optionality managed from false)
+[DEBUG]             com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:jar:2.8.8:compile (version managed from 2.8.1) (optionality managed from false)
+[DEBUG]             com.fasterxml.jackson.dataformat:jackson-dataformat-cbor:jar:2.8.8:compile (version managed from 2.8.1) (optionality managed from false)
+[DEBUG]             io.netty:netty:jar:3.10.6.Final:compile
+[DEBUG]             com.ning:compress-lzf:jar:1.0.2:compile
+[DEBUG]             commons-cli:commons-cli:jar:1.3.1:compile
+[DEBUG]             com.twitter:jsr166e:jar:1.1.0:compile
+[DEBUG]    net.java.dev.jna:jna:jar:4.2.2:compile
+[DEBUG]    org.springframework.boot:spring-boot-starter-logging:jar:1.5.3.RELEASE:compile
+[DEBUG]       ch.qos.logback:logback-classic:jar:1.1.11:compile (version managed from 1.1.11) (optionality managed from false)
+[DEBUG]          ch.qos.logback:logback-core:jar:1.1.11:compile (version managed from 1.1.11) (optionality managed from false)
+[DEBUG]       org.slf4j:jcl-over-slf4j:jar:1.7.25:compile (version managed from 1.7.25) (optionality managed from false)
+[DEBUG]       org.slf4j:jul-to-slf4j:jar:1.7.25:compile (version managed from 1.7.25) (optionality managed from false)
+[DEBUG]       org.slf4j:log4j-over-slf4j:jar:1.7.25:compile (version managed from 1.7.25) (optionality managed from false)
+[DEBUG]    org.springframework.boot:spring-boot-starter-mail:jar:1.5.3.RELEASE:compile
+[DEBUG]       com.sun.mail:javax.mail:jar:1.5.6:compile (version managed from 1.5.6) (optionality managed from false)
+[DEBUG]          javax.activation:activation:jar:1.1:compile
+[DEBUG]    org.springframework.boot:spring-boot-starter-security:jar:1.5.3.RELEASE:compile
+[DEBUG]       org.springframework.security:spring-security-config:jar:4.2.2.RELEASE:compile (version managed from 4.2.2.RELEASE) (optionality managed from false)
+[DEBUG]       org.springframework.security:spring-security-web:jar:4.2.2.RELEASE:compile (version managed from 4.2.2.RELEASE) (optionality managed from false)
+[DEBUG]    org.springframework.boot:spring-boot-starter-test:jar:1.5.3.RELEASE:test (exclusions managed)
+[DEBUG]       org.springframework.boot:spring-boot-test-autoconfigure:jar:1.5.3.RELEASE:test (version managed from 1.5.3.RELEASE) (optionality managed from false)
+[DEBUG]       junit:junit:jar:4.12:test (version managed from 4.12) (optionality managed from false)
+[DEBUG]       org.mockito:mockito-core:jar:1.10.19:test (version managed from 1.10.19) (optionality managed from false)
+[DEBUG]       org.skyscreamer:jsonassert:jar:1.4.0:test (version managed from 1.4.0) (optionality managed from false)
+[DEBUG]       org.springframework:spring-test:jar:4.3.8.RELEASE:test (version managed from 4.3.8.RELEASE) (optionality managed from false)
+[DEBUG]    org.springframework.security:spring-security-test:jar:4.2.2.RELEASE:test
+[DEBUG]       org.springframework.security:spring-security-core:jar:4.2.2.RELEASE:compile (version managed from 4.2.2.RELEASE) (optionality managed from false)
+[DEBUG]    org.springframework.boot:spring-boot-test:jar:1.5.3.RELEASE:test
+[DEBUG]    org.springframework.boot:spring-boot-starter-thymeleaf:jar:1.5.3.RELEASE:compile
+[DEBUG]       org.thymeleaf:thymeleaf-spring4:jar:2.1.5.RELEASE:compile (version managed from 2.1.5.RELEASE) (optionality managed from false)
+[DEBUG]          org.thymeleaf:thymeleaf:jar:2.1.5.RELEASE:compile (version managed from 2.1.5.RELEASE) (optionality managed from false)
+[DEBUG]             ognl:ognl:jar:3.0.8:compile
+[DEBUG]             org.unbescape:unbescape:jar:1.1.0.RELEASE:compile
+[DEBUG]       nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect:jar:1.4.0:compile (version managed from 1.4.0) (optionality managed from false)
+[DEBUG]          org.codehaus.groovy:groovy:jar:2.4.10:compile (version managed from 2.4.3) (optionality managed from false)
+[DEBUG]    org.springframework.boot:spring-boot-starter-web:jar:1.5.3.RELEASE:compile
+[DEBUG]       org.springframework:spring-web:jar:4.3.8.RELEASE:compile (version managed from 4.3.8.RELEASE) (optionality managed from false)
+[DEBUG]       org.springframework:spring-webmvc:jar:4.3.8.RELEASE:compile (version managed from 4.3.8.RELEASE) (optionality managed from false)
+[DEBUG]    org.springframework.boot:spring-boot-starter-websocket:jar:1.5.3.RELEASE:compile
+[DEBUG]       org.springframework:spring-messaging:jar:4.3.8.RELEASE:compile (version managed from 4.3.8.RELEASE) (optionality managed from false)
+[DEBUG]       org.springframework:spring-websocket:jar:4.3.8.RELEASE:compile (version managed from 4.3.8.RELEASE) (optionality managed from false)
+[DEBUG]    org.springframework.security.oauth:spring-security-oauth2:jar:2.0.13.RELEASE:compile
+[DEBUG]       org.codehaus.jackson:jackson-mapper-asl:jar:1.9.13:compile
+[DEBUG]          org.codehaus.jackson:jackson-core-asl:jar:1.9.13:compile
+[DEBUG]    org.springframework.security:spring-security-jwt:jar:1.0.7.RELEASE:compile
+[DEBUG]       org.bouncycastle:bcpkix-jdk15on:jar:1.55:compile
+[DEBUG]          org.bouncycastle:bcprov-jdk15on:jar:1.55:compile
+[DEBUG]    org.springframework.cloud:spring-cloud-security:jar:1.2.0.RELEASE:compile
+[DEBUG]    io.jsonwebtoken:jjwt:jar:0.7.0:compile
+[DEBUG]    org.springframework.cloud:spring-cloud-starter-zuul:jar:1.3.0.RELEASE:compile
+[DEBUG]       org.springframework.boot:spring-boot-starter-actuator:jar:1.5.3.RELEASE:compile (version managed from 1.5.2.RELEASE) (optionality managed from false)
+[DEBUG]       org.springframework.cloud:spring-cloud-starter-archaius:jar:1.3.0.RELEASE:compile (version managed from 1.3.0.RELEASE) (optionality managed from false)
+[DEBUG]          com.netflix.archaius:archaius-core:jar:0.7.4:compile (version managed from 0.7.4) (optionality managed from false) (exclusions managed)
+[DEBUG]             com.google.code.findbugs:jsr305:jar:3.0.1:runtime
+[DEBUG]          commons-configuration:commons-configuration:jar:1.8:compile (version managed from 1.8) (optionality managed from false)
+[DEBUG]       com.netflix.zuul:zuul-core:jar:1.3.0:compile (version managed from 1.3.0) (optionality managed from false) (exclusions managed)
+[DEBUG]          com.netflix.servo:servo-core:jar:0.10.1:compile (version managed from 0.7.2) (optionality managed from false) (exclusions managed)
+[DEBUG]             com.netflix.servo:servo-internal:jar:0.10.1:runtime
+[DEBUG]          com.netflix.netflix-commons:netflix-commons-util:jar:0.1.1:runtime (version managed from 0.1.1) (optionality managed from false)
+[DEBUG]    com.github.vladimir-bukhtoyarov:bucket4j-core:jar:2.0.1:compile
+[DEBUG]    com.github.vladimir-bukhtoyarov:bucket4j-jcache:jar:2.0.1:compile
+[DEBUG]    org.springframework.cloud:spring-cloud-starter:jar:1.2.0.RELEASE:compile
+[DEBUG]       org.springframework.cloud:spring-cloud-context:jar:1.2.0.RELEASE:compile (version managed from 1.2.0.RELEASE) (optionality managed from false)
+[DEBUG]          org.springframework.security:spring-security-crypto:jar:4.2.2.RELEASE:compile (version managed from 4.2.2.RELEASE) (optionality managed from false)
+[DEBUG]       org.springframework.cloud:spring-cloud-commons:jar:1.2.0.RELEASE:compile (version managed from 1.2.0.RELEASE) (optionality managed from false)
+[DEBUG]       org.springframework.security:spring-security-rsa:jar:1.0.3.RELEASE:compile (version managed from 1.0.3.RELEASE) (optionality managed from false) (exclusions managed)
+[DEBUG]    org.springframework.cloud:spring-cloud-starter-ribbon:jar:1.3.0.RELEASE:compile
+[DEBUG]       org.springframework.cloud:spring-cloud-netflix-core:jar:1.3.0.RELEASE:compile (version managed from 1.3.0.RELEASE) (optionality managed from false)
+[DEBUG]       com.netflix.ribbon:ribbon:jar:2.2.2:compile (version managed from 2.2.2) (optionality managed from false) (exclusions managed)
+[DEBUG]          com.netflix.ribbon:ribbon-transport:jar:2.2.2:runtime
+[DEBUG]             io.reactivex:rxnetty-contexts:jar:0.4.9:runtime
+[DEBUG]             io.reactivex:rxnetty-servo:jar:0.4.9:runtime
+[DEBUG]          javax.inject:javax.inject:jar:1:runtime (version managed from 1) (optionality managed from false)
+[DEBUG]          io.reactivex:rxnetty:jar:0.4.9:runtime
+[DEBUG]       com.netflix.ribbon:ribbon-core:jar:2.2.2:compile (version managed from 2.2.2) (optionality managed from false) (exclusions managed)
+[DEBUG]       com.netflix.ribbon:ribbon-httpclient:jar:2.2.2:compile (version managed from 2.2.2) (optionality managed from false) (exclusions managed)
+[DEBUG]          com.sun.jersey:jersey-client:jar:1.19.1:runtime (version managed from 1.19.1) (optionality managed from false)
+[DEBUG]          com.sun.jersey.contribs:jersey-apache-client4:jar:1.19.1:runtime (version managed from 1.19.1) (optionality managed from false)
+[DEBUG]       com.netflix.ribbon:ribbon-loadbalancer:jar:2.2.2:compile (version managed from 2.2.2) (optionality managed from false) (exclusions managed)
+[DEBUG]          com.netflix.netflix-commons:netflix-statistics:jar:0.1.1:runtime
+[DEBUG]       io.reactivex:rxjava:jar:1.1.10:compile (version managed from 1.1.10) (optionality managed from false)
+[DEBUG]    org.springframework.cloud:spring-cloud-starter-hystrix:jar:1.3.0.RELEASE:compile
+[DEBUG]       com.netflix.hystrix:hystrix-core:jar:1.5.10:compile (version managed from 1.5.10) (optionality managed from false) (exclusions managed)
+[DEBUG]          org.hdrhistogram:HdrHistogram:jar:2.1.9:compile
+[DEBUG]       com.netflix.hystrix:hystrix-metrics-event-stream:jar:1.5.10:compile (version managed from 1.5.10) (optionality managed from false) (exclusions managed)
+[DEBUG]          com.netflix.hystrix:hystrix-serialization:jar:1.5.10:runtime
+[DEBUG]             com.fasterxml.jackson.module:jackson-module-afterburner:jar:2.8.8:runtime (version managed from 2.7.5) (optionality managed from false)
+[DEBUG]       com.netflix.hystrix:hystrix-javanica:jar:1.5.10:compile (version managed from 1.5.10) (optionality managed from false) (exclusions managed)
+[DEBUG]          org.ow2.asm:asm:jar:5.0.4:runtime
+[DEBUG]    org.springframework.cloud:spring-cloud-starter-spectator:jar:1.3.0.RELEASE:compile
+[DEBUG]       org.springframework.cloud:spring-cloud-netflix-spectator:jar:1.3.0.RELEASE:compile (version managed from 1.3.0.RELEASE) (optionality managed from false)
+[DEBUG]          com.netflix.spectator:spectator-api:jar:0.30.0:compile
+[DEBUG]          com.netflix.spectator:spectator-reg-servo:jar:0.30.0:compile
+[DEBUG]    org.springframework.retry:spring-retry:jar:1.2.0.RELEASE:compile
+[DEBUG]    org.springframework.cloud:spring-cloud-starter-eureka:jar:1.3.0.RELEASE:compile
+[DEBUG]       org.springframework.cloud:spring-cloud-netflix-eureka-client:jar:1.3.0.RELEASE:compile (version managed from 1.3.0.RELEASE) (optionality managed from false)
+[DEBUG]       com.netflix.eureka:eureka-client:jar:1.6.2:compile (version managed from 1.6.2) (optionality managed from false) (exclusions managed)
+[DEBUG]          org.codehaus.jettison:jettison:jar:1.3.7:runtime
+[DEBUG]          com.netflix.netflix-commons:netflix-eventbus:jar:0.3.0:runtime
+[DEBUG]             com.netflix.netflix-commons:netflix-infix:jar:0.3.0:runtime
+[DEBUG]                commons-jxpath:commons-jxpath:jar:1.3:runtime
+[DEBUG]                org.antlr:antlr-runtime:jar:3.4:runtime
+[DEBUG]                   org.antlr:stringtemplate:jar:3.2.1:runtime
+[DEBUG]             org.apache.commons:commons-math:jar:2.2:runtime
+[DEBUG]          javax.ws.rs:jsr311-api:jar:1.1.1:runtime
+[DEBUG]          com.sun.jersey:jersey-core:jar:1.19.1:runtime (version managed from 1.19.1) (optionality managed from false)
+[DEBUG]          com.google.inject:guice:jar:4.1.0:runtime
+[DEBUG]       com.netflix.eureka:eureka-core:jar:1.6.2:compile (version managed from 1.6.2) (optionality managed from false) (exclusions managed)
+[DEBUG]          org.codehaus.woodstox:woodstox-core-asl:jar:4.4.1:runtime
+[DEBUG]             javax.xml.stream:stax-api:jar:1.0-2:runtime
+[DEBUG]             org.codehaus.woodstox:stax2-api:jar:3.1.4:runtime
+[DEBUG]       com.netflix.ribbon:ribbon-eureka:jar:2.2.2:compile (version managed from 2.2.2) (optionality managed from false) (exclusions managed)
+[DEBUG]       com.thoughtworks.xstream:xstream:jar:1.4.9:compile (version managed from 1.4.9) (optionality managed from false)
+[DEBUG]          xmlpull:xmlpull:jar:1.1.3.1:compile
+[DEBUG]          xpp3:xpp3_min:jar:1.1.4c:compile
+[DEBUG]    org.springframework.cloud:spring-cloud-starter-config:jar:1.3.0.RELEASE:compile
+[DEBUG]       org.springframework.cloud:spring-cloud-config-client:jar:1.3.0.RELEASE:compile (version managed from 1.3.0.RELEASE) (optionality managed from false)
+[DEBUG]    org.springframework.cloud:spring-cloud-starter-feign:jar:1.3.0.RELEASE:compile
+[DEBUG]       io.github.openfeign:feign-core:jar:9.4.0:compile (version managed from 9.4.0) (optionality managed from false)
+[DEBUG]          org.jvnet:animal-sniffer-annotation:jar:1.0:compile
+[DEBUG]       io.github.openfeign:feign-slf4j:jar:9.4.0:compile (version managed from 9.4.0) (optionality managed from false)
+[DEBUG]       io.github.openfeign:feign-hystrix:jar:9.4.0:compile (version managed from 9.4.0) (optionality managed from false)
+[DEBUG]    net.logstash.logback:logstash-logback-encoder:jar:4.9:compile
+[DEBUG]    org.springframework.boot:spring-boot-starter-cloud-connectors:jar:1.5.3.RELEASE:compile
+[DEBUG]       org.springframework.cloud:spring-cloud-spring-service-connector:jar:1.2.3.RELEASE:compile (version managed from 1.2.3.RELEASE) (optionality managed from false) (exclusions managed)
+[DEBUG]          org.springframework.cloud:spring-cloud-core:jar:1.2.3.RELEASE:compile (version managed from 1.2.3.RELEASE) (optionality managed from false)
+[DEBUG]       org.springframework.cloud:spring-cloud-cloudfoundry-connector:jar:1.2.3.RELEASE:compile (version managed from 1.2.3.RELEASE) (optionality managed from false)
+[DEBUG]       org.springframework.cloud:spring-cloud-heroku-connector:jar:1.2.3.RELEASE:compile (version managed from 1.2.3.RELEASE) (optionality managed from false)
+[DEBUG]       org.springframework.cloud:spring-cloud-localconfig-connector:jar:1.2.3.RELEASE:compile (version managed from 1.2.3.RELEASE) (optionality managed from false)
+[DEBUG]    org.springframework.security:spring-security-data:jar:4.2.2.RELEASE:compile
+[DEBUG]       org.springframework.data:spring-data-commons:jar:1.13.3.RELEASE:compile (version managed from 1.12.2.RELEASE) (optionality managed from false)
+[DEBUG]    org.springframework.security:spring-security-messaging:jar:4.2.2.RELEASE:compile
+[DEBUG]       aopalliance:aopalliance:jar:1.0:compile
+[DEBUG]       org.springframework:spring-expression:jar:4.3.8.RELEASE:compile (version managed from 4.3.5.RELEASE) (optionality managed from false)
+[DEBUG]    info.cukes:cucumber-junit:jar:1.2.4:test
+[DEBUG]       info.cukes:cucumber-core:jar:1.2.4:test
+[DEBUG]          info.cukes:cucumber-html:jar:0.2.3:test
+[DEBUG]          info.cukes:cucumber-jvm-deps:jar:1.0.5:test
+[DEBUG]          info.cukes:gherkin:jar:2.12.2:test
+[DEBUG]    info.cukes:cucumber-spring:jar:1.2.4:test
+[DEBUG]       info.cukes:cucumber-java:jar:1.2.4:test
+[DEBUG]    com.ali.taobao:dayu:jar:1.0.0:compile
+[DEBUG]    commons-codec:commons-codec:jar:1.9:compile
+[DEBUG]    com.google.code.gson:gson:jar:2.8.1:compile
+[DEBUG]    org.apache.httpcomponents:httpclient:jar:4.5.3:compile (exclusions managed)
+[DEBUG]       org.apache.httpcomponents:httpcore:jar:4.4.6:compile (version managed from 4.4.6) (optionality managed from false)
+[DEBUG]    io.github.openfeign.form:feign-form:jar:2.1.0:compile
+[DEBUG]       org.projectlombok:lombok:jar:1.16.16:compile (version managed from 1.16.12) (optionality managed from false)
+[DEBUG]    io.github.openfeign.form:feign-form-spring:jar:2.1.0:compile
+[DEBUG]    net.coobird:thumbnailator:jar:0.4.8:compile
+[DEBUG]    com.google.zxing:core:jar:3.3.0:compile
+[DEBUG]    org.springframework.data:spring-data-redis:jar:1.8.9.RELEASE:compile
+[DEBUG]       org.springframework.data:spring-data-keyvalue:jar:1.2.3.RELEASE:compile (version managed from 1.2.9.RELEASE) (optionality managed from false)
+[DEBUG]       org.springframework:spring-tx:jar:4.3.8.RELEASE:compile (version managed from 4.3.13.RELEASE) (optionality managed from false)
+[DEBUG]       org.springframework:spring-oxm:jar:4.3.8.RELEASE:compile (version managed from 4.3.13.RELEASE) (optionality managed from false)
+[DEBUG]    commons-beanutils:commons-beanutils:jar:1.9.3:compile (exclusions managed)
+[DEBUG]       commons-collections:commons-collections:jar:3.2.2:compile (version managed from 3.2.2) (optionality managed from false)
+[INFO] com.cross:common:jar:0.0.6-release
+[INFO] +- org.apache.poi:poi-ooxml:jar:3.9:compile
+[INFO] |  +- org.apache.poi:poi:jar:3.9:compile
+[INFO] |  +- org.apache.poi:poi-ooxml-schemas:jar:3.9:compile
+[INFO] |  |  \- org.apache.xmlbeans:xmlbeans:jar:2.3.0:compile
+[INFO] |  |     \- stax:stax-api:jar:1.0.1:compile
+[INFO] |  \- dom4j:dom4j:jar:1.6.1:compile
+[INFO] |     \- xml-apis:xml-apis:jar:1.4.01:compile
+[INFO] +- javax.servlet:jsp-api:jar:2.0:provided
+[INFO] |  \- javax.servlet:servlet-api:jar:2.4:provided
+[INFO] +- io.github.jhipster:jhipster:jar:1.1.3:compile
+[INFO] +- io.dropwizard.metrics:metrics-core:jar:3.2.2:compile
+[INFO] |  \- org.slf4j:slf4j-api:jar:1.7.25:compile
+[INFO] +- io.dropwizard.metrics:metrics-annotation:jar:3.2.2:compile
+[INFO] +- io.dropwizard.metrics:metrics-json:jar:3.2.2:compile
+[INFO] |  \- com.fasterxml.jackson.core:jackson-databind:jar:2.8.8:compile
+[INFO] +- io.dropwizard.metrics:metrics-jvm:jar:3.2.2:compile
+[INFO] +- io.dropwizard.metrics:metrics-servlet:jar:3.2.2:compile
+[INFO] +- io.dropwizard.metrics:metrics-servlets:jar:3.2.2:compile
+[INFO] |  +- io.dropwizard.metrics:metrics-healthchecks:jar:3.2.2:compile
+[INFO] |  \- com.papertrail:profiler:jar:1.0.2:compile
+[INFO] |     \- joda-time:joda-time:jar:2.9.9:compile
+[INFO] +- com.fasterxml.jackson.datatype:jackson-datatype-hibernate5:jar:2.8.8:compile
+[INFO] |  +- com.fasterxml.jackson.core:jackson-core:jar:2.8.8:compile
+[INFO] |  \- javax.transaction:jta:jar:1.1:compile
+[INFO] +- com.fasterxml.jackson.datatype:jackson-datatype-hppc:jar:2.8.8:compile
+[INFO] |  \- com.carrotsearch:hppc:jar:0.7.1:compile
+[INFO] +- com.fasterxml.jackson.datatype:jackson-datatype-jsr310:jar:2.8.8:compile
+[INFO] |  \- com.fasterxml.jackson.core:jackson-annotations:jar:2.8.0:compile
+[INFO] +- com.fasterxml.jackson.datatype:jackson-datatype-json-org:jar:2.8.8:compile
+[INFO] |  \- org.apache.geronimo.bundles:json:jar:20090211_1:compile
+[INFO] +- com.h2database:h2:jar:1.4.194:compile
+[INFO] +- com.hazelcast:hazelcast:jar:3.7.7:compile
+[INFO] +- com.hazelcast:hazelcast-hibernate52:jar:1.2:compile
+[INFO] +- com.hazelcast:hazelcast-spring:jar:3.7.7:compile
+[INFO] +- com.hazelcast:hazelcast-wm:jar:3.7:compile
+[INFO] +- org.awaitility:awaitility:jar:2.0.0:test
+[INFO] |  +- org.hamcrest:hamcrest-library:jar:1.3:test
+[INFO] |  +- org.hamcrest:hamcrest-core:jar:1.3:test
+[INFO] |  +- cglib:cglib-nodep:jar:3.1:test
+[INFO] |  \- org.objenesis:objenesis:jar:2.1:test
+[INFO] +- com.jayway.jsonpath:json-path:jar:2.2.0:test
+[INFO] |  \- net.minidev:json-smart:jar:2.2.1:test
+[INFO] |     \- net.minidev:accessors-smart:jar:1.1:test
+[INFO] +- io.springfox:springfox-swagger2:jar:2.6.1:compile
+[INFO] |  +- io.swagger:swagger-annotations:jar:1.5.10:compile
+[INFO] |  +- io.swagger:swagger-models:jar:1.5.10:compile
+[INFO] |  +- io.springfox:springfox-spi:jar:2.6.1:compile
+[INFO] |  |  \- io.springfox:springfox-core:jar:2.6.1:compile
+[INFO] |  +- io.springfox:springfox-schema:jar:2.6.1:compile
+[INFO] |  +- io.springfox:springfox-swagger-common:jar:2.6.1:compile
+[INFO] |  +- io.springfox:springfox-spring-web:jar:2.6.1:compile
+[INFO] |  +- com.google.guava:guava:jar:18.0:compile
+[INFO] |  +- com.fasterxml:classmate:jar:1.3.3:compile
+[INFO] |  +- org.springframework.plugin:spring-plugin-core:jar:1.2.0.RELEASE:compile
+[INFO] |  \- org.springframework.plugin:spring-plugin-metadata:jar:1.2.0.RELEASE:compile
+[INFO] +- io.springfox:springfox-bean-validators:jar:2.6.1:compile
+[INFO] +- com.mattbertolini:liquibase-slf4j:jar:2.0.0:compile
+[INFO] +- com.ryantenney.metrics:metrics-spring:jar:3.1.3:compile
+[INFO] |  +- org.springframework:spring-core:jar:4.3.8.RELEASE:compile
+[INFO] |  +- org.springframework:spring-beans:jar:4.3.8.RELEASE:compile
+[INFO] |  \- org.springframework:spring-aop:jar:4.3.8.RELEASE:compile
+[INFO] +- com.zaxxer:HikariCP:jar:2.6.0:compile
+[INFO] +- commons-io:commons-io:jar:2.5:compile
+[INFO] +- org.apache.commons:commons-lang3:jar:3.5:compile
+[INFO] +- io.gatling.highcharts:gatling-charts-highcharts:jar:2.2.3:test
+[INFO] |  +- org.scala-lang:scala-library:jar:2.11.8:test
+[INFO] |  +- io.gatling:gatling-charts:jar:2.2.3:test
+[INFO] |  |  +- io.gatling:gatling-core:jar:2.2.3:test
+[INFO] |  |  |  +- io.gatling:gatling-commons:jar:2.2.3:test
+[INFO] |  |  |  |  +- org.scala-lang:scala-reflect:jar:2.11.8:test
+[INFO] |  |  |  |  +- com.typesafe:config:jar:1.3.1:test
+[INFO] |  |  |  |  +- com.dongxiguo:fastring_2.11:jar:0.2.4:test
+[INFO] |  |  |  |  +- com.softwaremill.quicklens:quicklens_2.11:jar:1.4.8:test
+[INFO] |  |  |  |  +- org.asynchttpclient:async-http-client-netty-utils:jar:2.0.24:test
+[INFO] |  |  |  |  \- com.typesafe.scala-logging:scala-logging_2.11:jar:3.5.0:test
+[INFO] |  |  |  +- com.typesafe.akka:akka-actor_2.11:jar:2.4.12:test
+[INFO] |  |  |  +- com.typesafe.akka:akka-slf4j_2.11:jar:2.4.12:test
+[INFO] |  |  |  +- com.fasterxml.jackson.dataformat:jackson-dataformat-csv:jar:2.8.8:test
+[INFO] |  |  |  +- me.chrons:boopickle_2.11:jar:1.2.4:test
+[INFO] |  |  |  +- org.scala-lang.modules:scala-java8-compat_2.11:jar:0.8.0-RC7:test
+[INFO] |  |  |  +- com.github.ben-manes.caffeine:caffeine:jar:2.3.5:test
+[INFO] |  |  |  +- org.scala-lang.modules:scala-parser-combinators_2.11:jar:1.0.4:test
+[INFO] |  |  |  +- com.github.scopt:scopt_2.11:jar:3.5.0:test
+[INFO] |  |  |  +- io.gatling:jsonpath_2.11:jar:0.6.8:test
+[INFO] |  |  |  +- io.advantageous.boon:boon-json:jar:0.6.6:test
+[INFO] |  |  |  |  \- io.advantageous.boon:boon-reflekt:jar:0.6.6:test
+[INFO] |  |  |  +- net.sf.saxon:Saxon-HE:jar:9.7.0-10:test
+[INFO] |  |  |  \- org.jodd:jodd-lagarto:jar:3.8.0:test
+[INFO] |  |  |     +- org.jodd:jodd-core:jar:3.8.0:test
+[INFO] |  |  |     \- org.jodd:jodd-log:jar:3.8.0:test
+[INFO] |  |  \- com.tdunning:t-digest:jar:3.1:compile
+[INFO] |  +- io.gatling:gatling-app:jar:2.2.3:test
+[INFO] |  |  +- io.gatling:gatling-http:jar:2.2.3:test
+[INFO] |  |  |  +- org.asynchttpclient:async-http-client:jar:2.0.24:test
+[INFO] |  |  |  |  +- org.asynchttpclient:netty-resolver-dns:jar:2.0.24:test
+[INFO] |  |  |  |  |  +- org.asynchttpclient:netty-resolver:jar:2.0.24:test
+[INFO] |  |  |  |  |  \- org.asynchttpclient:netty-codec-dns:jar:2.0.24:test
+[INFO] |  |  |  |  +- org.reactivestreams:reactive-streams:jar:1.0.0:test
+[INFO] |  |  |  |  \- com.typesafe.netty:netty-reactive-streams:jar:1.0.8:test
+[INFO] |  |  |  +- io.netty:netty-transport-native-epoll:jar:linux-x86_64:4.0.42.Final:test
+[INFO] |  |  |  |  +- io.netty:netty-common:jar:4.0.42.Final:runtime
+[INFO] |  |  |  |  +- io.netty:netty-buffer:jar:4.0.42.Final:runtime
+[INFO] |  |  |  |  \- io.netty:netty-transport:jar:4.0.42.Final:runtime
+[INFO] |  |  |  \- org.scala-lang.modules:scala-xml_2.11:jar:1.0.5:test
+[INFO] |  |  +- io.gatling:gatling-jms:jar:2.2.3:test
+[INFO] |  |  |  \- org.apache.geronimo.specs:geronimo-jms_1.1_spec:jar:1.1.1:test
+[INFO] |  |  +- io.gatling:gatling-jdbc:jar:2.2.3:test
+[INFO] |  |  +- io.gatling:gatling-redis:jar:2.2.3:test
+[INFO] |  |  |  \- net.debasishg:redisclient_2.11:jar:3.2:test
+[INFO] |  |  |     \- commons-pool:commons-pool:jar:1.6:test
+[INFO] |  |  \- io.gatling:gatling-metrics:jar:2.2.3:test
+[INFO] |  \- io.gatling:gatling-recorder:jar:2.2.3:test
+[INFO] |     +- org.scala-lang.modules:scala-swing_2.11:jar:1.0.2:test
+[INFO] |     \- io.netty:netty-codec-http:jar:4.0.42.Final:runtime
+[INFO] |        +- io.netty:netty-codec:jar:4.0.42.Final:runtime
+[INFO] |        \- io.netty:netty-handler:jar:4.0.42.Final:runtime
+[INFO] +- com.jcraft:jzlib:jar:1.1.3:compile
+[INFO] +- javax.cache:cache-api:jar:1.0.0:compile
+[INFO] +- mysql:mysql-connector-java:jar:5.1.41:compile
+[INFO] +- org.assertj:assertj-core:jar:3.6.2:test
+[INFO] +- org.hibernate:hibernate-envers:jar:5.2.8.Final:compile
+[INFO] |  +- org.jboss.logging:jboss-logging:jar:3.3.1.Final:compile
+[INFO] |  \- org.hibernate:hibernate-core:jar:5.2.8.Final:compile
+[INFO] |     +- org.hibernate.javax.persistence:hibernate-jpa-2.1-api:jar:1.0.0.Final:compile
+[INFO] |     +- org.javassist:javassist:jar:3.21.0-GA:compile
+[INFO] |     +- antlr:antlr:jar:2.7.7:compile
+[INFO] |     +- org.jboss.spec.javax.transaction:jboss-transaction-api_1.2_spec:jar:1.0.1.Final:compile
+[INFO] |     +- org.jboss:jandex:jar:2.0.3.Final:compile
+[INFO] |     \- org.hibernate.common:hibernate-commons-annotations:jar:5.0.1.Final:compile
+[INFO] +- org.hibernate:hibernate-validator:jar:5.3.5.Final:compile
+[INFO] |  \- javax.validation:validation-api:jar:1.1.0.Final:compile
+[INFO] +- org.liquibase:liquibase-core:jar:3.5.3:compile
+[INFO] |  \- org.yaml:snakeyaml:jar:1.17:compile
+[INFO] +- org.mapstruct:mapstruct-jdk8:jar:1.1.0.Final:compile
+[INFO] +- org.springframework:spring-context-support:jar:4.3.8.RELEASE:compile
+[INFO] |  \- org.springframework:spring-context:jar:4.3.8.RELEASE:compile
+[INFO] +- org.springframework.boot:spring-boot-actuator:jar:1.5.3.RELEASE:compile
+[INFO] |  \- org.springframework.boot:spring-boot:jar:1.5.3.RELEASE:compile
+[INFO] +- org.springframework.boot:spring-boot-autoconfigure:jar:1.5.3.RELEASE:compile
+[INFO] +- org.springframework.boot:spring-boot-configuration-processor:jar:1.5.3.RELEASE:compile
+[INFO] |  \- com.vaadin.external.google:android-json:jar:0.0.20131108.vaadin1:compile
+[INFO] +- org.springframework.boot:spring-boot-loader-tools:jar:1.5.3.RELEASE:compile
+[INFO] +- org.springframework.boot:spring-boot-starter-aop:jar:1.5.3.RELEASE:compile
+[INFO] |  +- org.springframework.boot:spring-boot-starter:jar:1.5.3.RELEASE:compile
+[INFO] |  \- org.aspectj:aspectjweaver:jar:1.8.10:compile
+[INFO] +- org.springframework.boot:spring-boot-starter-data-jpa:jar:1.5.3.RELEASE:compile
+[INFO] |  +- org.springframework.boot:spring-boot-starter-jdbc:jar:1.5.3.RELEASE:compile
+[INFO] |  |  +- org.apache.tomcat:tomcat-jdbc:jar:8.5.14:compile
+[INFO] |  |  |  \- org.apache.tomcat:tomcat-juli:jar:8.5.14:compile
+[INFO] |  |  \- org.springframework:spring-jdbc:jar:4.3.8.RELEASE:compile
+[INFO] |  +- org.hibernate:hibernate-entitymanager:jar:5.2.8.Final:compile
+[INFO] |  |  \- net.bytebuddy:byte-buddy:jar:1.6.6:compile
+[INFO] |  +- javax.transaction:javax.transaction-api:jar:1.2:compile
+[INFO] |  +- org.springframework.data:spring-data-jpa:jar:1.11.3.RELEASE:compile
+[INFO] |  |  \- org.springframework:spring-orm:jar:4.3.8.RELEASE:compile
+[INFO] |  \- org.springframework:spring-aspects:jar:4.3.8.RELEASE:compile
+[INFO] +- org.springframework.boot:spring-boot-starter-data-elasticsearch:jar:1.5.3.RELEASE:compile
+[INFO] |  \- org.springframework.data:spring-data-elasticsearch:jar:2.1.3.RELEASE:compile
+[INFO] |     +- commons-lang:commons-lang:jar:2.6:compile
+[INFO] |     \- org.elasticsearch:elasticsearch:jar:2.4.4:compile
+[INFO] |        +- org.apache.lucene:lucene-core:jar:5.5.2:compile
+[INFO] |        +- org.apache.lucene:lucene-backward-codecs:jar:5.5.2:compile
+[INFO] |        +- org.apache.lucene:lucene-analyzers-common:jar:5.5.2:compile
+[INFO] |        +- org.apache.lucene:lucene-queries:jar:5.5.2:compile
+[INFO] |        +- org.apache.lucene:lucene-memory:jar:5.5.2:compile
+[INFO] |        +- org.apache.lucene:lucene-highlighter:jar:5.5.2:compile
+[INFO] |        +- org.apache.lucene:lucene-queryparser:jar:5.5.2:compile
+[INFO] |        |  \- org.apache.lucene:lucene-sandbox:jar:5.5.2:compile
+[INFO] |        +- org.apache.lucene:lucene-suggest:jar:5.5.2:compile
+[INFO] |        |  \- org.apache.lucene:lucene-misc:jar:5.5.2:compile
+[INFO] |        +- org.apache.lucene:lucene-join:jar:5.5.2:compile
+[INFO] |        |  \- org.apache.lucene:lucene-grouping:jar:5.5.2:compile
+[INFO] |        +- org.apache.lucene:lucene-spatial:jar:5.5.2:compile
+[INFO] |        |  +- org.apache.lucene:lucene-spatial3d:jar:5.5.2:compile
+[INFO] |        |  \- com.spatial4j:spatial4j:jar:0.5:compile
+[INFO] |        +- org.elasticsearch:securesm:jar:1.0:compile
+[INFO] |        +- com.fasterxml.jackson.dataformat:jackson-dataformat-smile:jar:2.8.8:compile
+[INFO] |        +- com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:jar:2.8.8:compile
+[INFO] |        +- com.fasterxml.jackson.dataformat:jackson-dataformat-cbor:jar:2.8.8:compile
+[INFO] |        +- io.netty:netty:jar:3.10.6.Final:compile
+[INFO] |        +- com.ning:compress-lzf:jar:1.0.2:compile
+[INFO] |        +- commons-cli:commons-cli:jar:1.3.1:compile
+[INFO] |        \- com.twitter:jsr166e:jar:1.1.0:compile
+[INFO] +- net.java.dev.jna:jna:jar:4.2.2:compile
+[INFO] +- org.springframework.boot:spring-boot-starter-logging:jar:1.5.3.RELEASE:compile
+[INFO] |  +- ch.qos.logback:logback-classic:jar:1.1.11:compile
+[INFO] |  |  \- ch.qos.logback:logback-core:jar:1.1.11:compile
+[INFO] |  +- org.slf4j:jcl-over-slf4j:jar:1.7.25:compile
+[INFO] |  +- org.slf4j:jul-to-slf4j:jar:1.7.25:compile
+[INFO] |  \- org.slf4j:log4j-over-slf4j:jar:1.7.25:compile
+[INFO] +- org.springframework.boot:spring-boot-starter-mail:jar:1.5.3.RELEASE:compile
+[INFO] |  \- com.sun.mail:javax.mail:jar:1.5.6:compile
+[INFO] |     \- javax.activation:activation:jar:1.1:compile
+[INFO] +- org.springframework.boot:spring-boot-starter-security:jar:1.5.3.RELEASE:compile
+[INFO] |  +- org.springframework.security:spring-security-config:jar:4.2.2.RELEASE:compile
+[INFO] |  \- org.springframework.security:spring-security-web:jar:4.2.2.RELEASE:compile
+[INFO] +- org.springframework.boot:spring-boot-starter-test:jar:1.5.3.RELEASE:test
+[INFO] |  +- org.springframework.boot:spring-boot-test-autoconfigure:jar:1.5.3.RELEASE:test
+[INFO] |  +- junit:junit:jar:4.12:test
+[INFO] |  +- org.mockito:mockito-core:jar:1.10.19:test
+[INFO] |  +- org.skyscreamer:jsonassert:jar:1.4.0:test
+[INFO] |  \- org.springframework:spring-test:jar:4.3.8.RELEASE:test
+[INFO] +- org.springframework.security:spring-security-test:jar:4.2.2.RELEASE:test
+[INFO] |  \- org.springframework.security:spring-security-core:jar:4.2.2.RELEASE:compile
+[INFO] +- org.springframework.boot:spring-boot-test:jar:1.5.3.RELEASE:test
+[INFO] +- org.springframework.boot:spring-boot-starter-thymeleaf:jar:1.5.3.RELEASE:compile
+[INFO] |  +- org.thymeleaf:thymeleaf-spring4:jar:2.1.5.RELEASE:compile
+[INFO] |  |  \- org.thymeleaf:thymeleaf:jar:2.1.5.RELEASE:compile
+[INFO] |  |     +- ognl:ognl:jar:3.0.8:compile
+[INFO] |  |     \- org.unbescape:unbescape:jar:1.1.0.RELEASE:compile
+[INFO] |  \- nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect:jar:1.4.0:compile
+[INFO] |     \- org.codehaus.groovy:groovy:jar:2.4.10:compile
+[INFO] +- org.springframework.boot:spring-boot-starter-web:jar:1.5.3.RELEASE:compile
+[INFO] |  +- org.springframework:spring-web:jar:4.3.8.RELEASE:compile
+[INFO] |  \- org.springframework:spring-webmvc:jar:4.3.8.RELEASE:compile
+[INFO] +- org.springframework.boot:spring-boot-starter-websocket:jar:1.5.3.RELEASE:compile
+[INFO] |  +- org.springframework:spring-messaging:jar:4.3.8.RELEASE:compile
+[INFO] |  \- org.springframework:spring-websocket:jar:4.3.8.RELEASE:compile
+[INFO] +- org.springframework.security.oauth:spring-security-oauth2:jar:2.0.13.RELEASE:compile
+[INFO] |  \- org.codehaus.jackson:jackson-mapper-asl:jar:1.9.13:compile
+[INFO] |     \- org.codehaus.jackson:jackson-core-asl:jar:1.9.13:compile
+[INFO] +- org.springframework.security:spring-security-jwt:jar:1.0.7.RELEASE:compile
+[INFO] |  \- org.bouncycastle:bcpkix-jdk15on:jar:1.55:compile
+[INFO] |     \- org.bouncycastle:bcprov-jdk15on:jar:1.55:compile
+[INFO] +- org.springframework.cloud:spring-cloud-security:jar:1.2.0.RELEASE:compile
+[INFO] +- io.jsonwebtoken:jjwt:jar:0.7.0:compile
+[INFO] +- org.springframework.cloud:spring-cloud-starter-zuul:jar:1.3.0.RELEASE:compile
+[INFO] |  +- org.springframework.boot:spring-boot-starter-actuator:jar:1.5.3.RELEASE:compile
+[INFO] |  +- org.springframework.cloud:spring-cloud-starter-archaius:jar:1.3.0.RELEASE:compile
+[INFO] |  |  +- com.netflix.archaius:archaius-core:jar:0.7.4:compile
+[INFO] |  |  |  \- com.google.code.findbugs:jsr305:jar:3.0.1:runtime
+[INFO] |  |  \- commons-configuration:commons-configuration:jar:1.8:compile
+[INFO] |  \- com.netflix.zuul:zuul-core:jar:1.3.0:compile
+[INFO] |     +- com.netflix.servo:servo-core:jar:0.10.1:compile
+[INFO] |     |  \- com.netflix.servo:servo-internal:jar:0.10.1:runtime
+[INFO] |     \- com.netflix.netflix-commons:netflix-commons-util:jar:0.1.1:runtime
+[INFO] +- com.github.vladimir-bukhtoyarov:bucket4j-core:jar:2.0.1:compile
+[INFO] +- com.github.vladimir-bukhtoyarov:bucket4j-jcache:jar:2.0.1:compile
+[INFO] +- org.springframework.cloud:spring-cloud-starter:jar:1.2.0.RELEASE:compile
+[INFO] |  +- org.springframework.cloud:spring-cloud-context:jar:1.2.0.RELEASE:compile
+[INFO] |  |  \- org.springframework.security:spring-security-crypto:jar:4.2.2.RELEASE:compile
+[INFO] |  +- org.springframework.cloud:spring-cloud-commons:jar:1.2.0.RELEASE:compile
+[INFO] |  \- org.springframework.security:spring-security-rsa:jar:1.0.3.RELEASE:compile
+[INFO] +- org.springframework.cloud:spring-cloud-starter-ribbon:jar:1.3.0.RELEASE:compile
+[INFO] |  +- org.springframework.cloud:spring-cloud-netflix-core:jar:1.3.0.RELEASE:compile
+[INFO] |  +- com.netflix.ribbon:ribbon:jar:2.2.2:compile
+[INFO] |  |  +- com.netflix.ribbon:ribbon-transport:jar:2.2.2:runtime
+[INFO] |  |  |  +- io.reactivex:rxnetty-contexts:jar:0.4.9:runtime
+[INFO] |  |  |  \- io.reactivex:rxnetty-servo:jar:0.4.9:runtime
+[INFO] |  |  +- javax.inject:javax.inject:jar:1:runtime
+[INFO] |  |  \- io.reactivex:rxnetty:jar:0.4.9:runtime
+[INFO] |  +- com.netflix.ribbon:ribbon-core:jar:2.2.2:compile
+[INFO] |  +- com.netflix.ribbon:ribbon-httpclient:jar:2.2.2:compile
+[INFO] |  |  +- com.sun.jersey:jersey-client:jar:1.19.1:runtime
+[INFO] |  |  \- com.sun.jersey.contribs:jersey-apache-client4:jar:1.19.1:runtime
+[INFO] |  +- com.netflix.ribbon:ribbon-loadbalancer:jar:2.2.2:compile
+[INFO] |  |  \- com.netflix.netflix-commons:netflix-statistics:jar:0.1.1:runtime
+[INFO] |  \- io.reactivex:rxjava:jar:1.1.10:compile
+[INFO] +- org.springframework.cloud:spring-cloud-starter-hystrix:jar:1.3.0.RELEASE:compile
+[INFO] |  +- com.netflix.hystrix:hystrix-core:jar:1.5.10:compile
+[INFO] |  |  \- org.hdrhistogram:HdrHistogram:jar:2.1.9:compile
+[INFO] |  +- com.netflix.hystrix:hystrix-metrics-event-stream:jar:1.5.10:compile
+[INFO] |  |  \- com.netflix.hystrix:hystrix-serialization:jar:1.5.10:runtime
+[INFO] |  |     \- com.fasterxml.jackson.module:jackson-module-afterburner:jar:2.8.8:runtime
+[INFO] |  \- com.netflix.hystrix:hystrix-javanica:jar:1.5.10:compile
+[INFO] |     \- org.ow2.asm:asm:jar:5.0.4:runtime
+[INFO] +- org.springframework.cloud:spring-cloud-starter-spectator:jar:1.3.0.RELEASE:compile
+[INFO] |  \- org.springframework.cloud:spring-cloud-netflix-spectator:jar:1.3.0.RELEASE:compile
+[INFO] |     +- com.netflix.spectator:spectator-api:jar:0.30.0:compile
+[INFO] |     \- com.netflix.spectator:spectator-reg-servo:jar:0.30.0:compile
+[INFO] +- org.springframework.retry:spring-retry:jar:1.2.0.RELEASE:compile
+[INFO] +- org.springframework.cloud:spring-cloud-starter-eureka:jar:1.3.0.RELEASE:compile
+[INFO] |  +- org.springframework.cloud:spring-cloud-netflix-eureka-client:jar:1.3.0.RELEASE:compile
+[INFO] |  +- com.netflix.eureka:eureka-client:jar:1.6.2:compile
+[INFO] |  |  +- org.codehaus.jettison:jettison:jar:1.3.7:runtime
+[INFO] |  |  +- com.netflix.netflix-commons:netflix-eventbus:jar:0.3.0:runtime
+[INFO] |  |  |  +- com.netflix.netflix-commons:netflix-infix:jar:0.3.0:runtime
+[INFO] |  |  |  |  +- commons-jxpath:commons-jxpath:jar:1.3:runtime
+[INFO] |  |  |  |  \- org.antlr:antlr-runtime:jar:3.4:runtime
+[INFO] |  |  |  |     \- org.antlr:stringtemplate:jar:3.2.1:runtime
+[INFO] |  |  |  \- org.apache.commons:commons-math:jar:2.2:runtime
+[INFO] |  |  +- javax.ws.rs:jsr311-api:jar:1.1.1:runtime
+[INFO] |  |  +- com.sun.jersey:jersey-core:jar:1.19.1:runtime
+[INFO] |  |  \- com.google.inject:guice:jar:4.1.0:runtime
+[INFO] |  +- com.netflix.eureka:eureka-core:jar:1.6.2:compile
+[INFO] |  |  \- org.codehaus.woodstox:woodstox-core-asl:jar:4.4.1:runtime
+[INFO] |  |     +- javax.xml.stream:stax-api:jar:1.0-2:runtime
+[INFO] |  |     \- org.codehaus.woodstox:stax2-api:jar:3.1.4:runtime
+[INFO] |  +- com.netflix.ribbon:ribbon-eureka:jar:2.2.2:compile
+[INFO] |  \- com.thoughtworks.xstream:xstream:jar:1.4.9:compile
+[INFO] |     +- xmlpull:xmlpull:jar:1.1.3.1:compile
+[INFO] |     \- xpp3:xpp3_min:jar:1.1.4c:compile
+[INFO] +- org.springframework.cloud:spring-cloud-starter-config:jar:1.3.0.RELEASE:compile
+[INFO] |  \- org.springframework.cloud:spring-cloud-config-client:jar:1.3.0.RELEASE:compile
+[INFO] +- org.springframework.cloud:spring-cloud-starter-feign:jar:1.3.0.RELEASE:compile
+[INFO] |  +- io.github.openfeign:feign-core:jar:9.4.0:compile
+[INFO] |  |  \- org.jvnet:animal-sniffer-annotation:jar:1.0:compile
+[INFO] |  +- io.github.openfeign:feign-slf4j:jar:9.4.0:compile
+[INFO] |  \- io.github.openfeign:feign-hystrix:jar:9.4.0:compile
+[INFO] +- net.logstash.logback:logstash-logback-encoder:jar:4.9:compile
+[INFO] +- org.springframework.boot:spring-boot-starter-cloud-connectors:jar:1.5.3.RELEASE:compile
+[INFO] |  +- org.springframework.cloud:spring-cloud-spring-service-connector:jar:1.2.3.RELEASE:compile
+[INFO] |  |  \- org.springframework.cloud:spring-cloud-core:jar:1.2.3.RELEASE:compile
+[INFO] |  +- org.springframework.cloud:spring-cloud-cloudfoundry-connector:jar:1.2.3.RELEASE:compile
+[INFO] |  +- org.springframework.cloud:spring-cloud-heroku-connector:jar:1.2.3.RELEASE:compile
+[INFO] |  \- org.springframework.cloud:spring-cloud-localconfig-connector:jar:1.2.3.RELEASE:compile
+[INFO] +- org.springframework.security:spring-security-data:jar:4.2.2.RELEASE:compile
+[INFO] |  \- org.springframework.data:spring-data-commons:jar:1.13.3.RELEASE:compile
+[INFO] +- org.springframework.security:spring-security-messaging:jar:4.2.2.RELEASE:compile
+[INFO] |  +- aopalliance:aopalliance:jar:1.0:compile
+[INFO] |  \- org.springframework:spring-expression:jar:4.3.8.RELEASE:compile
+[INFO] +- info.cukes:cucumber-junit:jar:1.2.4:test
+[INFO] |  \- info.cukes:cucumber-core:jar:1.2.4:test
+[INFO] |     +- info.cukes:cucumber-html:jar:0.2.3:test
+[INFO] |     +- info.cukes:cucumber-jvm-deps:jar:1.0.5:test
+[INFO] |     \- info.cukes:gherkin:jar:2.12.2:test
+[INFO] +- info.cukes:cucumber-spring:jar:1.2.4:test
+[INFO] |  \- info.cukes:cucumber-java:jar:1.2.4:test
+[INFO] +- com.ali.taobao:dayu:jar:1.0.0:compile
+[INFO] +- commons-codec:commons-codec:jar:1.9:compile
+[INFO] +- com.google.code.gson:gson:jar:2.8.1:compile
+[INFO] +- org.apache.httpcomponents:httpclient:jar:4.5.3:compile
+[INFO] |  \- org.apache.httpcomponents:httpcore:jar:4.4.6:compile
+[INFO] +- io.github.openfeign.form:feign-form:jar:2.1.0:compile
+[INFO] |  \- org.projectlombok:lombok:jar:1.16.16:compile
+[INFO] +- io.github.openfeign.form:feign-form-spring:jar:2.1.0:compile
+[INFO] +- net.coobird:thumbnailator:jar:0.4.8:compile
+[INFO] +- com.google.zxing:core:jar:3.3.0:compile
+[INFO] +- org.springframework.data:spring-data-redis:jar:1.8.9.RELEASE:compile
+[INFO] |  +- org.springframework.data:spring-data-keyvalue:jar:1.2.3.RELEASE:compile
+[INFO] |  +- org.springframework:spring-tx:jar:4.3.8.RELEASE:compile
+[INFO] |  \- org.springframework:spring-oxm:jar:4.3.8.RELEASE:compile
+[INFO] \- commons-beanutils:commons-beanutils:jar:1.9.3:compile
+[INFO]    \- commons-collections:commons-collections:jar:3.2.2:compile
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time: 10.508 s
+[INFO] Finished at: 2018-09-10T18:05:19+08:00
+[INFO] Final Memory: 42M/449M
+[INFO] ------------------------------------------------------------------------

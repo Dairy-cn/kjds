@@ -1,0 +1,39 @@
+{
+  "generator-jhipster": {
+    "promptValues": {
+      "packageName": "com.cross.uaa",
+      "nativeLanguage": "en"
+    },
+    "jhipsterVersion": "6.8.0",
+    "applicationType": "uaa",
+    "baseName": "uaa",
+    "packageName": "com.cross.uaa",
+    "packageFolder": "com/cross/uaa",
+    "serverPort": "9999",
+    "authenticationType": "uaa",
+    "cacheProvider": "no",
+    "websocket": false,
+    "databaseType": "sql",
+    "devDatabaseType": "mysql",
+    "prodDatabaseType": "mysql",
+    "searchEngine": false,
+    "messageBroker": false,
+    "serviceDiscoveryType": "eureka",
+    "buildTool": "maven",
+    "enableSwaggerCodegen": false,
+    "jwtSecretKey": "Y2QzNWM1ZDE2NTQ3OTJmYmExMDJhM2RlM2UyYzg2ZmJhMTVkMDAzMWViMmFjZjU0MTkyODZkYjkzYmIyMjNlMTUzMjZkOWU2MTk5OTVhNzEzM2NkMjU2MjRjZjdlNWFjMjNlOWQ3ZWVkNTBhMTJkODdiODQ3ZjZlMDU2MmZiMmQ=",
+    "embeddableLaunchScript": false,
+    "creationTimestamp": 1589088319844,
+    "testFrameworks": [],
+    "jhiPrefix": "jhi",
+    "entitySuffix": "",
+    "dtoSuffix": "DTO",
+    "otherModules": [],
+    "enableTranslation": true,
+    "clientPackageManager": "npm",
+    "nativeLanguage": "en",
+    "languages": ["en", "zh-cn"],
+    "blueprints": [],
+    "skipClient": true
+  }
+}
