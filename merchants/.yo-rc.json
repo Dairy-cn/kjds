@@ -1,0 +1,41 @@
+{
+  "generator-jhipster": {
+    "promptValues": {
+      "packageName": "com.cross.merchants",
+      "nativeLanguage": "en"
+    },
+    "jhipsterVersion": "6.8.0",
+    "applicationType": "microservice",
+    "baseName": "merchants",
+    "packageName": "com.cross.merchants",
+    "packageFolder": "com/cross/merchants",
+    "serverPort": "8081",
+    "authenticationType": "uaa",
+    "uaaBaseName": "uaa",
+    "cacheProvider": "no",
+    "websocket": false,
+    "databaseType": "sql",
+    "devDatabaseType": "mysql",
+    "prodDatabaseType": "mysql",
+    "searchEngine": false,
+    "messageBroker": false,
+    "serviceDiscoveryType": "eureka",
+    "buildTool": "maven",
+    "enableSwaggerCodegen": false,
+    "jwtSecretKey": "MWU5ODMxMGNiNTkyODhjOGY2MzUxMDIwYjllYTBkMjE5MjZkNjVmZTY0NzFkODkzMTk1MzFkMDFkY2FhYmMwOGFiM2MwMTdkZWE0YzY3NWZlOTdiYmYzNDVhMWZmNGU5NjI5Y2NkZWRiZDQ1YTQ0ODY2YTQ5NGYwMTIwNzZhN2Q=",
+    "embeddableLaunchScript": false,
+    "creationTimestamp": 1589202625465,
+    "testFrameworks": [],
+    "jhiPrefix": "jhi",
+    "entitySuffix": "",
+    "dtoSuffix": "DTO",
+    "otherModules": [],
+    "enableTranslation": true,
+    "clientPackageManager": "npm",
+    "nativeLanguage": "en",
+    "languages": ["en"],
+    "blueprints": [],
+    "skipClient": true,
+    "skipUserManagement": true
+  }
+}
