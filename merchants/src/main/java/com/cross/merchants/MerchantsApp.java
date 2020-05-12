@@ -3,9 +3,11 @@ package com.cross.merchants;
 import com.cross.merchants.client.OAuth2InterceptedFeignConfiguration;
 import com.cross.merchants.config.ApplicationProperties;
 
+import com.github.tobato.fastdfs.FdfsClientConfig;
 import io.github.jhipster.config.DefaultProfileUtil;
 import io.github.jhipster.config.JHipsterConstants;
 
+import io.github.jhipster.config.apidoc.SwaggerAutoConfiguration;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,8 +17,11 @@ import org.springframework.boot.autoconfigure.liquibase.LiquibaseProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.EnableMBeanExport;
 import org.springframework.context.annotation.FilterType;
+import org.springframework.context.annotation.Import;
 import org.springframework.core.env.Environment;
+import org.springframework.jmx.support.RegistrationPolicy;
 
 import javax.annotation.PostConstruct;
 import java.net.InetAddress;
@@ -27,9 +32,11 @@ import java.util.Collection;
 @ComponentScan(
     excludeFilters = @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = OAuth2InterceptedFeignConfiguration.class)
 )
-@SpringBootApplication
+@SpringBootApplication(exclude = {SwaggerAutoConfiguration.class})
 @EnableConfigurationProperties({LiquibaseProperties.class, ApplicationProperties.class})
 @EnableDiscoveryClient
+@Import(FdfsClientConfig.class)
+@EnableMBeanExport(registration = RegistrationPolicy.IGNORE_EXISTING)
 public class MerchantsApp {
 
     private static final Logger log = LoggerFactory.getLogger(MerchantsApp.class);

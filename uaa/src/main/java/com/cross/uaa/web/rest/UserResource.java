@@ -218,14 +218,14 @@ public class UserResource {
 
 
     /**
-     * 商户端手机号快捷登录
+     * 商户端手机号快捷注册
      *
      * @param username
      * @param code
      * @return
      */
     @GetMapping("/merchant/mobile-quick-login/{username:" + Constants.LOGIN_REGEX + "}")
-    @ApiOperation("商户端手机号快捷登录")
+    @ApiOperation("商户端手机号快捷注册")
     public R mobileQuickLoginByMerchant(@ApiParam(required = true, value = "手机号码") @PathVariable String username,
                                         @ApiParam(required = true, value = "密码") @RequestParam String password,
                                         @ApiParam(required = true, value = "手机验证码") @RequestParam String code) {
@@ -279,7 +279,7 @@ public class UserResource {
      * @return
      */
     @GetMapping("/user/mobile-quick-login/{username:" + Constants.LOGIN_REGEX + "}")
-    @ApiOperation("用户端手机号快捷登录")
+    @ApiOperation("用户端手机号快捷注册")
     public R mobileQuickLoginByUser(@ApiParam(required = true, value = "手机号码") @PathVariable String username,
                                     @ApiParam(required = true, value = "密码") @RequestParam String password,
                                     @ApiParam(required = true, value = "手机验证码") @RequestParam String code) {

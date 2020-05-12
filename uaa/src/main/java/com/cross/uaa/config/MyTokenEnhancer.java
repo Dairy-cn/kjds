@@ -18,7 +18,7 @@ public class MyTokenEnhancer implements TokenEnhancer {
     public OAuth2AccessToken enhance(OAuth2AccessToken accessToken, OAuth2Authentication authentication) {
         com.cross.uaa.security.QxhUserDetail user = (com.cross.uaa.security.QxhUserDetail) authentication.getPrincipal();
         final Map<String, Object> additionalInfo = new HashMap<>();
-        additionalInfo.put("userId", user.getUserId());
+        additionalInfo.put("id", user.getUserId());
         ((DefaultOAuth2AccessToken) accessToken).setAdditionalInformation(additionalInfo);
         return accessToken;
     }

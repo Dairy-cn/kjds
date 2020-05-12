@@ -1,0 +1,33 @@
+/** 商户入住审核相关 **/
+entity MerchantsCheckInInfo{
+  /** id **/
+   id Long,
+  /** 公司名称 **/
+  companyName String,
+  /** 营业执照 **/
+  businessLicense String,
+  /** 营业执照注册地址 **/
+  businessLicenseRegisteredAddress String,
+  /** 营业执照编号 **/
+  businessLicenseNo String,
+   /** 营业执照有效期(为空则永久) **/
+  businessLicenseValidTime Instant,
+    /** 店铺贸易模式(1 一般贸易 2 跨境贸易) **/
+  tradeMode Integer,
+  /** 申请人 **/
+  proposer Long,
+ /** 申请时间 **/
+ applicationTime Instant,
+
+}
+
+// Set pagination options
+// paginate ActivityMain with infinite-scroll
+paginate * with pagination
+
+dto * with mapstruct
+
+// Set service options to all except few
+service all with serviceImpl
+// Set an angular suffix
+// angularSuffix * with mySuffix
