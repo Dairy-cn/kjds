@@ -13,7 +13,14 @@
     <property name="clobType" value="clob" dbms="mysql, oracle, mssql, mariadb, postgresql"/>
     <property name="uuidType" value="varchar(36)" dbms="h2, mysql, mariadb"/>
 
-    <include file="config/liquibase/changelog/00000000000000_initial_schema.xml" relativeToChangelogFile="false"/>
+<!--    <include file="config/liquibase/changelog/00000000000000_initial_schema.xml" relativeToChangelogFile="false"/>-->
+<!--    <include file="config/liquibase/changelog/20200513033700_added_entity_MerchantsCheckInInfo.xml" relativeToChangelogFile="false"/>-->
+<!--    <include file="config/liquibase/changelog/20200513033800_added_entity_MerchantsCategory.xml" relativeToChangelogFile="false"/>-->
+<!--    <include file="config/liquibase/changelog/20200513045700_added_entity_StoreInfo.xml" relativeToChangelogFile="false"/>-->
+<!--    <include file="config/liquibase/changelog/20200513151500_added_entity_Region.xml" relativeToChangelogFile="false"/>-->
+<!--    <include file="config/liquibase/changelog/20200513154600_added_entity_GlobalRegion.xml" relativeToChangelogFile="false"/>-->
+<!--    <include file="config/liquibase/changelog/20200514054800_added_entity_StoreOperatingRecord.xml" relativeToChangelogFile="false"/>-->
+<!--    <include file="config/liquibase/changelog/20200514135300_added_entity_Brand.xml" relativeToChangelogFile="false"/>-->
     <!-- jhipster-needle-liquibase-add-changelog - JHipster will add liquibase changelogs here -->
     <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
 </databaseChangeLog>

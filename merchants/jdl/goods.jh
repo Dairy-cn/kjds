@@ -1,0 +1,106 @@
+/** 商品信息 **/
+entity Goods{
+  /** id **/
+   id Long,
+  /** 店铺id **/
+  storeId Long required,
+    /** 品牌id **/
+    brandId Long required,
+  /** 销售模式 1 现货销售 **/
+  salesModel Integer required,
+  /** 商品名称 **/
+  goodsName String required,
+  /** 商品描述 **/
+  goodsDesc String  maxlength(2000),
+   /** SPU编码**/
+  spuNo String ,
+     /** 商品品类id **/
+  categoryId Long,
+  /** 商品运费 **/
+  freight BigDecimal,
+  /** 商品详情 **/
+  goodsDetails String  maxlength(2000),
+
+   /** 申请人 **/
+    proposer Long,
+   /** 申请时间 **/
+   applicationTime Instant,
+
+
+     /** 审核状态 -1 未审核 0 未通过  1 通过 **/
+        checkStatus Boolean,
+     /** 审核失败原因 **/
+      checkFailureReasons String,
+             /** 审核时间 **/
+     checkTime Instant,
+
+      /** 商品图片信息 **/
+      goodsPic String,
+
+   /** 是否删除 **/
+  deleteFlag Boolean,
+
+   /** 上架状态 **/
+  saleState Boolean
+
+}
+       /** 商品规格 **/
+ entity  GoodsSku{
+    id Long,
+
+  /** 规格名称 **/
+    name String required maxlength(10),
+  /** 规格图片 **/
+    skuPic String,
+  /** 销售价 **/
+    salePrice BigDecimal,
+  /** 税费(元) **/
+    taxexAndDues BigDecimal,
+  /** 市场价(元) **/
+    marketPrice BigDecimal,
+  /** 成本价(元) **/
+    costPrice BigDecimal,
+  /** 库存 **/
+    stock Integer,
+  /** 重量（kg） **/
+    weight Double,
+  /** 体积(m³） **/
+    volume Double,
+   /** 是否删除 **/
+  deleteFlag Boolean
+ }
+
+       /** 商品属性 **/
+ entity  GoodsProperty{
+
+    id Long,
+  /** 属性名称 **/
+    name String required maxlength(20),
+       /** 是否删除 **/
+      deleteFlag Boolean
+ }
+
+        /** 商品属性标签 **/
+  entity  GoodsPropertyTag{
+
+   id Long,
+   /** 属性标签 **/
+   name String required maxlength(20),
+   /** 是否删除 **/
+   deleteFlag Boolean
+  }
+// relationship OneToMany {
+  // Goods{goodsSku} to GoodsSku,
+   //Goods{goodsProperty} to GoodsProperty,
+   //GoodsProperty{goodsPropertyTag} to GoodsPropertyTag
+ //}
+// Set pagination options
+// paginate ActivityMain with infinite-scroll
+paginate * with pagination
+
+dto * with mapstruct
+
+// Set service options to all except few
+service all with serviceImpl
+// Set an angular suffix
+// angularSuffix * with mySuffix

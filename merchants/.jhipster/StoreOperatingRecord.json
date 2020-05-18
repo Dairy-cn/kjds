@@ -1,0 +1,54 @@
+{
+    "name": "StoreOperatingRecord",
+    "fields": [
+        {
+            "fieldName": "storeId",
+            "javadoc": "店铺Id",
+            "fieldType": "Long"
+        },
+        {
+            "fieldName": "closeOfParty",
+            "javadoc": "关闭方  1 自己  2 平台",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "closeReason",
+            "javadoc": "关闭原因",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "closeTime",
+            "javadoc": "关闭时间",
+            "fieldType": "Instant"
+        },
+        {
+            "fieldName": "openTime",
+            "javadoc": "开启时间",
+            "fieldType": "Instant"
+        },
+        {
+            "fieldName": "closeOfWho",
+            "javadoc": "关闭人id",
+            "fieldType": "Long"
+        },
+        {
+            "fieldName": "openOfWho",
+            "javadoc": "开启人id",
+            "fieldType": "Long"
+        }
+    ],
+    "relationships": [],
+    "changelogDate": "20200514054800",
+    "javadoc": "店铺开关闭信息记录",
+    "entityTableName": "store_operating_record",
+    "dto": "mapstruct",
+    "pagination": "pagination",
+    "service": "serviceImpl",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "readOnly": false,
+    "embedded": false,
+    "clientRootFolder": "merchants",
+    "applications": "*",
+    "microserviceName": "merchants"
+}

@@ -1,0 +1,27 @@
+       /** 国内区域 **/
+ entity  Region{
+          /** id **/
+        id Long,
+        /** 区域编号 **/
+       regionId String,
+
+       /** 地区名称 **/
+       regionName String,
+
+             /** 父区域编号 **/
+       parentId Long,
+
+              /** 等级 **/
+       level Integer
+
+ }
+// Set pagination options
+// paginate ActivityMain with infinite-scroll
+paginate * with pagination
+
+dto * with mapstruct
+
+// Set service options to all except few
+service all with serviceImpl
+// Set an angular suffix
+// angularSuffix * with mySuffix

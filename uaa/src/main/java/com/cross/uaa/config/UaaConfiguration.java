@@ -83,6 +83,12 @@ public class UaaConfiguration extends AuthorizationServerConfigurerAdapter imple
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             .and()
                 .authorizeRequests()
+
+                .antMatchers("/api/reset/pwd/**").permitAll()
+
+                .antMatchers("/api/send-validation-code/**").permitAll()
+                .antMatchers("/api/user/mobile-quick-login/**").permitAll()
+                .antMatchers("/api/merchant/mobile-quick-login/**").permitAll()
                 .antMatchers("/api/register").permitAll()
                 .antMatchers("/api/activate").permitAll()
                 .antMatchers("/api/authenticate").permitAll()

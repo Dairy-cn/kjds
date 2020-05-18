@@ -1,0 +1,34 @@
+{
+    "name": "GoodsPropertyTag",
+    "fields": [
+        {
+            "fieldName": "name",
+            "javadoc": "属性标签",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required",
+                "maxlength"
+            ],
+            "fieldValidateRulesMaxlength": "20"
+        },
+        {
+            "fieldName": "deleteFlag",
+            "javadoc": "是否删除",
+            "fieldType": "Boolean"
+        }
+    ],
+    "relationships": [],
+    "changelogDate": "20200517113300",
+    "javadoc": "商品属性标签",
+    "entityTableName": "goods_property_tag",
+    "dto": "mapstruct",
+    "pagination": "pagination",
+    "service": "serviceImpl",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "readOnly": false,
+    "embedded": false,
+    "clientRootFolder": "merchants",
+    "applications": "*",
+    "microserviceName": "merchants"
+}

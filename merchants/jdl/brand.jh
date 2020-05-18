@@ -1,0 +1,46 @@
+       /** 店铺品牌信息 **/
+ entity  Brand{
+          /** id **/
+        id Long,
+        /**  品牌名称 **/
+       brandName  String,
+
+       /** 副品牌名称 **/
+       brandNameSecond String,
+
+       /** 品牌国家地区id **/
+       brandCountryId Long,
+
+             /** logo **/
+       brandLogo String,
+
+              /** 商标注册证 **/
+       tradeMarkRegistrationPic String,
+          /** 资质有效期(为空则永久) **/
+         certificateValidTime Instant,
+                  /** 品牌有效期 **/
+         brandDesc String,
+
+        /** 品牌授权类型  0 品牌方 1 一级代理 2 二级代理 3  三级代理  **/
+        brandAuthType Integer,
+        /** 授权书信息   **/
+        owerOfAttorney String,
+
+          /** 审核状态 -1 未审核 0 未通过  1 通过 **/
+         checkStatus Boolean,
+             /** 审核失败原因 **/
+         checkFailureReasons String,
+                     /** 审核时间 **/
+         checkTime Instant
+
+ }
+// Set pagination options
+// paginate ActivityMain with infinite-scroll
+paginate * with pagination
+
+dto * with mapstruct
+
+// Set service options to all except few
+service all with serviceImpl
+// Set an angular suffix
+// angularSuffix * with mySuffix

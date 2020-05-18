@@ -1,5 +1,8 @@
 package com.cross.utils;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+
 import java.io.Serializable;
 
 /*************************************************************
@@ -7,12 +10,21 @@ import java.io.Serializable;
  * Author: Dair
  * CreateTime: 2020/5/10
  ************************************************************/
+@ApiModel(description = "接口返回数据")
 public class R implements Serializable {
 	
+	@ApiModelProperty("请求结果")
 	private boolean flag;
+	@ApiModelProperty("请求结果code")
 	private Integer code;
+	
+	@ApiModelProperty("请求message")
 	private String message;
+	
+	@ApiModelProperty("请求返回数据")
 	private Object data;
+	
+	@ApiModelProperty("分页查询的总条数")
 	private Long count;
 	
 	private R() {
@@ -119,6 +131,14 @@ public class R implements Serializable {
 	 */
 	public static R error(String message) {
 		return new R(false, StatusCode.ERROR, message);
+	}
+	
+	/**
+	 * 返回失败消息
+	 * @return Result
+	 */
+	public static R errorData( ) {
+		return new R(false, StatusCode.ERROR, "数据不存在");
 	}
 	
 	/**

@@ -48,7 +48,7 @@ public class DeliveryPerson implements Serializable {
     /**
      * 区
      */
-    private String county;
+    private String country;
 
     /**
      * 地址
@@ -284,17 +284,17 @@ public class DeliveryPerson implements Serializable {
         this.city = city;
     }
 
-    public String getCounty() {
-        return county;
+    public String getCountry() {
+        return country;
     }
 
-    public DeliveryPerson county(String county) {
-        this.county = county;
+    public DeliveryPerson country(String country) {
+        this.country = country;
         return this;
     }
 
-    public void setCounty(String county) {
-        this.county = county;
+    public void setCountry(String country) {
+        this.country = country;
     }
 
     public String getAddress() {
@@ -688,7 +688,7 @@ public class DeliveryPerson implements Serializable {
                 ", password='" + password + '\'' +
                 ", province='" + province + '\'' +
                 ", city='" + city + '\'' +
-                ", county='" + county + '\'' +
+                ", country='" + country + '\'' +
                 ", address='" + address + '\'' +
                 ", coordinate='" + coordinate + '\'' +
                 ", imageUrl='" + imageUrl + '\'' +

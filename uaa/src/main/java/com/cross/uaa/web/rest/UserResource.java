@@ -1,5 +1,6 @@
 package com.cross.uaa.web.rest;
 
+import com.cross.interfaces.phone.Phone;
 import com.cross.uaa.config.Constants;
 import com.cross.uaa.domain.Authority;
 import com.cross.uaa.domain.User;
@@ -38,6 +39,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -46,6 +48,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
+import java.util.regex.Pattern;
 
 /**
  * REST controller for managing users.
@@ -265,7 +268,7 @@ public class UserResource {
                 }
                 userService.update(dbUser);
             }
-            operations.set(username,null,1,TimeUnit.SECONDS);
+            operations.set(username, null, 1, TimeUnit.SECONDS);
             return R.ok();
         }
     }
@@ -321,7 +324,7 @@ public class UserResource {
                 }
                 userService.update(dbUser);
             }
-            operations.set(username,null,1,TimeUnit.SECONDS);
+            operations.set(username, null, 1, TimeUnit.SECONDS);
             return R.ok();
         }
     }
@@ -330,6 +333,10 @@ public class UserResource {
     @ApiOperation("获取验证码")
     public R sendValidationCodeBySms(@PathVariable String mobile) {
         log.info("send validation code : {}", mobile);
+        boolean matches = Pattern.matches(Constants.PHONE_REGEX, mobile);
+        if (!matches) {
+            return R.error("电话号码不正确");
+        }
         String code = aliYunUtil.init().sendValidationCodeSMS(mobile);
 
         ValueOperations<String, String> operations = redisTemplate.opsForValue();
@@ -358,7 +365,7 @@ public class UserResource {
 
             }
             userService.resetPassword(phone, pwd);
-            operations.set(phone,null,1,TimeUnit.SECONDS);
+            operations.set(phone, null, 1, TimeUnit.SECONDS);
         }
         return R.ok();
     }

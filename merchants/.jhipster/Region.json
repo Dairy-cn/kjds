@@ -1,0 +1,39 @@
+{
+    "name": "Region",
+    "fields": [
+        {
+            "fieldName": "regionId",
+            "javadoc": "区域编号",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "regionName",
+            "javadoc": "地区名称",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "parentId",
+            "javadoc": "父区域编号",
+            "fieldType": "Long"
+        },
+        {
+            "fieldName": "level",
+            "javadoc": "等级",
+            "fieldType": "Integer"
+        }
+    ],
+    "relationships": [],
+    "changelogDate": "20200513151500",
+    "javadoc": "国内区域",
+    "entityTableName": "region",
+    "dto": "mapstruct",
+    "pagination": "pagination",
+    "service": "serviceImpl",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "readOnly": false,
+    "embedded": false,
+    "clientRootFolder": "merchants",
+    "applications": "*",
+    "microserviceName": "merchants"
+}

@@ -1,0 +1,24 @@
+{
+    "name": "MerchantsCategory",
+    "fields": [
+        {
+            "fieldName": "name",
+            "javadoc": "类目名称",
+            "fieldType": "String"
+        }
+    ],
+    "relationships": [],
+    "changelogDate": "20200513033800",
+    "javadoc": "商户类目",
+    "entityTableName": "merchants_category",
+    "dto": "mapstruct",
+    "pagination": "pagination",
+    "service": "serviceImpl",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "readOnly": false,
+    "embedded": false,
+    "clientRootFolder": "merchants",
+    "applications": "*",
+    "microserviceName": "merchants"
+}

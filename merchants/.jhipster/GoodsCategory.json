@@ -1,0 +1,49 @@
+{
+    "name": "GoodsCategory",
+    "fields": [
+        {
+            "fieldName": "pid",
+            "javadoc": "父ID",
+            "fieldType": "Long"
+        },
+        {
+            "fieldName": "name",
+            "javadoc": "品类名称",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "pic",
+            "javadoc": "分类图标",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "level",
+            "javadoc": "级数 1 一级 2 二级 3 三级",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "createTime",
+            "javadoc": "创建时间",
+            "fieldType": "Instant"
+        },
+        {
+            "fieldName": "stick",
+            "javadoc": "是否置顶",
+            "fieldType": "Boolean"
+        }
+    ],
+    "relationships": [],
+    "changelogDate": "20200517041300",
+    "javadoc": "商品品类信息",
+    "entityTableName": "goods_category",
+    "dto": "mapstruct",
+    "pagination": "pagination",
+    "service": "serviceImpl",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "readOnly": false,
+    "embedded": false,
+    "clientRootFolder": "merchants",
+    "applications": "*",
+    "microserviceName": "merchants"
+}

@@ -1,0 +1,124 @@
+{
+    "name": "MerchantsCheckInInfo",
+    "fields": [
+        {
+            "fieldName": "companyName",
+            "javadoc": "公司名称",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "businessLicense",
+            "javadoc": "营业执照",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "businessLicenseRegisteredAddress",
+            "javadoc": "营业执照注册地址",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "businessLicenseNo",
+            "javadoc": "营业执照编号",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "businessLicenseValidTime",
+            "javadoc": "营业执照有效期(为空则永久)",
+            "fieldType": "Instant"
+        },
+        {
+            "fieldName": "tradeMode",
+            "javadoc": "店铺贸易模式(1 一般贸易 2 跨境贸易)",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "proposer",
+            "javadoc": "申请人",
+            "fieldType": "Long"
+        },
+        {
+            "fieldName": "applicationTime",
+            "javadoc": "申请时间",
+            "fieldType": "Instant"
+        },
+        {
+            "fieldName": "categoryId",
+            "javadoc": "主营类目",
+            "fieldType": "Long"
+        },
+        {
+            "fieldName": "province",
+            "javadoc": "省",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "city",
+            "javadoc": "市",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "country",
+            "javadoc": "国家",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "address",
+            "javadoc": "详细地址",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "webAdd",
+            "javadoc": "官网地址",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "telPhone",
+            "javadoc": "手机",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "email",
+            "javadoc": "邮箱",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "position",
+            "javadoc": "职位",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "linkMan",
+            "javadoc": "联系人",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "checkStatus",
+            "javadoc": "审核状态 -1 未审核 0 未通过  1 通过",
+            "fieldType": "Boolean"
+        },
+        {
+            "fieldName": "checkFailureReasons",
+            "javadoc": "审核失败原因",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "checkTime",
+            "javadoc": "审核时间",
+            "fieldType": "Instant"
+        }
+    ],
+    "relationships": [],
+    "changelogDate": "20200513033700",
+    "javadoc": "商户入住审核相关",
+    "entityTableName": "merchants_check_in_info",
+    "dto": "mapstruct",
+    "pagination": "pagination",
+    "service": "serviceImpl",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "readOnly": false,
+    "embedded": false,
+    "clientRootFolder": "merchants",
+    "applications": "*",
+    "microserviceName": "merchants"
+}

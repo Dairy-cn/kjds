@@ -37,15 +37,15 @@ eureka:
       git-version: ${git.commit.id.describe:}
       git-commit: ${git.commit.id.abbrev:}
       git-branch: ${git.branch:}
-ribbon:
-  eureka:
-    enabled: true
+
 # See http://cloud.spring.io/spring-cloud-netflix/spring-cloud-netflix.html
 zuul: # those values must be configured depending on the application specific needs
   sensitive-headers: Cookie,Set-Cookie #see https://github.com/spring-cloud/spring-cloud-netflix/issues/3126
   host:
     max-total-connections: 1000
     max-per-route-connections: 100
+    connect-timeout-millis: 1500000 #HTTP连接超时要比Hystrix的大
+    socket-timeout-millis: 60000   #socket超时
   prefix: /services
   semaphore:
     max-semaphores: 500
@@ -57,10 +57,16 @@ hystrix:
     default:
       execution:
         timeout:
-          enabled: true
+          enabled: false
         isolation:
           thread:
-            timeoutInMilliseconds: 1000000
+            timeoutInMilliseconds: 100000
+ribbon:
+  ReadTimeout: 12000
+  ConnectTimeout: 12000
+  eureka:
+    enabled: true
+
 
 
 management:
@@ -158,6 +164,22 @@ spring:
   output:
     ansi:
       console-available: true
+  servlet:
+    multipart:
+      maxFileSize: "20MB"
+      maxRequestSize: "100MB"
+  redis:
+    database: 0
+    port: 6379
+    password:
+    host: 139.9.113.127
+    timeout: 300000
+    jedis:
+      pool:
+        max-active: 64
+        max-idle: 64
+        max-wait: 300000
+        min-idle: 0
 security:
   oauth2:
     resource:

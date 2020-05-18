@@ -1,0 +1,32 @@
+       /** 店铺开关闭信息记录 **/
+ entity  StoreOperatingRecord{
+    id Long,
+
+     /** 店铺Id **/
+    storeId Long,
+    /** 关闭方  1 自己  2 平台**/
+    closeOfParty Integer,
+    /** 关闭原因 **/
+    closeReason String,
+     /** 关闭时间 **/
+    closeTime Instant,
+     /** 开启时间 **/
+    openTime Instant
+
+     /** 关闭人id **/
+     closeOfWho Long,
+
+    /** 开启人id **/
+     openOfWho Long,
+
+ }
+// Set pagination options
+// paginate ActivityMain with infinite-scroll
+paginate * with pagination
+
+dto * with mapstruct
+
+// Set service options to all except few
+service all with serviceImpl
+// Set an angular suffix
+// angularSuffix * with mySuffix

@@ -37,9 +37,7 @@ eureka:
       git-version: ${git.commit.id.describe:}
       git-commit: ${git.commit.id.abbrev:}
       git-branch: ${git.branch:}
-ribbon:
-  eureka:
-    enabled: true
+
 feign:
   hystrix:
     enabled: true
@@ -49,17 +47,19 @@ feign:
   #             connectTimeout: 5000
   #             readTimeout: 5000
 
-# See https://github.com/Netflix/Hystrix/wiki/Configuration
+#hystrix的超时时间
 hystrix:
   command:
     default:
       execution:
+        timeout:
+          enabled: false
         isolation:
-          strategy: SEMAPHORE
-          # See https://github.com/spring-cloud/spring-cloud-netflix/issues/1330
-          # thread:
-          #     timeoutInMilliseconds: 10000
-  shareSecurityContext: true
+          thread:
+            timeoutInMilliseconds: 1000000
+ribbon:
+  eureka:
+    enabled: true
 
 management:
   endpoints:
@@ -156,6 +156,22 @@ spring:
   output:
     ansi:
       console-available: true
+  servlet:
+    multipart:
+      maxFileSize: "20MB"
+      maxRequestSize: "100MB"
+  redis:
+    database: 0
+    port: 6379
+    password:
+    host: 139.9.113.127
+    timeout: 300000
+    jedis:
+      pool:
+        max-active: 64
+        max-idle: 64
+        max-wait: 300000
+        min-idle: 0
 security:
   oauth2:
     client:
@@ -236,10 +252,10 @@ fdfs:
     height: 150
   # 跟踪服务器tracker_server请求地址,支持多个，这里只有一个，如果有多个在下方加- x.x.x.x:port
   trackerList:
-    - 192.168.24.231:1111
+    - 139.9.113.127:22122
   #
   # 存储服务器storage_server访问地址
-  web-server-url: http://192.168.24.231/
+  web-server-url: http://139.9.113.127/
 aliyun:
   oss:
     endpoint: oss-cn-hangzhou.aliyuncs.com
@@ -247,3 +263,6 @@ aliyun:
     accessKeySecret: 98IvwxnbmLGbVaANezhO5MHWkh7cwH
     bucketName: cydlattach
     folderName: data
+logging:
+  level:
+    io.swagger.models.parameters.AbstractSerializableParameter: error

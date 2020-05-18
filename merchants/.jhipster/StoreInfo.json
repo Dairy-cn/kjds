@@ -1,0 +1,79 @@
+{
+    "name": "StoreInfo",
+    "fields": [
+        {
+            "fieldName": "companyName",
+            "javadoc": "公司名称",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "storeName",
+            "javadoc": "店铺名称",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "storeLogo",
+            "javadoc": "店铺logo",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "merchantsCheckInInfoId",
+            "javadoc": "商户审核记录id",
+            "fieldType": "Long"
+        },
+        {
+            "fieldName": "operatingStatus",
+            "javadoc": "营业状态  1 正常 0 休息中",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "closeOfParty",
+            "javadoc": "关闭方  1 自己  2 平台",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "closeReason",
+            "javadoc": "关闭原因",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "closeTime",
+            "javadoc": "关闭时间",
+            "fieldType": "Instant"
+        },
+        {
+            "fieldName": "openTime",
+            "javadoc": "开启时间",
+            "fieldType": "Instant"
+        },
+        {
+            "fieldName": "closeOfWho",
+            "javadoc": "关闭人id",
+            "fieldType": "Long"
+        },
+        {
+            "fieldName": "openOfWho",
+            "javadoc": "开启人id",
+            "fieldType": "Long"
+        },
+        {
+            "fieldName": "categoryId",
+            "javadoc": "主营类目",
+            "fieldType": "Long"
+        }
+    ],
+    "relationships": [],
+    "changelogDate": "20200513045700",
+    "javadoc": "店铺信息",
+    "entityTableName": "store_info",
+    "dto": "mapstruct",
+    "pagination": "pagination",
+    "service": "serviceImpl",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "readOnly": false,
+    "embedded": false,
+    "clientRootFolder": "merchants",
+    "applications": "*",
+    "microserviceName": "merchants"
+}

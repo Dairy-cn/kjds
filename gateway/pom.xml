@@ -497,19 +497,12 @@
                 <artifactId>dockerfile-maven-plugin</artifactId>
                 <version>${dockerfile-maven-plugin.version}</version>
                 <configuration>
-                    <repository>registry.cn-zhangjiakou.aliyuncs.com/cydl/island</repository>
+                    <repository>registry.cn-shanghai.aliyuncs.com/kjshop/gateway</repository>
                     <tag>${project.version}</tag>
                     <contextDirectory>${project.build.directory}</contextDirectory>
-                    <username>cydl1000</username>
-                    <password>cydl123456.</password>
+                    <username>成都慧商科技</username>
+                    <password>hskj123456</password>
                 </configuration>
-<!--                <configuration>-->
-<!--                    <repository>registry.cn-shanghai.aliyuncs.com/kjshop/registry/gateway</repository>-->
-<!--                    <tag>${project.version}</tag>-->
-<!--                    <contextDirectory>${project.build.directory}</contextDirectory>-->
-<!--                    <username>成都慧商科技</username>-->
-<!--                    <password>hskj123456</password>-->
-<!--                </configuration>-->
             </plugin>
             <!-- jhipster-needle-maven-add-plugin -->
         </plugins>

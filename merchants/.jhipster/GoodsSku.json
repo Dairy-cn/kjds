@@ -1,0 +1,74 @@
+{
+    "name": "GoodsSku",
+    "fields": [
+        {
+            "fieldName": "name",
+            "javadoc": "规格名称",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required",
+                "maxlength"
+            ],
+            "fieldValidateRulesMaxlength": "10"
+        },
+        {
+            "fieldName": "skuPic",
+            "javadoc": "规格图片",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "salePrice",
+            "javadoc": "销售价",
+            "fieldType": "BigDecimal"
+        },
+        {
+            "fieldName": "taxexAndDues",
+            "javadoc": "税费(元)",
+            "fieldType": "BigDecimal"
+        },
+        {
+            "fieldName": "marketPrice",
+            "javadoc": "市场价(元)",
+            "fieldType": "BigDecimal"
+        },
+        {
+            "fieldName": "costPrice",
+            "javadoc": "成本价(元)",
+            "fieldType": "BigDecimal"
+        },
+        {
+            "fieldName": "stock",
+            "javadoc": "库存",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "weight",
+            "javadoc": "重量（kg）",
+            "fieldType": "Double"
+        },
+        {
+            "fieldName": "volume",
+            "javadoc": "体积(m³）",
+            "fieldType": "Double"
+        },
+        {
+            "fieldName": "deleteFlag",
+            "javadoc": "是否删除",
+            "fieldType": "Boolean"
+        }
+    ],
+    "relationships": [],
+    "changelogDate": "20200517113100",
+    "javadoc": "商品规格",
+    "entityTableName": "goods_sku",
+    "dto": "mapstruct",
+    "pagination": "pagination",
+    "service": "serviceImpl",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "readOnly": false,
+    "embedded": false,
+    "clientRootFolder": "merchants",
+    "applications": "*",
+    "microserviceName": "merchants"
+}

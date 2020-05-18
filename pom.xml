@@ -17,20 +17,20 @@
 
     <modules>
         <module>gateway</module>
-<!--        <module>merchant</module>-->
-<!--		<module>sys</module>-->
-<!--        <module>transcation</module>-->
+        <module>merchants</module>
+        <!--		<module>sys</module>-->
+        <!--        <module>transcation</module>-->
         <module>common</module>
-<!--		<module>shipping</module>-->
-<!--        <module>shop</module>-->
-<!--        <module>print</module>-->
-<!--        <module>platform</module>-->
-		<module>uaa</module>
-<!--        <module>operation</module>-->
+        <!--		<module>shipping</module>-->
+        <!--        <module>shop</module>-->
+        <!--        <module>print</module>-->
+        <!--        <module>platform</module>-->
+        <module>uaa</module>
+        <!--        <module>operation</module>-->
         <module>jhipster-registry</module>
-<!--        <module>oa</module>-->
-<!--        <module>article</module>-->
-<!--        <module>island</module>-->
+        <!--        <module>oa</module>-->
+        <!--        <module>article</module>-->
+        <!--        <module>island</module>-->
     </modules>
 
 </project>

@@ -1,0 +1,79 @@
+{
+    "name": "Brand",
+    "fields": [
+        {
+            "fieldName": "brandName",
+            "javadoc": "品牌名称",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "brandNameSecond",
+            "javadoc": "副品牌名称",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "brandCountryId",
+            "javadoc": "品牌国家地区id",
+            "fieldType": "Long"
+        },
+        {
+            "fieldName": "brandLogo",
+            "javadoc": "logo",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "tradeMarkRegistrationPic",
+            "javadoc": "商标注册证",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "certificateValidTime",
+            "javadoc": "资质有效期(为空则永久)",
+            "fieldType": "Instant"
+        },
+        {
+            "fieldName": "brandDesc",
+            "javadoc": "品牌有效期",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "brandAuthType",
+            "javadoc": "品牌授权类型  0 品牌方 1 一级代理 2 二级代理 3  三级代理",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "owerOfAttorney",
+            "javadoc": "授权书信息",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "checkStatus",
+            "javadoc": "审核状态 -1 未审核 0 未通过  1 通过",
+            "fieldType": "Boolean"
+        },
+        {
+            "fieldName": "checkFailureReasons",
+            "javadoc": "审核失败原因",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "checkTime",
+            "javadoc": "审核时间",
+            "fieldType": "Instant"
+        }
+    ],
+    "relationships": [],
+    "changelogDate": "20200514135300",
+    "javadoc": "店铺品牌信息",
+    "entityTableName": "brand",
+    "dto": "mapstruct",
+    "pagination": "pagination",
+    "service": "serviceImpl",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "readOnly": false,
+    "embedded": false,
+    "clientRootFolder": "merchants",
+    "applications": "*",
+    "microserviceName": "merchants"
+}

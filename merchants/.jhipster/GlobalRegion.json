@@ -1,0 +1,49 @@
+{
+    "name": "GlobalRegion",
+    "fields": [
+        {
+            "fieldName": "pid",
+            "javadoc": "父ID",
+            "fieldType": "Long"
+        },
+        {
+            "fieldName": "path",
+            "javadoc": "路径",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "name",
+            "javadoc": "中文名称",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "nameEn",
+            "javadoc": "英文名称",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "namePinyin",
+            "javadoc": "中文拼音",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "level",
+            "javadoc": "层级",
+            "fieldType": "Integer"
+        }
+    ],
+    "relationships": [],
+    "changelogDate": "20200513154600",
+    "javadoc": "国内区域",
+    "entityTableName": "global_region",
+    "dto": "mapstruct",
+    "pagination": "pagination",
+    "service": "serviceImpl",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "readOnly": false,
+    "embedded": false,
+    "clientRootFolder": "merchants",
+    "applications": "*",
+    "microserviceName": "merchants"
+}

@@ -24,7 +24,7 @@ eureka:
     prefer-ip-address: true
   client:
     service-url:
-      defaultZone: http://admin:${jhipster.registry.password}@localhost:8761/eureka/
+      defaultZone: http://admin:${jhipster.registry.password}@139.9.113.127:8761/eureka/
 
 spring:
   profiles:
@@ -44,9 +44,9 @@ spring:
       indent-output: true
   datasource:
     type: com.zaxxer.hikari.HikariDataSource
-    url: jdbc:mysql://localhost:3306/uaa?useUnicode=true&characterEncoding=utf8&useSSL=false&useLegacyDatetimeCode=false&serverTimezone=UTC&createDatabaseIfNotExist=true
+    url: jdbc:mysql://139.9.113.127:3306/uaa?useUnicode=true&characterEncoding=utf8&useSSL=false&useLegacyDatetimeCode=false&serverTimezone=UTC&createDatabaseIfNotExist=true
     username: root
-    password:
+    password: 123456
     hikari:
       poolName: Hikari
       auto-commit: false
@@ -96,13 +96,13 @@ server:
 
 jhipster:
   # CORS is only enabled by default with the "dev" profile, so BrowserSync can access the API
-  cors:
-    allowed-origins: '*'
-    allowed-methods: '*'
-    allowed-headers: '*'
-    exposed-headers: 'Authorization,Link,X-Total-Count'
-    allow-credentials: true
-    max-age: 1800
+#  cors:
+#    allowed-origins: '*'
+#    allowed-methods: '*'
+#    allowed-headers: '*'
+#    exposed-headers: 'Authorization,Link,X-Total-Count'
+#    allow-credentials: true
+#    max-age: 1800
   security:
     client-authorization:
       client-id: internal
@@ -129,7 +129,7 @@ uaa:
     alias: selfsigned
   web-client-configuration:
     # Access Token is valid for 5 mins
-    access-token-validity-in-seconds: 3000
+    access-token-validity-in-seconds: 30000
     # Refresh Token is valid for 7 days
     refresh-token-validity-in-seconds-for-remember-me: 604800
     client-id: web_app

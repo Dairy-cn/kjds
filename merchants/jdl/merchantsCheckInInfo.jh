@@ -19,8 +19,46 @@ entity MerchantsCheckInInfo{
  /** 申请时间 **/
  applicationTime Instant,
 
-}
+ /** 主营类目 **/
+  categoryId Long,
 
+  /** 省 **/
+  province String,
+
+  /** 市 **/
+  city String,
+
+  /** 国家 **/
+  country String,
+  /** 详细地址 **/
+  address String ,
+  /** 官网地址 **/
+  webAdd String ,
+
+  /** 手机 **/
+  telPhone String,
+     /** 邮箱 **/
+    email String ,
+     /** 职位 **/
+    position String,
+       /** 联系人 **/
+        linkMan String,
+     /** 审核状态 -1 未审核 0 未通过  1 通过 **/
+        checkStatus Boolean,
+     /** 审核失败原因 **/
+        checkFailureReasons String,
+             /** 审核时间 **/
+        checkTime Instant
+
+
+}
+       /** 商户类目 **/
+ entity  MerchantsCategory{
+    id Long,
+ /** 类目名称 **/
+ name String
+
+ }
 // Set pagination options
 // paginate ActivityMain with infinite-scroll
 paginate * with pagination

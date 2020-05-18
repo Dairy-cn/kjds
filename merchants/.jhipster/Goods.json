@@ -1,0 +1,124 @@
+{
+    "name": "Goods",
+    "fields": [
+        {
+            "fieldName": "storeId",
+            "javadoc": "店铺id",
+            "fieldType": "Long",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "brandId",
+            "javadoc": "品牌id",
+            "fieldType": "Long",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "salesModel",
+            "javadoc": "销售模式 1 现货销售",
+            "fieldType": "Integer",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "goodsName",
+            "javadoc": "商品名称",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "goodsDesc",
+            "javadoc": "商品描述",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "maxlength"
+            ],
+            "fieldValidateRulesMaxlength": "2000"
+        },
+        {
+            "fieldName": "spuNo",
+            "javadoc": "SPU编码",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "categoryId",
+            "javadoc": "商品品类id",
+            "fieldType": "Long"
+        },
+        {
+            "fieldName": "freight",
+            "javadoc": "商品运费",
+            "fieldType": "BigDecimal"
+        },
+        {
+            "fieldName": "goodsDetails",
+            "javadoc": "商品详情",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "maxlength"
+            ],
+            "fieldValidateRulesMaxlength": "2000"
+        },
+        {
+            "fieldName": "proposer",
+            "javadoc": "申请人",
+            "fieldType": "Long"
+        },
+        {
+            "fieldName": "applicationTime",
+            "javadoc": "申请时间",
+            "fieldType": "Instant"
+        },
+        {
+            "fieldName": "checkStatus",
+            "javadoc": "审核状态 -1 未审核 0 未通过  1 通过",
+            "fieldType": "Boolean"
+        },
+        {
+            "fieldName": "checkFailureReasons",
+            "javadoc": "审核失败原因",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "checkTime",
+            "javadoc": "审核时间",
+            "fieldType": "Instant"
+        },
+        {
+            "fieldName": "goodsPic",
+            "javadoc": "商品图片信息",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "deleteFlag",
+            "javadoc": "是否删除",
+            "fieldType": "Boolean"
+        },
+        {
+            "fieldName": "saleState",
+            "javadoc": "上架状态",
+            "fieldType": "Boolean"
+        }
+    ],
+    "relationships": [],
+    "changelogDate": "20200517113000",
+    "javadoc": "商品信息",
+    "entityTableName": "goods",
+    "dto": "mapstruct",
+    "pagination": "pagination",
+    "service": "serviceImpl",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "readOnly": false,
+    "embedded": false,
+    "clientRootFolder": "merchants",
+    "applications": "*",
+    "microserviceName": "merchants"
+}

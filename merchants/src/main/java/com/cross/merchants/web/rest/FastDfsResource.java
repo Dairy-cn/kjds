@@ -59,24 +59,24 @@ public class FastDfsResource {
     @Autowired
     private AliOssUtil aliOssUtil;
 
-//    @PostMapping("/upload")
-//    public R Upload(@RequestPart("file") MultipartFile file,
-//                    HttpServletRequest request) {
-//        String str = FastDFSClient.uploadFile(file);
-//        String accessUrl = FastDFSClient.getResAccessUrl(str);
-//        return R.ok(accessUrl);
-//    }
-//
-//
-//    @PostMapping("/delete")
-//    public R get(@RequestPart("fileName") String fileName) {
-//        boolean flag = FastDFSClient.deleteFile(fileName);
-//        if (flag) {
-//            return R.ok();
-//        } else {
-//            return R.error();
-//        }
-//    }
+    @PostMapping("/upload")
+    public R Upload(@RequestPart("file") MultipartFile file,
+                    HttpServletRequest request) {
+        String str = FastDFSClient.uploadFile(file);
+        String accessUrl = FastDFSClient.getResAccessUrl(str);
+        return R.ok(accessUrl);
+    }
+
+
+    @PostMapping("/delete")
+    public R get(@RequestPart("fileName") String fileName) {
+        boolean flag = FastDFSClient.deleteFile(fileName);
+        if (flag) {
+            return R.ok();
+        } else {
+            return R.error();
+        }
+    }
 
 
     /**

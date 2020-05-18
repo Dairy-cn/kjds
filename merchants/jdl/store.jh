@@ -1,0 +1,41 @@
+       /** 店铺信息 **/
+ entity  StoreInfo{
+    id Long,
+
+     /** 公司名称 **/
+     companyName String,
+     /** 店铺名称 **/
+    storeName String,
+    /** 店铺logo **/
+    storeLogo String,
+       /** 商户审核记录id **/
+    merchantsCheckInInfoId Long,
+   /** 营业状态  1 正常 0 休息中**/
+    operatingStatus Integer,
+    /** 关闭方  1 自己  2 平台**/
+    closeOfParty Integer,
+    /** 关闭原因 **/
+    closeReason String,
+     /** 关闭时间 **/
+    closeTime Instant,
+     /** 开启时间 **/
+    openTime Instant
+
+     /** 关闭人id **/
+     closeOfWho Long,
+
+    /** 开启人id **/
+     openOfWho Long,
+   /** 主营类目 **/
+   categoryId Long
+ }
+// Set pagination options
+// paginate ActivityMain with infinite-scroll
+paginate * with pagination
+
+dto * with mapstruct
+
+// Set service options to all except few
+service all with serviceImpl
+// Set an angular suffix
+// angularSuffix * with mySuffix

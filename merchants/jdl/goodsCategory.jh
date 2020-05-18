@@ -1,0 +1,28 @@
+       /** 商品品类信息 **/
+ entity  GoodsCategory{
+          /** id **/
+        id Long,
+        /** 父ID **/
+       pid Long,
+        /** 品类名称 **/
+       name String,
+       /** 分类图标 **/
+           pic String,
+          /** 级数 1 一级 2 二级 3 三级 **/
+           level Integer,
+        /** 创建时间 **/
+           createTime Instant,
+         /** 是否置顶 **/
+           stick Boolean
+
+ }
+// Set pagination options
+// paginate ActivityMain with infinite-scroll
+paginate * with pagination
+
+dto * with mapstruct
+
+// Set service options to all except few
+service all with serviceImpl
+// Set an angular suffix
+// angularSuffix * with mySuffix
