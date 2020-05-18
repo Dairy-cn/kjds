@@ -165,4 +165,21 @@ public class GoodsPropertyServiceImpl implements GoodsPropertyService {
 
         return new HashMap<>();
     }
+
+    @Override
+    public List<GoodsPropertyDTO> findAllByIdGoods(Long id) {
+        List<GoodsProperty> propertyList = goodsPropertyRepository.findAllByGoodsIdAndDeleteFlag(id, false);
+        List<GoodsPropertyDTO> propertyDTOS = goodsPropertyMapper.toDto(propertyList);
+        List<Long> propertyIds = propertyList.stream().map(GoodsProperty::getId).collect(Collectors.toList());
+        Map<Long, List<GoodsPropertyTag>> map = new HashMap<>();
+        if (!CollectionUtils.isEmpty(propertyIds)) {
+            List<GoodsPropertyTag> allByGoodsPropertyIdInAndDeleteFlag = goodsPropertyTagRepository.findAllByGoodsPropertyIdInAndDeleteFlag(propertyIds, false);
+            map = allByGoodsPropertyIdInAndDeleteFlag.stream().collect(Collectors.groupingBy(GoodsPropertyTag::getGoodsPropertyId));
+        }
+        Map<Long, List<GoodsPropertyTag>> finalMap = map;
+        propertyDTOS.stream().forEach(e -> {
+            e.setGoodsPropertyTagDTOS(goodsPropertyTagMapper.toDto(finalMap.get(e.getId())));
+        });
+        return propertyDTOS;
+    }
 }

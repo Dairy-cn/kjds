@@ -1,8 +1,10 @@
 package com.cross.merchants.service.impl;
 
+import com.cross.merchants.domain.GoodsCategory;
 import com.cross.merchants.domain.GoodsProperty;
 import com.cross.merchants.domain.GoodsSku;
 import com.cross.merchants.exception.MerchantsException;
+import com.cross.merchants.repository.GoodsCategoryRepository;
 import com.cross.merchants.repository.GoodsPropertyRepository;
 import com.cross.merchants.repository.GoodsSkuRepository;
 import com.cross.merchants.service.GoodsPropertyService;
@@ -25,6 +27,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
+import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.Predicate;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -57,13 +60,16 @@ public class GoodsServiceImpl implements GoodsService {
 
     private final GoodsPropertyService goodsPropertyService;
 
-    public GoodsServiceImpl(GoodsRepository goodsRepository, GoodsMapper goodsMapper, GoodsSkuService goodsSkuService, GoodsSkuRepository goodsSkuRepository, GoodsPropertyRepository goodsPropertyRepository, GoodsPropertyService goodsPropertyService) {
+    private final GoodsCategoryRepository goodsCategoryRepository;
+
+    public GoodsServiceImpl(GoodsRepository goodsRepository, GoodsMapper goodsMapper, GoodsSkuService goodsSkuService, GoodsSkuRepository goodsSkuRepository, GoodsPropertyRepository goodsPropertyRepository, GoodsPropertyService goodsPropertyService, GoodsCategoryRepository goodsCategoryRepository) {
         this.goodsRepository = goodsRepository;
         this.goodsMapper = goodsMapper;
         this.goodsSkuService = goodsSkuService;
         this.goodsSkuRepository = goodsSkuRepository;
         this.goodsPropertyRepository = goodsPropertyRepository;
         this.goodsPropertyService = goodsPropertyService;
+        this.goodsCategoryRepository = goodsCategoryRepository;
     }
 
     /**
@@ -142,6 +148,11 @@ public class GoodsServiceImpl implements GoodsService {
         return goodsMapper.toDto(goods);
     }
 
+    @Override
+    public GoodsDTO saveOnly(GoodsDTO goodsDTO) {
+        return goodsMapper.toDto(goodsRepository.save(goodsMapper.toEntity(goodsDTO)));
+    }
+
     private boolean checkParam(GoodsDTO goodsDTO) {
         Goods dbGoods = goodsRepository.findFirstByStoreIdAndBrandIdAndGoodsNameAndDeleteFlag(goodsDTO.getStoreId(), goodsDTO.getBrandId(), goodsDTO.getGoodsName(), false);
         if (dbGoods != null) {
@@ -160,10 +171,10 @@ public class GoodsServiceImpl implements GoodsService {
             if (nameSet.size() != goodsDTO.getGoodsPropertyDTOS().size()) {
                 throw new MerchantsException(400, "商品属性名称不能重复");
             }
-            goodsDTO.getGoodsPropertyDTOS().stream().forEach(e->{
+            goodsDTO.getGoodsPropertyDTOS().stream().forEach(e -> {
                 List<GoodsPropertyTagDTO> tagDTOS = e.getGoodsPropertyTagDTOS();
-                if(!CollectionUtils.isEmpty(tagDTOS)){
-                    Set<String> tagSet=tagDTOS.stream().map(GoodsPropertyTagDTO::getName).collect(Collectors.toSet());
+                if (!CollectionUtils.isEmpty(tagDTOS)) {
+                    Set<String> tagSet = tagDTOS.stream().map(GoodsPropertyTagDTO::getName).collect(Collectors.toSet());
                     if (tagSet.size() != tagDTOS.size()) {
                         throw new MerchantsException(400, "商品属性标签不能重复");
                     }
@@ -189,6 +200,8 @@ public class GoodsServiceImpl implements GoodsService {
 
     @Override
     public Page<GoodsDTO> getAllGoodsByCondition(Pageable pageable, Long storeId, Long brandId, Boolean saleState, Integer checkState, Instant startTime, Instant endTime, String keyWord, Integer goodsType) {
+
+
         Page<Goods> page = goodsRepository.findAll((r, q, b) -> {
             List<Predicate> listPredicates = new ArrayList<>();
             if (storeId != null) {
@@ -208,6 +221,7 @@ public class GoodsServiceImpl implements GoodsService {
             } else if (goodsType != null && 2 == goodsType) {
                 listPredicates.add(b.notEqual(r.get("checkStatus").as(Integer.class), 1));
             }
+
             if (!StringUtils.isBlank(keyWord)) {
                 List<Predicate> listPermission = new ArrayList<>();
                 listPermission.add(b.like(r.get("goodsNo").as(String.class), "%" + keyWord.trim() + "%"));
@@ -222,6 +236,83 @@ public class GoodsServiceImpl implements GoodsService {
                 listPredicates.add(b.lessThanOrEqualTo(r.get("applicationTime").as(Instant.class), endTime));
             }
 
+            Predicate[] arrayPredicates = new Predicate[listPredicates.size()];
+            return b.and(listPredicates.toArray(arrayPredicates));
+        }, pageable);
+        return page.map(goodsMapper::toDto);
+    }
+
+    @Override
+    public Page<GoodsDTO> getAllGoodsByCondition(Pageable pageable, Long storeId, Long brandId, Integer checkState, Instant startTime, Instant endTime, String keyWord, Instant startCheckTime, Instant endCheckTime, Long oneCategoryId, Long twoCategoryId, Long thirdCategoryId) {
+        List<Long> twoList = new ArrayList<>();
+        List<Long> thirdList = new ArrayList<>();
+        if (oneCategoryId != null) {
+            twoList = goodsCategoryRepository.findAllByPid(oneCategoryId).stream().map(GoodsCategory::getId).collect(Collectors.toList());
+            if (!CollectionUtils.isEmpty(twoList)) {
+                if (twoCategoryId != null) {
+                    twoList = twoList.stream().filter(e -> e == twoCategoryId).collect(Collectors.toList());
+                }
+            }
+        }
+        if (twoCategoryId != null) {
+            twoList.add(twoCategoryId);
+        }
+        if (!CollectionUtils.isEmpty(twoList)) {
+            twoList = twoList.stream().distinct().collect(Collectors.toList());
+            thirdList = goodsCategoryRepository.findAllByPidIn(twoList).stream().map(GoodsCategory::getId).collect(Collectors.toList());
+            if (!CollectionUtils.isEmpty(thirdList)) {
+                if (thirdCategoryId != null) {
+                    thirdList = thirdList.stream().filter(e -> e == thirdCategoryId).collect(Collectors.toList());
+                }
+            }
+        }
+        if (thirdCategoryId != null) {
+            thirdList.add(twoCategoryId);
+        }
+        if (!CollectionUtils.isEmpty(thirdList)) {
+            thirdList = thirdList.stream().distinct().collect(Collectors.toList());
+        }
+        List<Long> finalThirdList = thirdList;
+
+        Page<Goods> page = goodsRepository.findAll((r, q, b) -> {
+            List<Predicate> listPredicates = new ArrayList<>();
+            if (storeId != null) {
+                listPredicates.add(b.equal(r.get("storeId").as(Long.class), storeId));
+            }
+            if (brandId != null) {
+                listPredicates.add(b.equal(r.get("brandId").as(Long.class), brandId));
+            }
+
+            if (checkState != null) {
+                listPredicates.add(b.equal(r.get("checkStatus").as(Integer.class), checkState));
+            }
+            if (!CollectionUtils.isEmpty(finalThirdList)){
+                CriteriaBuilder.In<Long> in = b.in(r.get("categoryId"));
+                for (Long categoryId : finalThirdList) {
+                    in.value(categoryId);
+                }
+                listPredicates.add(in);
+            }
+            if (!StringUtils.isBlank(keyWord)) {
+                List<Predicate> listPermission = new ArrayList<>();
+                listPermission.add(b.like(r.get("spuNo").as(String.class), "%" + keyWord.trim() + "%"));
+                listPermission.add(b.like(r.get("goodsName").as(String.class), "%" + keyWord.trim() + "%"));
+                Predicate[] predicatesPermissionArr = new Predicate[listPermission.size()];
+                listPredicates.add(b.or(listPermission.toArray(predicatesPermissionArr)));
+            }
+            if (startTime != null) {
+                listPredicates.add(b.greaterThanOrEqualTo(r.get("applicationTime").as(Instant.class), startTime));
+            }
+            if (endTime != null) {
+                listPredicates.add(b.lessThanOrEqualTo(r.get("applicationTime").as(Instant.class), endTime));
+            }
+
+            if (startCheckTime != null) {
+                listPredicates.add(b.greaterThanOrEqualTo(r.get("checkTime").as(Instant.class), startCheckTime));
+            }
+            if (endCheckTime != null) {
+                listPredicates.add(b.lessThanOrEqualTo(r.get("checkTime").as(Instant.class), endCheckTime));
+            }
             Predicate[] arrayPredicates = new Predicate[listPredicates.size()];
             return b.and(listPredicates.toArray(arrayPredicates));
         }, pageable);

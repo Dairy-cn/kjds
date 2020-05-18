@@ -21,6 +21,8 @@ public interface MerchantsCheckInInfoRepository extends JpaRepository<MerchantsC
 
     MerchantsCheckInInfo findFirstByProposer(Long id);
 
+    MerchantsCheckInInfo findFirstByProposerAndCheckStatus(Long id, Integer state);
+
 
     Page<MerchantsCheckInInfo> findAllByCheckStatus(Pageable pageable, Integer checkStatus);
 

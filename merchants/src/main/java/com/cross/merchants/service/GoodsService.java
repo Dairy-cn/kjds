@@ -22,6 +22,8 @@ public interface GoodsService {
      */
     GoodsDTO save(GoodsDTO goodsDTO);
 
+    GoodsDTO saveOnly(GoodsDTO goodsDTO);
+
     /**
      * Get all the goods.
      *
@@ -34,6 +36,7 @@ public interface GoodsService {
     Page<GoodsDTO> getAllGoodsByCondition(Pageable pageable, Long storeId, Long brandId, Boolean saleState, Integer checkState, Instant startTime, Instant endTime, String keyWord, Integer goodsType);
 
 
+    Page<GoodsDTO> getAllGoodsByCondition(Pageable pageable, Long storeId, Long brandId, Integer checkState, Instant startTime, Instant endTime, String keyWord,Instant startCheckTime,Instant endCheckTime,Long oneCategoryId,Long twoCategoryId,Long thirdCategoryId);
 
     /**
      * Get the "id" goods.

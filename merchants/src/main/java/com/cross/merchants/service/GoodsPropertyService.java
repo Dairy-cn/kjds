@@ -49,4 +49,7 @@ public interface GoodsPropertyService {
     boolean saveAll(List<GoodsPropertyDTO> dtos);
 
     Map<Long, List<GoodsPropertyDTO>> findAllByIdGoodsInGroupById(List<Long> ids);
+
+    List<GoodsPropertyDTO> findAllByIdGoods(Long id);
+
 }

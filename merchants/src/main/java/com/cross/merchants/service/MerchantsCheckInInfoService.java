@@ -53,6 +53,7 @@ public interface MerchantsCheckInInfoService {
 
     MerchantsCheckInInfoDTO findOneWithSelf(Long submitId);
 
+    MerchantsCheckInInfoDTO findOneWithSelfByCheckState(Long submitId,Integer state);
 
     MerchantsCheckInInfoDTO merchantsCheckInInfo(MerchantsCheckInInfoDTO merchantsCheckInInfoDTO);
 

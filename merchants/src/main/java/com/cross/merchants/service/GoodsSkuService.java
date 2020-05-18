@@ -49,6 +49,7 @@ public interface GoodsSkuService {
 
     Map<Long, List<GoodsSkuDTO>> findAllByIdGoodsInGroupById(List<Long> goodsIds);
 
+    List<GoodsSkuDTO> findAllByGoodsId(Long goodsId);
 
     List<GoodsSku> saveAll(List<GoodsSkuDTO> goodsSkuDTOs);
 }

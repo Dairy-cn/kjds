@@ -58,5 +58,7 @@ public interface GoodsCategoryService {
     boolean stickGoodsCategory(Long id);
 
 
-    Map<Long,GoodsCategoryDTO> findAllByInInWithParentInfo(List<Long> ids);
+    Map<Long, GoodsCategoryDTO> findAllByInInWithParentInfo(List<Long> ids);
+
+    GoodsCategoryDTO findAllInfoByIdWithParentInfo(Long id);
 }

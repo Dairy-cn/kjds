@@ -90,6 +90,11 @@ public class GoodsDTO implements Serializable {
     private Long proposer;
 
     /**
+     * 创建时间
+     */
+    @ApiModelProperty(value = "创建时间")
+    private Instant createTime;
+    /**
      * 申请时间
      */
     @ApiModelProperty(value = "申请时间")
@@ -139,6 +144,14 @@ public class GoodsDTO implements Serializable {
 
     @ApiModelProperty(value = "商品属性信息")
     private List<GoodsPropertyDTO> goodsPropertyDTOS;
+
+    public Instant getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Instant createTime) {
+        this.createTime = createTime;
+    }
 
     public List<GoodsPropertyDTO> getGoodsPropertyDTOS() {
         return goodsPropertyDTOS;

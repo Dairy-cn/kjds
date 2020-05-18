@@ -191,7 +191,7 @@ public class BrandResource {
     @PostMapping("/check-brand-check-in-infos/{id}")
     @ApiOperation("大后台--商家入住审核")
     public R brandCheckInInfo(@ApiParam("记录id") @PathVariable Long id,
-                              @ApiParam("审核状态") @RequestParam Integer status,
+                              @ApiParam(value = "审核状态 true 通过 false 失败", required = true) @RequestParam(required = true) Boolean status,
                               @ApiParam("失败原因") @RequestParam String checkFailureReasons) {
         log.debug("REST request to delete brandDTO : {}", id);
         BrandDTO brandDTO = brandService.findOne(id);
@@ -201,7 +201,10 @@ public class BrandResource {
         if (1 == brandDTO.getCheckStatus() || 0 == brandDTO.getCheckStatus()) {
             return R.error("记录已经审核过了，不能重复审核");
         }
-        brandDTO.setCheckStatus(status);
+        if (status == null) {
+            return R.error("审核状态不能为空");
+        }
+        brandDTO.setCheckStatus(status ? 1 : 0);
         brandDTO.setCheckTime(Instant.now());
         brandDTO.setCheckFailureReasons(checkFailureReasons);
         brandDTO = brandService.brandCheckInInfo(brandDTO);

@@ -19,6 +19,7 @@ public interface GoodsSkuRepository extends JpaRepository<GoodsSku, Long> {
     List<GoodsSku> findAllByGoodsIdInAndDeleteFlag(List<Long> goodsIds, Boolean delete);
 
 
+
     List<GoodsSku> findAllByGoodsIdAndDeleteFlag(Long goodsId, Boolean delete);
 
 

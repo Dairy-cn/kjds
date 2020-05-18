@@ -102,6 +102,12 @@ public class GoodsSkuServiceImpl implements GoodsSkuService {
     }
 
     @Override
+    public List<GoodsSkuDTO> findAllByGoodsId(Long goodsId) {
+        List<GoodsSkuDTO> skuDTOList = goodsSkuMapper.toDto(goodsSkuRepository.findAllByGoodsIdAndDeleteFlag(goodsId, false));
+        return skuDTOList;
+    }
+
+    @Override
     @Transactional
     public List<GoodsSku> saveAll(List<GoodsSkuDTO> goodsSkuDTOs) {
         return goodsSkuRepository.saveAll(goodsSkuMapper.toEntity(goodsSkuDTOs));

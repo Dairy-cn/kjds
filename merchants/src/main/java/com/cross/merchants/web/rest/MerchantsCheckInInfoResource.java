@@ -164,6 +164,120 @@ public class MerchantsCheckInInfoResource {
             return R.error("记录不存在");
         }
         MerchantsCheckInInfoDTO merchantsCheckInInfoDTO = one.get();
+        this.getAddressInfo(merchantsCheckInInfoDTO);
+        return R.ok(merchantsCheckInInfoDTO);
+    }
+
+    @GetMapping("/merchants-check-in-infos-with-self-submit")
+    @ApiOperation("商户端--获取自己提交记录")
+    public R getMerchantsCheckInInfo() {
+        Long id = CommonUtil.getCurrentLoginUser().getId();
+        if (id == null || -1L == id) {
+            return R.accessError();
+        }
+        MerchantsCheckInInfoDTO merchantsCheckInInfoDTO = merchantsCheckInInfoService.findOneWithSelf(id);
+        return R.ok(merchantsCheckInInfoDTO);
+    }
+
+    @GetMapping("/merchants-info-with-check-success-self")
+    @ApiOperation("商户端--企业管理--企业信息")
+    public R getMerchantsInfoWithCheckSuccessBySelf() {
+        Long id = CommonUtil.getCurrentLoginUser().getId();
+        if (id == null || -1L == id) {
+            return R.accessError();
+        }
+        MerchantsCheckInInfoDTO merchantsCheckInInfoDTO = merchantsCheckInInfoService.findOneWithSelfByCheckState(id, 1);
+
+        return R.ok(merchantsCheckInInfoDTO);
+    }
+
+    /**
+     * {@code DELETE  /merchants-check-in-infos/:id} : delete the "id" merchantsCheckInInfo.
+     *
+     * @param id the id of the merchantsCheckInInfoDTO to delete.
+     * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
+     */
+    @DeleteMapping("/merchants-check-in-infos/{id}")
+    public ResponseEntity<Void> deleteMerchantsCheckInInfo(@PathVariable Long id) {
+        log.debug("REST request to delete MerchantsCheckInInfo : {}", id);
+        merchantsCheckInInfoService.delete(id);
+        return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString())).build();
+    }
+
+    @PostMapping("/check-merchants-check-in-infos/{id}")
+    @ApiOperation("大后台--商家入住审核")
+    public R merchantsCheckInInfo(@ApiParam("记录id") @PathVariable Long id,
+                                  @ApiParam("审核状态 true 通过 false 失败") @RequestParam Boolean status,
+                                  @ApiParam("失败原因") @RequestParam String checkFailureReasons) {
+        log.debug("REST request to delete MerchantsCheckInInfo : {}", id);
+        MerchantsCheckInInfoDTO merchantsCheckInInfoDTO = merchantsCheckInInfoService.findOne(id).get();
+        if (merchantsCheckInInfoDTO == null) {
+            return R.error("记录不存在");
+        }
+        if (1 == merchantsCheckInInfoDTO.getCheckStatus() || 0 == merchantsCheckInInfoDTO.getCheckStatus()) {
+            return R.error("记录已经审核过了，不能重复审核");
+        }
+        if (status == null) {
+            return R.error("审核状态不能为空");
+        }
+        merchantsCheckInInfoDTO.setCheckStatus(status ? 1 : 0);
+        merchantsCheckInInfoDTO.setCheckTime(Instant.now());
+        merchantsCheckInInfoDTO.setCheckFailureReasons(checkFailureReasons);
+        merchantsCheckInInfoDTO = merchantsCheckInInfoService.merchantsCheckInInfo(merchantsCheckInInfoDTO);
+        return R.ok(merchantsCheckInInfoDTO);
+    }
+
+
+    @GetMapping("/merchants-check-in-infos-wait-check-in-list-info")
+    @ApiOperation("大后台--获取未审核记录")
+    public R getAllMerchantsCheckInInfosWithWaitCheckInInfo(Pageable pageable) {
+        log.debug("REST request to get a page of MerchantsCheckInInfos");
+        Page<MerchantsCheckInInfoDTO> page = merchantsCheckInInfoService.findAllWithWaitCheckIn(pageable);
+        return R.ok(page.getContent(), page.getTotalElements());
+    }
+
+
+    @GetMapping("/merchants-update-enterprise-info/{id}")
+    @ApiOperation("大后台--修改审核成功后的企业信息")
+    public R updateMerchantsEnterpriseInfo(@ApiParam("记录id") @PathVariable Long id,
+                                           @ApiParam("国家id") @RequestParam(required = true) Long countryId,
+                                           @ApiParam("省id") @RequestParam(required = true) Long provinceId,
+                                           @ApiParam("城市id") @RequestParam(required = true) Long cityId,
+                                           @ApiParam("详细地址") @RequestParam(required = true) String address,
+                                           @ApiParam("官网地址") @RequestParam(required = true) String webAdd,
+                                           @ApiParam("联系人") @RequestParam(required = true) String linkMan,
+                                           @ApiParam("职位") @RequestParam(required = true) String position,
+                                           @ApiParam("邮箱") @RequestParam(required = true) String email,
+                                           @ApiParam("电话号码") @RequestParam(required = true) String telPhone
+    ) {
+        log.debug("REST request to get a page of MerchantsCheckInInfos");
+        Optional<MerchantsCheckInInfoDTO> one = merchantsCheckInInfoService.findOne(id);
+        if (!one.isPresent()) {
+            return R.errorData();
+        }
+        MerchantsCheckInInfoDTO merchantsCheckInInfoDTO = one.get();
+        merchantsCheckInInfoDTO.setCityId(cityId);
+        merchantsCheckInInfoDTO.setProvinceId(provinceId);
+        merchantsCheckInInfoDTO.setCountryId(countryId);
+        merchantsCheckInInfoDTO.setAddress(address);
+        merchantsCheckInInfoDTO.setWebAdd(webAdd);
+        merchantsCheckInInfoDTO.setLinkMan(linkMan);
+        merchantsCheckInInfoDTO.setPosition(position);
+        merchantsCheckInInfoDTO.setEmail(email);
+        merchantsCheckInInfoDTO.setTelPhone(telPhone);
+        merchantsCheckInInfoDTO = merchantsCheckInInfoService.save(merchantsCheckInInfoDTO);
+        this.getAddressInfo(merchantsCheckInInfoDTO);
+        return R.ok(merchantsCheckInInfoDTO);
+    }
+
+
+    /**
+     * 获取地址信息
+     * @param merchantsCheckInInfoDTO
+     * @return
+     */
+
+    private MerchantsCheckInInfoDTO getAddressInfo(MerchantsCheckInInfoDTO merchantsCheckInInfoDTO) {
         if (merchantsCheckInInfoDTO != null) {
             List<Long> regionIds = new ArrayList<>();
             if (merchantsCheckInInfoDTO.getCountryId() != null) {
@@ -189,59 +303,6 @@ public class MerchantsCheckInInfoResource {
                 }
             }
         }
-        return R.ok(merchantsCheckInInfoDTO);
-    }
-
-    @GetMapping("/merchants-check-in-infos-with-self-submit")
-    @ApiOperation("商户端--获取自己提交记录")
-    public R getMerchantsCheckInInfo() {
-        Long id = CommonUtil.getCurrentLoginUser().getId();
-        if (id == null || -1L == id) {
-            return R.accessError();
-        }
-        MerchantsCheckInInfoDTO merchantsCheckInInfoDTO = merchantsCheckInInfoService.findOneWithSelf(id);
-        return R.ok(merchantsCheckInInfoDTO);
-    }
-
-    /**
-     * {@code DELETE  /merchants-check-in-infos/:id} : delete the "id" merchantsCheckInInfo.
-     *
-     * @param id the id of the merchantsCheckInInfoDTO to delete.
-     * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
-     */
-    @DeleteMapping("/merchants-check-in-infos/{id}")
-    public ResponseEntity<Void> deleteMerchantsCheckInInfo(@PathVariable Long id) {
-        log.debug("REST request to delete MerchantsCheckInInfo : {}", id);
-        merchantsCheckInInfoService.delete(id);
-        return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString())).build();
-    }
-
-    @PostMapping("/check-merchants-check-in-infos/{id}")
-    @ApiOperation("大后台--商家入住审核")
-    public R merchantsCheckInInfo(@ApiParam("记录id") @PathVariable Long id,
-                                  @ApiParam("审核状态") @RequestParam Integer status,
-                                  @ApiParam("失败原因") @RequestParam String checkFailureReasons) {
-        log.debug("REST request to delete MerchantsCheckInInfo : {}", id);
-        MerchantsCheckInInfoDTO merchantsCheckInInfoDTO = merchantsCheckInInfoService.findOne(id).get();
-        if (merchantsCheckInInfoDTO == null) {
-            return R.error("记录不存在");
-        }
-        if (1 == merchantsCheckInInfoDTO.getCheckStatus() || 0 == merchantsCheckInInfoDTO.getCheckStatus()) {
-            return R.error("记录已经审核过了，不能重复审核");
-        }
-        merchantsCheckInInfoDTO.setCheckStatus(status);
-        merchantsCheckInInfoDTO.setCheckTime(Instant.now());
-        merchantsCheckInInfoDTO.setCheckFailureReasons(checkFailureReasons);
-        merchantsCheckInInfoDTO = merchantsCheckInInfoService.merchantsCheckInInfo(merchantsCheckInInfoDTO);
-        return R.ok(merchantsCheckInInfoDTO);
-    }
-
-
-    @GetMapping("/merchants-check-in-infos-wait-check-in-list-info")
-    @ApiOperation("大后台--获取未审核记录")
-    public R getAllMerchantsCheckInInfosWithWaitCheckInInfo(Pageable pageable) {
-        log.debug("REST request to get a page of MerchantsCheckInInfos");
-        Page<MerchantsCheckInInfoDTO> page = merchantsCheckInInfoService.findAllWithWaitCheckIn(pageable);
-        return R.ok(page.getContent(), page.getTotalElements());
+        return merchantsCheckInInfoDTO;
     }
 }

@@ -1,6 +1,8 @@
 package com.cross.merchants.domain;
 
 
+import io.swagger.annotations.ApiModelProperty;
+
 import javax.persistence.*;
 import javax.validation.constraints.*;
 
@@ -133,8 +135,26 @@ public class Goods implements Serializable {
     @Column(name = "sale_state")
     private Boolean saleState;
 
+    /**
+     * 创建时间
+     */
+    @ApiModelProperty(value = "创建时间")
+    @Column(name = "create_time")
+    private Instant createTime;
+
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
 
+
+    public Instant getCreateTime() {
+        return createTime;
+    }
+    public Goods createTime(Instant createTime) {
+        this.createTime = createTime;
+        return this;
+    }
+    public void setCreateTime(Instant createTime) {
+        this.createTime = createTime;
+    }
 
     public String getGoodsNo() {
         return goodsNo;

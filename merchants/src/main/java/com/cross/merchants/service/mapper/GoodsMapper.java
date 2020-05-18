@@ -27,7 +27,6 @@ public class GoodsMapper {
             return null;
         } else {
             Goods goods = new Goods();
-            goods.setGoodsNo(dto.getGoodsNo());
             goods.setId(dto.getId());
             goods.setStoreId(dto.getStoreId());
             goods.setBrandId(dto.getBrandId());
@@ -49,6 +48,9 @@ public class GoodsMapper {
 
             goods.setDeleteFlag(dto.getDeleteFlag());
             goods.setSaleState(dto.getSaleState());
+            goods.setCreateTime(dto.getCreateTime());
+            goods.setGoodsNo(dto.getGoodsNo());
+
             return goods;
         }
     }
@@ -58,7 +60,6 @@ public class GoodsMapper {
             return null;
         } else {
             GoodsDTO goodsDTO = new GoodsDTO();
-            goodsDTO.setGoodsNo(entity.getGoodsNo());
             goodsDTO.setId(entity.getId());
             goodsDTO.setStoreId(entity.getStoreId());
             goodsDTO.setBrandId(entity.getBrandId());
@@ -79,6 +80,8 @@ public class GoodsMapper {
             }
             goodsDTO.setDeleteFlag(entity.getDeleteFlag());
             goodsDTO.setSaleState(entity.getSaleState());
+            goodsDTO.setCreateTime(entity.getCreateTime());
+            goodsDTO.setGoodsNo(entity.getGoodsNo());
             return goodsDTO;
         }
     }

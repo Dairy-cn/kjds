@@ -237,16 +237,31 @@ public class GoodsCategoryServiceImpl implements GoodsCategoryService {
                     });
                 }
             }
-            fristList.stream().filter(e->e.getPid()!=null).forEach(e->{
+            fristList.stream().filter(e -> e.getPid() != null).forEach(e -> {
                 e.setParentNode(map.get(e.getPid()));
             });
-            fristList.stream().filter(e->e.getParentNode()!=null).forEach(e->{
+            fristList.stream().filter(e -> e.getParentNode() != null).forEach(e -> {
                 GoodsCategoryDTO parentNode = e.getParentNode();
                 parentNode.setParentNode(map.get(parentNode.getPid()));
                 e.setParentNode(parentNode);
             });
-            return fristList.stream().collect(Collectors.toMap(GoodsCategoryDTO::getId,e->e));
+            return fristList.stream().collect(Collectors.toMap(GoodsCategoryDTO::getId, e -> e));
         }
         return map;
+    }
+
+    @Override
+    public GoodsCategoryDTO findAllInfoByIdWithParentInfo(Long id) {
+        GoodsCategoryDTO goodsCategoryDTO = goodsCategoryMapper.toDto(goodsCategoryRepository.getOne(id));
+        if (goodsCategoryDTO != null && 0 != goodsCategoryDTO.getPid()) {
+            GoodsCategoryDTO parentDto = goodsCategoryMapper.toDto(goodsCategoryRepository.getOne(goodsCategoryDTO.getPid()));
+
+            if(parentDto!=null && 0!=parentDto.getPid()){
+                GoodsCategoryDTO gandParentDto = goodsCategoryMapper.toDto(goodsCategoryRepository.getOne(parentDto.getPid()));
+                parentDto.setParentNode(gandParentDto);
+            }
+            goodsCategoryDTO.setParentNode(parentDto);
+        }
+        return goodsCategoryDTO;
     }
 }

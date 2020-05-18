@@ -147,6 +147,12 @@ spring:
         max-idle: 64
         max-wait: 300000
         min-idle: 0
+
+  cloud:
+    inetutils:
+      preferredNetworks:
+        - 192.168
+        - 10.0.1
 security:
   oauth2:
     client:

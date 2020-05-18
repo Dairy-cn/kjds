@@ -12,7 +12,9 @@ import com.cross.merchants.web.rest.errors.BadRequestAlertException;
 import com.cross.merchants.service.dto.GoodsDTO;
 
 import com.cross.utils.CommonUtil;
+import com.cross.utils.PinyinUtil;
 import com.cross.utils.R;
+import com.cross.utils.RandomUtil;
 import io.github.jhipster.web.util.HeaderUtil;
 import io.github.jhipster.web.util.PaginationUtil;
 import io.github.jhipster.web.util.ResponseUtil;
@@ -36,6 +38,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.time.Instant;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -89,6 +92,7 @@ public class GoodsResource {
         goodsDTO.setCheckStatus(-1);
         goodsDTO.setDeleteFlag(false);
         goodsDTO.setSaleState(false);
+        goodsDTO.setCreateTime(Instant.now());
         goodsDTO.setProposer(CommonUtil.getCurrentLoginUser().getId());
         GoodsDTO result = goodsService.save(goodsDTO);
         return R.ok(result);
@@ -99,7 +103,7 @@ public class GoodsResource {
     public R reCheckGoods(@Valid @RequestBody GoodsDTO goodsDTO) throws URISyntaxException {
         log.debug("REST request to update Goods : {}", goodsDTO);
         log.debug("REST request to save Goods : {}", goodsDTO);
-        if (goodsDTO.getId() != null) {
+        if (goodsDTO.getId() == null) {
             return R.error("idexists");
         }
         Optional<GoodsDTO> one = goodsService.findOne(goodsDTO.getId());
@@ -209,26 +213,70 @@ public class GoodsResource {
             List<Long> categoryIds = page.getContent().stream().filter(e -> e.getCategoryId() != null).map(GoodsDTO::getCategoryId).collect(Collectors.toList());
             if (!CollectionUtils.isEmpty(categoryIds)) {
                 Map<Long, GoodsCategoryDTO> parentInfoMap = goodsCategoryService.findAllByInInWithParentInfo(categoryIds);
-                page.getContent().stream().filter(e->e.getCategoryId()!=null).forEach(e->{
+                page.getContent().stream().filter(e -> e.getCategoryId() != null).forEach(e -> {
                     e.setGoodsCategoryDTO(parentInfoMap.get(e.getCategoryId()));
                 });
             }
 
-            List<Long> goodsIds=page.getContent().stream().map(GoodsDTO::getId).collect(Collectors.toList());
-            if(!CollectionUtils.isEmpty(goodsIds)){
+            List<Long> goodsIds = page.getContent().stream().map(GoodsDTO::getId).collect(Collectors.toList());
+            if (!CollectionUtils.isEmpty(goodsIds)) {
                 Map<Long, List<GoodsSkuDTO>> skuMap = goodsSkuService.findAllByIdGoodsInGroupById(goodsIds);
-                page.getContent().stream().forEach(e->{
+                page.getContent().stream().forEach(e -> {
                     e.setGoodsSkuDTOS(skuMap.get(e.getId()));
                 });
 
                 Map<Long, List<GoodsPropertyDTO>> propertyMap = goodsPropertyService.findAllByIdGoodsInGroupById(goodsIds);
-                page.getContent().stream().forEach(e->{
+                page.getContent().stream().forEach(e -> {
                     e.setGoodsPropertyDTOS(propertyMap.get(e.getId()));
                 });
             }
         }
         return R.ok(page.getContent(), page.getTotalElements());
     }
+
+
+    @GetMapping("/goods-by-condition-by-platform")
+    @ApiOperation("大后台--店铺商品列表/商户商品列表")
+    public R getAllGoodsByConditionByPlatform(@ApiParam("分页信息") Pageable pageable,
+                                              @ApiParam(value = "店铺id", required = false) @RequestParam(required = false) Long storeId,
+                                              @ApiParam("品牌id") @RequestParam(required = false) Long brandId,
+                                              @ApiParam("一级商品品类id") @RequestParam(required = false) Long oneCategoryId,
+                                              @ApiParam("二级商品品类id") @RequestParam(required = false) Long twoCategoryId,
+                                              @ApiParam("三商品品类id") @RequestParam(required = false) Long thirdCategoryId,
+                                              @ApiParam("审核状态 null 为全部 1 通过 -1 未审核 0 审核失败") @RequestParam(required = false) Integer checkState,
+                                              @ApiParam("提交开始时间 eg 2017-11-27T03:16:03Z") @RequestParam(required = false) Instant startTime,
+                                              @ApiParam("提交结束时间 eg 2017-11-27T03:16:03Z ") @RequestParam(required = false) Instant endTime,
+                                              @ApiParam("审核开始时间 eg 2017-11-27T03:16:03Z") @RequestParam(required = false) Instant startCheckTime,
+                                              @ApiParam("审核结束时间 eg 2017-11-27T03:16:03Z ") @RequestParam(required = false) Instant endCheckTime,
+                                              @ApiParam("关键字查询 请输入商品名称/SPU编码") @RequestParam(required = false) String keyWord
+    ) {
+        log.debug("REST request to get a page of Goods");
+        Page<GoodsDTO> page = goodsService.getAllGoodsByCondition(pageable, storeId, brandId, checkState, startTime, endTime, keyWord,startCheckTime,endCheckTime,oneCategoryId,twoCategoryId,thirdCategoryId);
+        if (!CollectionUtils.isEmpty(page.getContent())) {
+            List<Long> categoryIds = page.getContent().stream().filter(e -> e.getCategoryId() != null).map(GoodsDTO::getCategoryId).collect(Collectors.toList());
+            if (!CollectionUtils.isEmpty(categoryIds)) {
+                Map<Long, GoodsCategoryDTO> parentInfoMap = goodsCategoryService.findAllByInInWithParentInfo(categoryIds);
+                page.getContent().stream().filter(e -> e.getCategoryId() != null).forEach(e -> {
+                    e.setGoodsCategoryDTO(parentInfoMap.get(e.getCategoryId()));
+                });
+            }
+
+            List<Long> goodsIds = page.getContent().stream().map(GoodsDTO::getId).collect(Collectors.toList());
+            if (!CollectionUtils.isEmpty(goodsIds)) {
+                Map<Long, List<GoodsSkuDTO>> skuMap = goodsSkuService.findAllByIdGoodsInGroupById(goodsIds);
+                page.getContent().stream().forEach(e -> {
+                    e.setGoodsSkuDTOS(skuMap.get(e.getId()));
+                });
+
+                Map<Long, List<GoodsPropertyDTO>> propertyMap = goodsPropertyService.findAllByIdGoodsInGroupById(goodsIds);
+                page.getContent().stream().forEach(e -> {
+                    e.setGoodsPropertyDTOS(propertyMap.get(e.getId()));
+                });
+            }
+        }
+        return R.ok(page.getContent(), page.getTotalElements());
+    }
+
 
     /**
      * {@code GET  /goods/:id} : get the "id" goods.
@@ -237,10 +285,24 @@ public class GoodsResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the goodsDTO, or with status {@code 404 (Not Found)}.
      */
     @GetMapping("/goods/{id}")
-    public ResponseEntity<GoodsDTO> getGoods(@PathVariable Long id) {
+    @ApiOperation("获取商品详情（包括sku-属性--分类信息）")
+    public R getGoods(@PathVariable Long id) {
         log.debug("REST request to get Goods : {}", id);
-        Optional<GoodsDTO> goodsDTO = goodsService.findOne(id);
-        return ResponseUtil.wrapOrNotFound(goodsDTO);
+        Optional<GoodsDTO> one = goodsService.findOne(id);
+        if (!one.isPresent()) {
+            return R.errorData();
+        }
+        GoodsDTO goodsDTO = one.get();
+
+        if (goodsDTO.getCategoryId() != null) {
+            GoodsCategoryDTO categoryDTO = goodsCategoryService.findAllInfoByIdWithParentInfo(goodsDTO.getCategoryId());
+            goodsDTO.setGoodsCategoryDTO(categoryDTO);
+        }
+        List<GoodsSkuDTO> skuList = goodsSkuService.findAllByGoodsId(goodsDTO.getId());
+        goodsDTO.setGoodsSkuDTOS(skuList);
+        List<GoodsPropertyDTO> goodsPropertyDTOList = goodsPropertyService.findAllByIdGoods(goodsDTO.getId());
+        goodsDTO.setGoodsPropertyDTOS(goodsPropertyDTOList);
+        return R.ok(goodsDTO);
     }
 
     /**
@@ -250,9 +312,46 @@ public class GoodsResource {
      * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
      */
     @DeleteMapping("/goods/{id}")
-    public ResponseEntity<Void> deleteGoods(@PathVariable Long id) {
+    @ApiOperation("删除商品信息")
+    public R deleteGoods(@PathVariable Long id) {
         log.debug("REST request to delete Goods : {}", id);
-        goodsService.delete(id);
-        return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString())).build();
+        Optional<GoodsDTO> one = goodsService.findOne(id);
+        if (!one.isPresent()) {
+            return R.errorData();
+        }
+        GoodsDTO goodsDTO = one.get();
+        goodsDTO.setDeleteFlag(true);
+        GoodsDTO result = goodsService.saveOnly(goodsDTO);
+        return R.ok();
+    }
+
+    @PutMapping("/goods-check/{id}")
+    @ApiOperation("商品审核")
+    public R checkGoods(@ApiParam("记录id") @PathVariable Long id,
+                        @ApiParam("审核状态 true 通过 false 失败") @RequestParam Boolean status,
+                        @ApiParam("失败原因") @RequestParam String checkFailureReasons) throws URISyntaxException {
+
+        if (status == null) {
+            return R.error("审核状态不能为空");
+        }
+        Optional<GoodsDTO> one = goodsService.findOne(id);
+        if (!one.isPresent()) {
+            return R.errorData();
+        }
+        GoodsDTO dbGoodsDto = one.get();
+        if (1 != dbGoodsDto.getCheckStatus()) {
+            return R.error("审核未通过的商品不能修改上下架状态");
+        }
+
+        dbGoodsDto.setCheckStatus(status ? 1 : 0);
+        dbGoodsDto.setCheckTime(Instant.now());
+        dbGoodsDto.setCheckFailureReasons(checkFailureReasons);
+        if (status) {
+            String brandHeadPinYin = PinyinUtil.getPinYinHeadChar(dbGoodsDto.getGoodsName().trim());
+            Long code = RandomUtil.generateValidateCode();
+            dbGoodsDto.setGoodsNo(brandHeadPinYin + code);
+        }
+        GoodsDTO result = goodsService.saveOnly(dbGoodsDto);
+        return R.ok(result);
     }
 }

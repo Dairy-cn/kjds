@@ -128,6 +128,12 @@ public class MerchantsCheckInInfoServiceImpl implements MerchantsCheckInInfoServ
     }
 
     @Override
+    public MerchantsCheckInInfoDTO findOneWithSelfByCheckState(Long submitId,Integer state) {
+        MerchantsCheckInInfo firstByProposer = merchantsCheckInInfoRepository.findFirstByProposerAndCheckStatus(submitId,state);
+        return merchantsCheckInInfoMapper.toDto(firstByProposer);
+    }
+
+    @Override
     @Transactional
     public MerchantsCheckInInfoDTO merchantsCheckInInfo(MerchantsCheckInInfoDTO merchantsCheckInInfoDTO) {
         MerchantsCheckInInfoDTO save = this.save(merchantsCheckInInfoDTO);
