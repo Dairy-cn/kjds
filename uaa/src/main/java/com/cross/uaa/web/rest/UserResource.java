@@ -16,6 +16,7 @@ import com.cross.uaa.web.rest.errors.BadRequestAlertException;
 import com.cross.uaa.web.rest.errors.EmailAlreadyUsedException;
 import com.cross.uaa.web.rest.errors.LoginAlreadyUsedException;
 
+import com.cross.utils.CommonUtil;
 import com.cross.utils.R;
 import io.github.jhipster.web.util.HeaderUtil;
 import io.github.jhipster.web.util.PaginationUtil;
@@ -46,6 +47,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.time.Instant;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Pattern;
@@ -205,6 +207,14 @@ public class UserResource {
                 .map(UserDTO::new));
     }
 
+
+    @GetMapping("/query-users/{id}")
+    @ApiOperation("根据用户id获取用户信息")
+    public R getUser(@PathVariable Long id) {
+        log.debug("REST request to get User : {}", id);
+        return R.ok(userService.getOne(id));
+    }
+
     /**
      * {@code DELETE /users/:login} : delete the "login" User.
      *
@@ -255,7 +265,7 @@ public class UserResource {
                 Set<Authority> authorities = new HashSet<>();
                 authorities.add(authority);
                 // 创建帐号
-                userService.createUser(username, password, username, username, username + "@canyingdongli.com", "", "zh-cn", authorities, true, 0, partnerCode);
+                userService.createUser(username, password, username, username, username + "@kjds.com", "", "zh-cn", authorities, true, 0, partnerCode);
             } else {
                 User dbUser = userService.getUserWithAuthoritiesByLogin(username).get();
                 Set<Authority> authorities = dbUser.getAuthorities();
@@ -310,7 +320,7 @@ public class UserResource {
                 authorities.add(authority);
 
                 // 创建帐号
-                userService.createUser(username, password, username, username, username + "@canyingdongli.com", "", "zh-cn", authorities, true, 0, partnerCode);
+                userService.createUser(username, password, username, username, username + "@kjds.com", "", "zh-cn", authorities, true, 0, partnerCode);
 
             } else {
                 User dbUser = userService.getUserWithAuthoritiesByLogin(username).get();
@@ -346,6 +356,30 @@ public class UserResource {
         return R.ok(code);
     }
 
+    @PutMapping("/real-name-auth")
+    @ApiOperation("实名制认证")
+    public R realNameAuth(@ApiParam(value = "真实信息", required = true) @RequestParam(required = true) String realname,
+                          @ApiParam(value = "身份证号码", required = true) @RequestParam(required = true) String idCard,
+                          @ApiParam(value = "实名制手机号码", required = true) @RequestParam(required = true) String phone,
+                          @ApiParam(value = "身份证正面", required = false) @RequestParam(required = false) String idCardF,
+                          @ApiParam(value = "身份证背面", required = false) @RequestParam(required = false) String idCardR) {
+
+
+        Long id = CommonUtil.getCurrentLoginUser().getId();
+        UserDTO one = userService.getOne(id);
+        if (one == null) {
+            return R.error();
+        }
+        one.setRealName(realname);
+        one.setIdCard(idCard);
+        one.setMobile(phone);
+        one.setIdCardF(idCardF);
+        one.setIdCardR(idCardR);
+        one = userService.save(one);
+        return R.ok(one);
+    }
+
+
     @PutMapping("/reset/pwd/{phone}")
     @ApiOperation("重置密码")
     public R resetPwd(@PathVariable String phone, @RequestParam String pwd, @RequestParam String code) {
@@ -369,4 +403,17 @@ public class UserResource {
         }
         return R.ok();
     }
+
+
+    @GetMapping("/users-page-list")
+    @ApiOperation("大后台--获取用户列表")
+    public R getAllUsers(Pageable pageable,
+                         @ApiParam("注册开始时间") @RequestParam(required = false) Instant registerStartTime,
+                         @ApiParam("注册结束时间") @RequestParam(required = false) Instant registerEndTime,
+                         @ApiParam("用户Id/手机号码") @RequestParam(required = false) String keyWord
+    ) {
+        Page<UserDTO> page = userService.getAllUsersByCondition(pageable, registerStartTime, registerEndTime, keyWord);
+        return R.ok(page.getContent(), page.getTotalElements());
+    }
+
 }

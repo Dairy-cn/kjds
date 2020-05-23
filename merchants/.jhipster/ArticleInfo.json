@@ -1,0 +1,67 @@
+{
+    "name": "ArticleInfo",
+    "fields": [
+        {
+            "fieldName": "title",
+            "javadoc": "标题",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "titleNo",
+            "javadoc": "文字编号",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "cover",
+            "javadoc": "文字封面",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "pageview",
+            "javadoc": "浏览人数",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "createTime",
+            "javadoc": "创建时间",
+            "fieldType": "Instant"
+        },
+        {
+            "fieldName": "updateTime",
+            "javadoc": "更新时间",
+            "fieldType": "Instant"
+        },
+        {
+            "fieldName": "showState",
+            "javadoc": "上架状态  true 上架  false 下架",
+            "fieldType": "Boolean"
+        },
+        {
+            "fieldName": "top",
+            "javadoc": "置顶状态",
+            "fieldType": "Boolean"
+        },
+        {
+            "fieldName": "content",
+            "javadoc": "文章内容",
+            "fieldType": "String"
+        }
+    ],
+    "relationships": [],
+    "changelogDate": "20200522155700",
+    "javadoc": "文章管理",
+    "entityTableName": "article_info",
+    "dto": "mapstruct",
+    "pagination": "pagination",
+    "service": "serviceImpl",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "readOnly": false,
+    "embedded": false,
+    "clientRootFolder": "merchants",
+    "applications": "*",
+    "microserviceName": "merchants"
+}

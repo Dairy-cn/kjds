@@ -36,7 +36,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
      */
     @ExceptionHandler(GlobalException.class)
     public R customExceptionHandler(HttpServletRequest request, final Exception e, HttpServletResponse response) {
-        response.setStatus(HttpStatus.BAD_REQUEST.value());
+        response.setStatus(HttpStatus.OK.value());
         GlobalException exception = (GlobalException) e;
 //        ErrorResponseEntity entity = new ErrorResponseEntity();
 //        entity.setCode(exception.getReturnCode());

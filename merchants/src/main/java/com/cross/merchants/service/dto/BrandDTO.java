@@ -114,7 +114,7 @@ public class BrandDTO implements Serializable {
     /**
      * 品牌国家地区
      */
-    @ApiModelProperty(value = "品牌国家地区",hidden = true)
+    @ApiModelProperty(value = "品牌国家地区")
     private String brandCountry;
 
 

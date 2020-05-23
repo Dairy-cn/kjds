@@ -44,8 +44,8 @@ spring:
       indent-output: true
   datasource:
     type: com.zaxxer.hikari.HikariDataSource
-    url: jdbc:mysql://localhost:3306/gateway?useUnicode=true&characterEncoding=utf8&useSSL=false&useLegacyDatetimeCode=false&serverTimezone=UTC&createDatabaseIfNotExist=true
-    username: new
+    url: jdbc:mysql://139.9.113.127:3306/gateway?useUnicode=true&characterEncoding=utf8&useSSL=false&useLegacyDatetimeCode=false&serverTimezone=UTC&createDatabaseIfNotExist=true
+    username: root
     password: 123456
     hikari:
       poolName: Hikari
@@ -88,7 +88,7 @@ spring:
     database: 0
     port: 6379
     password:
-    host: localhost
+    host: 139.9.113.127
     timeout: 300000
     jedis:
       pool:

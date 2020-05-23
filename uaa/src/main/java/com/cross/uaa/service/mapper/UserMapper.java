@@ -4,14 +4,16 @@ import com.cross.uaa.domain.Authority;
 import com.cross.uaa.domain.User;
 import com.cross.uaa.service.dto.UserDTO;
 
+import io.swagger.annotations.ApiModelProperty;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.*;
 import java.util.stream.Collectors;
 
 /**
  * Mapper for the entity {@link User} and its DTO called {@link UserDTO}.
- *
+ * <p>
  * Normal mappers are generated using MapStruct, this one is hand-coded as MapStruct
  * support is still in beta, and requires a manual step with an IDE.
  */
@@ -51,6 +53,17 @@ public class UserMapper {
             user.setLangKey(userDTO.getLangKey());
             Set<Authority> authorities = this.authoritiesFromStrings(userDTO.getAuthorities());
             user.setAuthorities(authorities);
+
+            user.setRealName(userDTO.getRealName());
+            user.setIdCard(userDTO.getIdCard());
+            user.setIdCardF(userDTO.getIdCardF());
+            user.setIdCardR(userDTO.getIdCardR());
+            user.setUserId(userDTO.getUserId());
+            user.setRealNameAuthStatus(userDTO.getRealNameAuthStatus());
+            user.setOrderTotalTimes(userDTO.getOrderTotalTimes());
+            user.setOrderTotalAmount(userDTO.getOrderTotalAmount());
+            user.setMobile(userDTO.getMobile());
+            user.setSex(userDTO.getSex());
             return user;
         }
     }

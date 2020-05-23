@@ -2,6 +2,7 @@ package com.cross.merchants.web.rest;
 
 import com.cross.merchants.service.BrandService;
 import com.cross.merchants.service.GlobalRegionService;
+import com.cross.merchants.service.MerchantsCheckInInfoService;
 import com.cross.merchants.service.StoreInfoService;
 import com.cross.merchants.service.dto.GlobalRegionDTO;
 import com.cross.merchants.service.dto.MerchantsCheckInInfoDTO;
@@ -17,6 +18,7 @@ import io.github.jhipster.web.util.ResponseUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import io.swagger.annotations.ApiResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,9 +64,12 @@ public class BrandResource {
 
     private final GlobalRegionService globalRegionService;
 
-    public BrandResource(BrandService brandService, GlobalRegionService globalRegionService) {
+    private final MerchantsCheckInInfoService merchantsCheckInInfoService;
+
+    public BrandResource(BrandService brandService, GlobalRegionService globalRegionService, MerchantsCheckInInfoService merchantsCheckInInfoService) {
         this.brandService = brandService;
         this.globalRegionService = globalRegionService;
+        this.merchantsCheckInInfoService = merchantsCheckInInfoService;
     }
 
     /**
@@ -76,18 +81,16 @@ public class BrandResource {
      */
     @PostMapping("/brands")
     @ApiOperation("添加品牌信息")
-    public ResponseEntity<BrandDTO> createBrand(@RequestBody BrandDTO brandDTO) throws URISyntaxException {
+    public R createBrand(@RequestBody BrandDTO brandDTO) throws URISyntaxException {
         log.debug("REST request to save Brand : {}", brandDTO);
         if (brandDTO.getId() != null) {
-            throw new BadRequestAlertException("A new brand cannot already have an ID", ENTITY_NAME, "idexists");
+            return R.error("idexists");
         }
         brandDTO.setApplicationTime(Instant.now());
         brandDTO.setCheckStatus(-1);
         brandDTO.setProposer(CommonUtil.getCurrentLoginUser().getId());
         BrandDTO result = brandService.save(brandDTO);
-        return ResponseEntity.created(new URI("/api/brands/" + result.getId()))
-            .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
-            .body(result);
+        return R.ok(result);
     }
 
     @PutMapping("/re-upload-brand-check-in-infos")
@@ -122,15 +125,13 @@ public class BrandResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PutMapping("/brands")
-    public ResponseEntity<BrandDTO> updateBrand(@RequestBody BrandDTO brandDTO) throws URISyntaxException {
+    public R updateBrand(@RequestBody BrandDTO brandDTO) throws URISyntaxException {
         log.debug("REST request to update Brand : {}", brandDTO);
         if (brandDTO.getId() == null) {
-            throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
+            return R.error("idnull");
         }
         BrandDTO result = brandService.save(brandDTO);
-        return ResponseEntity.ok()
-            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, brandDTO.getId().toString()))
-            .body(result);
+        return R.ok(result);
     }
 
     /**
@@ -140,11 +141,10 @@ public class BrandResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of brands in body.
      */
     @GetMapping("/brands")
-    public ResponseEntity<List<BrandDTO>> getAllBrands(Pageable pageable) {
+    public R getAllBrands(Pageable pageable) {
         log.debug("REST request to get a page of Brands");
         Page<BrandDTO> page = brandService.findAll(pageable);
-        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
-        return ResponseEntity.ok().headers(headers).body(page.getContent());
+        return R.ok(page.getContent(),page.getTotalElements());
     }
 
     /**
@@ -181,15 +181,15 @@ public class BrandResource {
      * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
      */
     @DeleteMapping("/brands/{id}")
-    public ResponseEntity<Void> deleteBrand(@PathVariable Long id) {
+    public R deleteBrand(@PathVariable Long id) {
         log.debug("REST request to delete Brand : {}", id);
         brandService.delete(id);
-        return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString())).build();
+        return R.ok();
     }
 
 
     @PostMapping("/check-brand-check-in-infos/{id}")
-    @ApiOperation("大后台--商家入住审核")
+    @ApiOperation("大后台--品牌审核")
     public R brandCheckInInfo(@ApiParam("记录id") @PathVariable Long id,
                               @ApiParam(value = "审核状态 true 通过 false 失败", required = true) @RequestParam(required = true) Boolean status,
                               @ApiParam("失败原因") @RequestParam String checkFailureReasons) {
@@ -217,6 +217,17 @@ public class BrandResource {
     public R getAllBrandCheckInInfosWithWaitCheckInInfo(Pageable pageable) {
         log.debug("REST request to get a page of MerchantsCheckInInfos");
         Page<BrandDTO> page = brandService.findAllWithWaitCheckIn(pageable);
+        if (!CollectionUtils.isEmpty(page.getContent())) {
+            List<Long> regionIds = new ArrayList<>();
+            regionIds = page.getContent().stream().filter(e -> e.getBrandCountryId() != null).map(e -> e.getBrandCountryId()).collect(Collectors.toList());
+            if (!CollectionUtils.isEmpty(regionIds)) {
+                List<GlobalRegionDTO> globalRegionDTOS = globalRegionService.findAllByIdIn(regionIds);
+                Map<Long, String> map = globalRegionDTOS.stream().collect(Collectors.toMap(GlobalRegionDTO::getId, GlobalRegionDTO::getName));
+                page.getContent().stream().filter(e -> e.getBrandCountryId() != null).forEach(e->{
+                    e.setBrandCountry(map.get(e.getBrandCountryId()));
+                });
+            }
+        }
         return R.ok(page.getContent(), page.getTotalElements());
     }
 
@@ -231,6 +242,17 @@ public class BrandResource {
             return R.ok();
         }
         Page<BrandDTO> page = brandService.findAllByStatusAndStoreId(pageable, checkStatus, storeInfoDTO.getId());
+        if (!CollectionUtils.isEmpty(page.getContent())) {
+            List<Long> regionIds = new ArrayList<>();
+            regionIds = page.getContent().stream().filter(e -> e.getBrandCountryId() != null).map(e -> e.getBrandCountryId()).collect(Collectors.toList());
+            if (!CollectionUtils.isEmpty(regionIds)) {
+                List<GlobalRegionDTO> globalRegionDTOS = globalRegionService.findAllByIdIn(regionIds);
+                Map<Long, String> map = globalRegionDTOS.stream().collect(Collectors.toMap(GlobalRegionDTO::getId, GlobalRegionDTO::getName));
+                page.getContent().stream().filter(e -> e.getBrandCountryId() != null).forEach(e->{
+                    e.setBrandCountry(map.get(e.getBrandCountryId()));
+                });
+            }
+        }
         return R.ok(page.getContent(), page.getTotalElements());
     }
 
@@ -244,6 +266,17 @@ public class BrandResource {
             return R.ok();
         }
         List<BrandDTO> list = brandService.findAllByStatusAndStoreId(1, storeInfoDTO.getId());
+        if (!CollectionUtils.isEmpty(list)) {
+            List<Long> regionIds = new ArrayList<>();
+            regionIds = list.stream().filter(e -> e.getBrandCountryId() != null).map(e -> e.getBrandCountryId()).collect(Collectors.toList());
+            if (!CollectionUtils.isEmpty(regionIds)) {
+                List<GlobalRegionDTO> globalRegionDTOS = globalRegionService.findAllByIdIn(regionIds);
+                Map<Long, String> map = globalRegionDTOS.stream().collect(Collectors.toMap(GlobalRegionDTO::getId, GlobalRegionDTO::getName));
+                list.stream().filter(e -> e.getBrandCountryId() != null).forEach(e->{
+                    e.setBrandCountry(map.get(e.getBrandCountryId()));
+                });
+            }
+        }
         return R.ok(list);
     }
 

@@ -136,7 +136,7 @@ public class GoodsDTO implements Serializable {
     @ApiModelProperty(value = "上架状态")
     private Boolean saleState;
 
-    @ApiModelProperty(value = "商品分类信息",hidden = true)
+    @ApiModelProperty(value = "商品分类信息")
     private GoodsCategoryDTO goodsCategoryDTO;
 
     @ApiModelProperty(value = "商品sku")

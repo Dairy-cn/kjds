@@ -1,0 +1,39 @@
+       /** 文章管理  **/
+ entity ArticleInfo {
+          /** id **/
+        id Long,
+        /** 标题 **/
+       title String required,
+
+       /** 文字编号 **/
+       titleNo String,
+
+    /** 文字封面 **/
+       cover String,
+     /** 浏览人数 **/
+     pageview Integer,
+
+       /** 创建时间 **/
+         createTime Instant,
+
+   /** 更新时间 **/
+     updateTime Instant,
+        /** 上架状态  true 上架  false 下架**/
+     showState Boolean,
+  /** 置顶状态**/
+     top  Boolean,
+  /** 文章内容**/
+     content String
+
+
+ }
+// Set pagination options
+// paginate ActivityMain with infinite-scroll
+paginate * with pagination
+
+dto * with mapstruct
+
+// Set service options to all except few
+service all with serviceImpl
+// Set an angular suffix
+// angularSuffix * with mySuffix

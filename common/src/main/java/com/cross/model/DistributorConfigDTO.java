@@ -101,7 +101,7 @@ public class DistributorConfigDTO implements Serializable {
     /**
      * 平台信息
      */
-    @ApiModelProperty(value = "平台信息",hidden = true)
+    @ApiModelProperty(value = "平台信息")
     private SystemSettingDTO systemSettingDTO;
 
 

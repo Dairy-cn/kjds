@@ -3,6 +3,7 @@ package com.cross.uaa.domain;
 import com.cross.uaa.config.Constants;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import io.swagger.annotations.ApiModelProperty;
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.annotations.BatchSize;
 
@@ -12,6 +13,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.HashSet;
 import java.util.Locale;
@@ -102,6 +104,124 @@ public class User extends AbstractAuditingEntity implements Serializable {
     @BatchSize(size = 20)
     private Set<Authority> authorities = new HashSet<>();
 
+
+    @ApiModelProperty("真实姓名")
+    @Column(name = "real_name")
+    private String realName;
+
+    @ApiModelProperty("身份证号码")
+    @Column(name = "id_card")
+    private String idCard;
+
+    @ApiModelProperty("身份证正面")
+    @Column(name = "id_card_f")
+    private String idCardF;
+
+    @ApiModelProperty("身份证反面")
+    @Column(name = "id_card_r")
+    private String idCardR;
+
+
+    @ApiModelProperty("用户ID,8位")
+    @Column(name = "user_id")
+    private String userId;
+
+
+    @ApiModelProperty("实名认证状态")
+    @Column(name = "real_name_auth_status")
+    private Boolean realNameAuthStatus;
+
+    @ApiModelProperty("累计消费次数")
+    @Column(name = "order_total_times")
+    private Integer orderTotalTimes;
+
+    @ApiModelProperty("累计消费金额")
+    @Column(name = "order_total_amount")
+    private BigDecimal orderTotalAmount;
+
+
+    @ApiModelProperty("创建时间/注册时间")
+    @Column(name = "created_date")
+    private Instant createdDate;
+
+
+    @Override
+    public Instant getCreatedDate() {
+        return createdDate;
+    }
+
+    @Override
+    public void setCreatedDate(Instant createdDate) {
+        this.createdDate = createdDate;
+    }
+
+    public boolean isActivated() {
+        return activated;
+    }
+
+    public String getRealName() {
+        return realName;
+    }
+
+    public void setRealName(String realName) {
+        this.realName = realName;
+    }
+
+    public String getIdCard() {
+        return idCard;
+    }
+
+    public void setIdCard(String idCard) {
+        this.idCard = idCard;
+    }
+
+    public String getIdCardF() {
+        return idCardF;
+    }
+
+    public void setIdCardF(String idCardF) {
+        this.idCardF = idCardF;
+    }
+
+    public String getIdCardR() {
+        return idCardR;
+    }
+
+    public void setIdCardR(String idCardR) {
+        this.idCardR = idCardR;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
+    public Boolean getRealNameAuthStatus() {
+        return realNameAuthStatus;
+    }
+
+    public void setRealNameAuthStatus(Boolean realNameAuthStatus) {
+        this.realNameAuthStatus = realNameAuthStatus;
+    }
+
+    public Integer getOrderTotalTimes() {
+        return orderTotalTimes;
+    }
+
+    public void setOrderTotalTimes(Integer orderTotalTimes) {
+        this.orderTotalTimes = orderTotalTimes;
+    }
+
+    public BigDecimal getOrderTotalAmount() {
+        return orderTotalAmount;
+    }
+
+    public void setOrderTotalAmount(BigDecimal orderTotalAmount) {
+        this.orderTotalAmount = orderTotalAmount;
+    }
 
     public Integer getSex() {
         return sex;

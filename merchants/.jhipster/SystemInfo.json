@@ -1,0 +1,54 @@
+{
+    "name": "SystemInfo",
+    "fields": [
+        {
+            "fieldName": "platformName",
+            "javadoc": "平台名称",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "platformLogo",
+            "javadoc": "平台Logo",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "platAppId",
+            "javadoc": "微信平台应用编号",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "platAppSecret",
+            "javadoc": "平台应用密钥",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "aliAppId",
+            "javadoc": "支付宝appId",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "aliAppPrivteKey",
+            "javadoc": "支付宝私钥",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "aliAppPublicKey",
+            "javadoc": "支付宝公钥",
+            "fieldType": "String"
+        }
+    ],
+    "relationships": [],
+    "changelogDate": "20200522155500",
+    "javadoc": "系统信息",
+    "entityTableName": "system_info",
+    "dto": "mapstruct",
+    "pagination": "pagination",
+    "service": "serviceImpl",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "readOnly": false,
+    "embedded": false,
+    "clientRootFolder": "merchants",
+    "applications": "*",
+    "microserviceName": "merchants"
+}

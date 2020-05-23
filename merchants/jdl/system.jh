@@ -1,0 +1,42 @@
+       /** 系统信息  **/
+ entity  SystemInfo{
+          /** id **/
+        id Long,
+        /** 平台名称 **/
+       platformName String,
+
+       /** 平台Logo **/
+       platformLogo String,
+
+
+   /** 微信平台应用编号 **/
+   platAppId String,
+
+
+    /** 平台应用密钥 **/
+    platAppSecret String,
+
+   /** 支付宝appId **/
+    aliAppId String,
+
+
+       /** 支付宝私钥 **/
+  aliAppPrivteKey String,
+
+
+    /** 支付宝公钥 **/
+  aliAppPublicKey String,
+
+
+
+ }
+// Set pagination options
+// paginate ActivityMain with infinite-scroll
+paginate * with pagination
+
+dto * with mapstruct
+
+// Set service options to all except few
+service all with serviceImpl
+// Set an angular suffix
+// angularSuffix * with mySuffix

@@ -3,23 +3,33 @@ package com.cross.uaa.service;
 import com.cross.uaa.config.Constants;
 import com.cross.uaa.domain.Authority;
 import com.cross.uaa.domain.User;
+import com.cross.uaa.domain.UserAuthority;
+import com.cross.uaa.exception.UaaException;
 import com.cross.uaa.repository.AuthorityRepository;
+import com.cross.uaa.repository.UserAuthorityRepository;
 import com.cross.uaa.repository.UserRepository;
 import com.cross.uaa.security.AuthoritiesConstants;
 import com.cross.uaa.security.SecurityUtils;
 import com.cross.uaa.service.dto.UserDTO;
 
+import com.cross.uaa.service.mapper.UserMapper;
 import io.github.jhipster.security.RandomUtil;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.Predicate;
+import java.math.BigDecimal;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
@@ -40,10 +50,16 @@ public class UserService {
 
     private final AuthorityRepository authorityRepository;
 
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, AuthorityRepository authorityRepository) {
+    private final UserMapper userMapper;
+
+    @Autowired
+    private UserAuthorityRepository userAuthorityRepository;
+
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, AuthorityRepository authorityRepository, UserMapper userMapper) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.authorityRepository = authorityRepository;
+        this.userMapper = userMapper;
     }
 
     public Optional<User> activateRegistration(String key) {
@@ -68,6 +84,11 @@ public class UserService {
                 user.setResetDate(null);
                 return user;
             });
+    }
+
+
+    public UserDTO save(UserDTO userDTO) {
+        return userMapper.userToUserDTO(userRepository.save(userMapper.userDTOToUser(userDTO)));
     }
 
     public Optional<User> requestPasswordReset(String mail) {
@@ -145,6 +166,9 @@ public class UserService {
         user.setResetKey(RandomUtil.generateResetKey());
         user.setResetDate(Instant.now());
         user.setActivated(true);
+        user.setRealNameAuthStatus(false);
+        user.setOrderTotalAmount(BigDecimal.ZERO);
+        user.setOrderTotalTimes(Integer.valueOf(0));
         if (userDTO.getAuthorities() != null) {
             Set<Authority> authorities = userDTO.getAuthorities().stream()
                 .map(authorityRepository::findById)
@@ -180,9 +204,32 @@ public class UserService {
         newUser.setActivationKey(RandomUtil.generateActivationKey());
         authorities.add(authority);
         newUser.setAuthorities(authorities);
+        newUser.setRealNameAuthStatus(false);
+        newUser.setOrderTotalAmount(BigDecimal.ZERO);
+        newUser.setOrderTotalTimes(Integer.valueOf(0));
+        String userId = getUserId();
+        if (userId == null) {
+            throw new UaaException(400, "系统异常，请稍后再试");
+        }
+        newUser.setUserId(userId);
         userRepository.save(newUser);
-        log.debug("Created Information for User: {}", newUser);
+        log.debug("CreategetUserIdd Information for User: {}", newUser);
         return newUser;
+    }
+
+    private String getUserId() {
+        String userId = com.cross.utils.RandomUtil.randomId();
+        int count = userRepository.countByUserId(userId);
+        if (count > 0) {
+            for (int i = 0; i < 10 && count == 0; i++) {
+                userId = com.cross.utils.RandomUtil.randomId();
+                count = userRepository.countByUserId(userId);
+            }
+        }
+        if (count > 0) {
+            return null;
+        }
+        return userId;
     }
 
     /**
@@ -282,6 +329,43 @@ public class UserService {
     }
 
     @Transactional(readOnly = true)
+    public Page<UserDTO> getAllUsersByCondition(Pageable pageable, Instant registerStartTime, Instant registerEndTime, String keyWord) {
+        List<UserAuthority> allByAuthorityName = userAuthorityRepository.findAllByAuthorityName(AuthoritiesConstants.USER);
+        List<Long> ids = new ArrayList<>();
+        if (!CollectionUtils.isEmpty(allByAuthorityName)) {
+            ids = allByAuthorityName.stream().map(e -> e.getUserId()).collect(Collectors.toList());
+        }
+        List<Long> finalIds = ids;
+        Page<User> page = userRepository.findAll((r, q, b) -> {
+            List<Predicate> listPredicates = new ArrayList<>();
+
+            if (!StringUtils.isBlank(keyWord)) {
+                List<Predicate> listPermission = new ArrayList<>();
+                listPermission.add(b.like(r.get("login").as(String.class), "%" + keyWord.trim() + "%"));
+                listPermission.add(b.like(r.get("userId").as(String.class), "%" + keyWord.trim() + "%"));
+                Predicate[] predicatesPermissionArr = new Predicate[listPermission.size()];
+                listPredicates.add(b.or(listPermission.toArray(predicatesPermissionArr)));
+            }
+            if (registerStartTime != null) {
+                listPredicates.add(b.greaterThanOrEqualTo(r.get("createdDate").as(Instant.class), registerStartTime));
+            }
+            if (registerEndTime != null) {
+                listPredicates.add(b.lessThanOrEqualTo(r.get("createdDate").as(Instant.class), registerEndTime));
+            }
+            if (!CollectionUtils.isEmpty(finalIds)){
+                CriteriaBuilder.In<Long> in = b.in(r.get("id"));
+                for (Long id : finalIds) {
+                    in.value(id);
+                }
+                listPredicates.add(in);
+            }
+            Predicate[] arrayPredicates = new Predicate[listPredicates.size()];
+            return b.and(listPredicates.toArray(arrayPredicates));
+        }, pageable);
+        return page.map(userMapper::userToUserDTO);
+    }
+
+    @Transactional(readOnly = true)
     public Optional<User> getUserWithAuthoritiesByLogin(String login) {
         return userRepository.findOneWithAuthoritiesByLogin(login);
     }
@@ -318,6 +402,10 @@ public class UserService {
      */
     public List<String> getAuthorities() {
         return authorityRepository.findAll().stream().map(Authority::getName).collect(Collectors.toList());
+    }
+
+    public UserDTO getOne(Long id) {
+        return userMapper.userToUserDTO(userRepository.getOne(id));
     }
 
 }
