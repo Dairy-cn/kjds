@@ -7,15 +7,11 @@ import com.cross.merchants.exception.MerchantsException;
 import com.cross.merchants.repository.GoodsCategoryRepository;
 import com.cross.merchants.repository.GoodsPropertyRepository;
 import com.cross.merchants.repository.GoodsSkuRepository;
-import com.cross.merchants.service.GoodsPropertyService;
-import com.cross.merchants.service.GoodsService;
+import com.cross.merchants.service.*;
 import com.cross.merchants.domain.Goods;
 import com.cross.merchants.repository.GoodsRepository;
-import com.cross.merchants.service.GoodsSkuService;
-import com.cross.merchants.service.dto.GoodsDTO;
-import com.cross.merchants.service.dto.GoodsPropertyDTO;
-import com.cross.merchants.service.dto.GoodsPropertyTagDTO;
-import com.cross.merchants.service.dto.GoodsSkuDTO;
+import com.cross.merchants.service.dto.*;
+import com.cross.merchants.service.mapper.GoodsCategoryMapper;
 import com.cross.merchants.service.mapper.GoodsMapper;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -60,16 +56,23 @@ public class GoodsServiceImpl implements GoodsService {
 
     private final GoodsPropertyService goodsPropertyService;
 
+    private final GoodsCategoryService goodsCategoryService;
+
     private final GoodsCategoryRepository goodsCategoryRepository;
 
-    public GoodsServiceImpl(GoodsRepository goodsRepository, GoodsMapper goodsMapper, GoodsSkuService goodsSkuService, GoodsSkuRepository goodsSkuRepository, GoodsPropertyRepository goodsPropertyRepository, GoodsPropertyService goodsPropertyService, GoodsCategoryRepository goodsCategoryRepository) {
+    private final StoreInfoService storeInfoService;
+
+
+    public GoodsServiceImpl(GoodsRepository goodsRepository, GoodsMapper goodsMapper, GoodsSkuService goodsSkuService, GoodsSkuRepository goodsSkuRepository, GoodsPropertyRepository goodsPropertyRepository, GoodsPropertyService goodsPropertyService, GoodsCategoryService goodsCategoryService, GoodsCategoryRepository goodsCategoryRepository, StoreInfoService storeInfoService) {
         this.goodsRepository = goodsRepository;
         this.goodsMapper = goodsMapper;
         this.goodsSkuService = goodsSkuService;
         this.goodsSkuRepository = goodsSkuRepository;
         this.goodsPropertyRepository = goodsPropertyRepository;
         this.goodsPropertyService = goodsPropertyService;
+        this.goodsCategoryService = goodsCategoryService;
         this.goodsCategoryRepository = goodsCategoryRepository;
+        this.storeInfoService = storeInfoService;
     }
 
     /**
@@ -286,7 +289,7 @@ public class GoodsServiceImpl implements GoodsService {
             if (checkState != null) {
                 listPredicates.add(b.equal(r.get("checkStatus").as(Integer.class), checkState));
             }
-            if (!CollectionUtils.isEmpty(finalThirdList)){
+            if (!CollectionUtils.isEmpty(finalThirdList)) {
                 CriteriaBuilder.In<Long> in = b.in(r.get("categoryId"));
                 for (Long categoryId : finalThirdList) {
                     in.value(categoryId);
@@ -342,5 +345,37 @@ public class GoodsServiceImpl implements GoodsService {
     public void delete(Long id) {
         log.debug("Request to delete Goods : {}", id);
         goodsRepository.deleteById(id);
+    }
+
+    @Override
+    public Map<Long, GoodsDTO> finAllMapInfo(List<Long> ids) {
+        Map<Long, GoodsDTO> map = new HashMap<>();
+        if (!CollectionUtils.isEmpty(ids)) {
+            List<Goods> allByIdIn = goodsRepository.findAllByIdIn(ids);
+            List<Long> categoryIds = allByIdIn.stream().filter(e -> e.getCategoryId() != null).map(Goods::getCategoryId).collect(Collectors.toList());
+            List<Long> storeIds = allByIdIn.stream().filter(e -> e.getStoreId() != null).map(Goods::getStoreId).collect(Collectors.toList());
+
+            Map<Long, GoodsCategoryDTO> goodsCategoryDTOMap = new HashMap<>();
+            if (!CollectionUtils.isEmpty(categoryIds)) {
+                goodsCategoryDTOMap = goodsCategoryService.findAllByInInWithParentInfo(categoryIds);
+            }
+            List<GoodsDTO> goodsDTOS = goodsMapper.toDto(allByIdIn);
+            Map<Long, GoodsCategoryDTO> finalGoodsCategoryDTOMap = goodsCategoryDTOMap;
+            goodsDTOS.stream().filter(e -> e.getCategoryId() != null).forEach(e -> {
+                e.setGoodsCategoryDTO(finalGoodsCategoryDTOMap.get(e.getCategoryId()));
+            });
+            Map<Long, StoreInfoDTO> storeInfoDTOMap = new HashMap<>();
+
+            if (!CollectionUtils.isEmpty(storeIds)) {
+                List<StoreInfoDTO> storeInfoDTOS = storeInfoService.findAllByIdIn(storeIds);
+                storeInfoDTOMap = storeInfoDTOS.stream().collect(Collectors.toMap(StoreInfoDTO::getId, e -> e));
+            }
+            Map<Long, StoreInfoDTO> finalStoreInfoDTOMap = storeInfoDTOMap;
+            goodsDTOS.stream().filter(e -> e.getStoreId() != null).forEach(e -> {
+                e.setStoreInfoDTO(finalStoreInfoDTOMap.get(e.getStoreId()));
+            });
+            return goodsDTOS.stream().collect(Collectors.toMap(GoodsDTO::getId, e -> e));
+        }
+        return map;
     }
 }

@@ -1,0 +1,154 @@
+{
+    "name": "WarehouseInfo",
+    "fields": [
+        {
+            "fieldName": "merchantId",
+            "javadoc": "商户id",
+            "fieldType": "Long"
+        },
+        {
+            "fieldName": "shippingRegionType",
+            "javadoc": "物流类型 1 商家发货",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "warehouseType",
+            "javadoc": "仓库类型 1 自有仓库 2 三方代发",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "warehouseArea",
+            "javadoc": "仓库面积",
+            "fieldType": "Double"
+        },
+        {
+            "fieldName": "warehouseOperatorsNumber",
+            "javadoc": "仓库操作人员数量",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "dailyInvoiceQuantity",
+            "javadoc": "日发货单量 (单/日)",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "signedDelivery",
+            "javadoc": "签约快递",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "shippingSoftwareName",
+            "javadoc": "发货软件名称",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "contacts",
+            "javadoc": "联系人",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "telephone",
+            "javadoc": "发货仓库手机",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "address",
+            "javadoc": "仓库详细地址",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "shipmentsAndReturnsInfoNoDifference",
+            "javadoc": "退货仓库信息是否和发货仓库信息一致",
+            "fieldType": "Boolean"
+        },
+        {
+            "fieldName": "openIndependentAfterSales",
+            "javadoc": "是否支持自主售后",
+            "fieldType": "Boolean"
+        },
+        {
+            "fieldName": "returnWarehouseContact",
+            "javadoc": "退货仓库联系人",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "returnWarehousePhone",
+            "javadoc": "退货仓库联系人",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "provinceId",
+            "javadoc": "发货仓库省id",
+            "fieldType": "Long"
+        },
+        {
+            "fieldName": "cityId",
+            "javadoc": "发货仓库市Id",
+            "fieldType": "Long"
+        },
+        {
+            "fieldName": "countryID",
+            "javadoc": "发货仓库国家Id",
+            "fieldType": "Long"
+        },
+        {
+            "fieldName": "province",
+            "javadoc": "发货仓库省",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "city",
+            "javadoc": "发货仓库市",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "country",
+            "javadoc": "发货仓库国家",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "returnWarehouseProvinceId",
+            "javadoc": "退货仓库省id(如果shipmentsAndReturnsInfoNoDifference为true 不传)",
+            "fieldType": "Long"
+        },
+        {
+            "fieldName": "returnWarehouseCityId",
+            "javadoc": "退货仓库市Id (如果shipmentsAndReturnsInfoNoDifference为true 不传)",
+            "fieldType": "Long"
+        },
+        {
+            "fieldName": "returnWarehouseCountryID",
+            "javadoc": "退货仓库国家Id (如果shipmentsAndReturnsInfoNoDifference为true 不传)",
+            "fieldType": "Long"
+        },
+        {
+            "fieldName": "returnWarehouseProvince",
+            "javadoc": "退货仓库省",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "returnWarehouseCity",
+            "javadoc": "退货仓库市",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "returnWarehouseCountry",
+            "javadoc": "退货仓库国家",
+            "fieldType": "String"
+        }
+    ],
+    "relationships": [],
+    "changelogDate": "20200519123600",
+    "javadoc": "仓库信息",
+    "entityTableName": "warehouse_info",
+    "dto": "mapstruct",
+    "pagination": "pagination",
+    "service": "serviceImpl",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "readOnly": false,
+    "embedded": false,
+    "clientRootFolder": "merchants",
+    "applications": "*",
+    "microserviceName": "merchants"
+}

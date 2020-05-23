@@ -66,16 +66,26 @@ public class BrandDTO implements Serializable {
     private String brandDesc;
 
     /**
-     * 品牌授权类型  0 品牌方 1 一级代理 2 二级代理 3  三级代理
+     * 供应商代理等级  0 品牌方 1 一级代理 2 二级代理 3  三级代理
      */
-    @ApiModelProperty(value = "品牌授权类型  0 品牌方 1 一级代理 2 二级代理 3  三级代理")
+    @ApiModelProperty(value = "供应商代理等级  0 品牌方 1 一级代理 2 二级代理 3  三级代理")
     private Integer brandAuthType;
 
     /**
-     * 授权书信息
+     * 一级授权书信息
      */
-    @ApiModelProperty(value = "授权书信息")
-    private List<OwerOfAttorneyDTO> owerOfAttorney;
+    @ApiModelProperty(value = "一级授权书信息")
+    private OwerOfAttorneyDTO owerOfAttorneyPicLevelOne;
+    /**
+     * 二级授权书信息
+     */
+    @ApiModelProperty(value = "二级授权书信息")
+    private OwerOfAttorneyDTO owerOfAttorneyPicLevelTwo;
+    /**
+     * 三级授权书信息
+     */
+    @ApiModelProperty(value = "三级授权书信息")
+    private OwerOfAttorneyDTO owerOfAttorneyPicLevelThree;
 
     /**
      * 审核状态 -1 未审核 0 未通过  1 通过
@@ -230,12 +240,28 @@ public class BrandDTO implements Serializable {
         this.brandAuthType = brandAuthType;
     }
 
-    public List<OwerOfAttorneyDTO> getOwerOfAttorney() {
-        return owerOfAttorney;
+    public OwerOfAttorneyDTO getOwerOfAttorneyPicLevelOne() {
+        return owerOfAttorneyPicLevelOne;
     }
 
-    public void setOwerOfAttorney(List<OwerOfAttorneyDTO> owerOfAttorney) {
-        this.owerOfAttorney = owerOfAttorney;
+    public void setOwerOfAttorneyPicLevelOne(OwerOfAttorneyDTO owerOfAttorneyPicLevelOne) {
+        this.owerOfAttorneyPicLevelOne = owerOfAttorneyPicLevelOne;
+    }
+
+    public OwerOfAttorneyDTO getOwerOfAttorneyPicLevelTwo() {
+        return owerOfAttorneyPicLevelTwo;
+    }
+
+    public void setOwerOfAttorneyPicLevelTwo(OwerOfAttorneyDTO owerOfAttorneyPicLevelTwo) {
+        this.owerOfAttorneyPicLevelTwo = owerOfAttorneyPicLevelTwo;
+    }
+
+    public OwerOfAttorneyDTO getOwerOfAttorneyPicLevelThree() {
+        return owerOfAttorneyPicLevelThree;
+    }
+
+    public void setOwerOfAttorneyPicLevelThree(OwerOfAttorneyDTO owerOfAttorneyPicLevelThree) {
+        this.owerOfAttorneyPicLevelThree = owerOfAttorneyPicLevelThree;
     }
 
     public Integer getCheckStatus() {
@@ -290,18 +316,26 @@ public class BrandDTO implements Serializable {
     @Override
     public String toString() {
         return "BrandDTO{" +
-            "id=" + getId() +
-            ", brandName='" + getBrandName() + "'" +
-            ", brandNameSecond='" + getBrandNameSecond() + "'" +
-            ", brandCountryId=" + getBrandCountryId() +
-            ", brandLogo='" + getBrandLogo() + "'" +
-            ", tradeMarkRegistrationPic='" + getTradeMarkRegistrationPic() + "'" +
-            ", brandDesc='" + getBrandDesc() + "'" +
-            ", brandAuthType=" + getBrandAuthType() +
-            ", owerOfAttorney='" + getOwerOfAttorney() + "'" +
-            ", checkStatus='" + isCheckStatus() + "'" +
-            ", checkFailureReasons='" + getCheckFailureReasons() + "'" +
-            ", checkTime='" + getCheckTime() + "'" +
-            "}";
+            "id=" + id +
+            ", brandName='" + brandName + '\'' +
+            ", brandNameSecond='" + brandNameSecond + '\'' +
+            ", brandCountryId=" + brandCountryId +
+            ", brandLogo='" + brandLogo + '\'' +
+            ", tradeMarkRegistrationPic=" + tradeMarkRegistrationPic +
+            ", certificateValidStartTime='" + certificateValidStartTime + '\'' +
+            ", certificateValidEndTime='" + certificateValidEndTime + '\'' +
+            ", brandDesc='" + brandDesc + '\'' +
+            ", brandAuthType=" + brandAuthType +
+            ", owerOfAttorneyPicLevelOne=" + owerOfAttorneyPicLevelOne +
+            ", owerOfAttorneyPicLevelTwo=" + owerOfAttorneyPicLevelTwo +
+            ", owerOfAttorneyPicLevelThree=" + owerOfAttorneyPicLevelThree +
+            ", checkStatus=" + checkStatus +
+            ", checkFailureReasons='" + checkFailureReasons + '\'' +
+            ", checkTime=" + checkTime +
+            ", storeId=" + storeId +
+            ", proposer=" + proposer +
+            ", applicationTime=" + applicationTime +
+            ", brandCountry='" + brandCountry + '\'' +
+            '}';
     }
 }

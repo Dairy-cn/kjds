@@ -1,0 +1,26 @@
+ /** 商户推荐 **/
+entity StoreRecommend {
+	 /** id **/
+    id Long,
+    /** 商户id**/
+    storeId String required,
+    /** 是否置顶**/
+    top Boolean,
+
+     /** 创建时间 **/
+    createTime Instant,
+    /** 更新时间 **/
+    updateTime Instant
+
+}
+
+
+// Set pagination options
+paginate * with infinite-scroll
+paginate * with pagination
+dto * with mapstruct
+// Set service options to all except few  except *
+service all with serviceImpl
+// Set an angular suffix
+// angularSuffix * with mySuffix
+

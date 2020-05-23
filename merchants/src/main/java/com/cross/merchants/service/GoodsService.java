@@ -2,11 +2,14 @@ package com.cross.merchants.service;
 
 import com.cross.merchants.service.dto.GoodsDTO;
 
+import com.cross.merchants.service.dto.GoodsRecommendDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import java.time.Instant;
 import java.time.LocalDate;
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 /**
@@ -52,4 +55,7 @@ public interface GoodsService {
      * @param id the id of the entity.
      */
     void delete(Long id);
+
+    Map<Long, GoodsDTO> finAllMapInfo(List<Long> ids);
+
 }

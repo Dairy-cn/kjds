@@ -2,9 +2,11 @@ package com.cross.merchants.service.impl;
 
 import com.cross.merchants.domain.StoreOperatingRecord;
 import com.cross.merchants.repository.StoreOperatingRecordRepository;
+import com.cross.merchants.service.MerchantsCategoryService;
 import com.cross.merchants.service.StoreInfoService;
 import com.cross.merchants.domain.StoreInfo;
 import com.cross.merchants.repository.StoreInfoRepository;
+import com.cross.merchants.service.dto.MerchantsCategoryDTO;
 import com.cross.merchants.service.dto.StoreInfoDTO;
 import com.cross.merchants.service.mapper.StoreInfoMapper;
 import com.cross.utils.CommonUtil;
@@ -15,10 +17,14 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 
 import java.time.Instant;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * Service Implementation for managing {@link StoreInfo}.
@@ -35,10 +41,13 @@ public class StoreInfoServiceImpl implements StoreInfoService {
 
     private final StoreOperatingRecordRepository storeOperatingRecordRepository;
 
-    public StoreInfoServiceImpl(StoreInfoRepository storeInfoRepository, StoreInfoMapper storeInfoMapper, StoreOperatingRecordRepository storeOperatingRecordRepository) {
+    private final MerchantsCategoryService merchantsCategoryService;
+
+    public StoreInfoServiceImpl(StoreInfoRepository storeInfoRepository, StoreInfoMapper storeInfoMapper, StoreOperatingRecordRepository storeOperatingRecordRepository, MerchantsCategoryService merchantsCategoryService) {
         this.storeInfoRepository = storeInfoRepository;
         this.storeInfoMapper = storeInfoMapper;
         this.storeOperatingRecordRepository = storeOperatingRecordRepository;
+        this.merchantsCategoryService = merchantsCategoryService;
     }
 
     /**
@@ -128,7 +137,7 @@ public class StoreInfoServiceImpl implements StoreInfoService {
     }
 
     @Override
-    public StoreInfoDTO updateStoreOperatingStatusInfoWithPlatform(Long id, Integer status,String closeReason) {
+    public StoreInfoDTO updateStoreOperatingStatusInfoWithPlatform(Long id, Integer status, String closeReason) {
         StoreInfo storeInfo = storeInfoRepository.getOne(id);
         if (storeInfo != null) {
             storeInfo.setOperatingStatus(status);
@@ -156,5 +165,40 @@ public class StoreInfoServiceImpl implements StoreInfoService {
     @Override
     public StoreInfoDTO findByCreateUserId(Long userId) {
         return storeInfoMapper.toDto(storeInfoRepository.findFirstByCreateUserId(userId));
+    }
+
+    @Override
+    public StoreInfoDTO findFirstByMerchantId(Long merchantId) {
+        return storeInfoMapper.toDto(storeInfoRepository.findFirstByMerchantsCheckInInfoId(merchantId));
+    }
+
+    @Override
+    public List<StoreInfoDTO> findAllByIdIn(List<Long> ids) {
+        List<StoreInfoDTO> storeInfoDTOS = storeInfoMapper.toDto(storeInfoRepository.findAllByIdIn(ids));
+        if (!CollectionUtils.isEmpty(storeInfoDTOS)) {
+            Map<Long, MerchantsCategoryDTO> merchantsCategoryDTOMap = new HashMap<>();
+            List<Long> storeCategoryIds = storeInfoDTOS.stream().filter(e -> e.getCategoryId() != null).map(StoreInfoDTO::getCategoryId).collect(Collectors.toList());
+            if (!CollectionUtils.isEmpty(storeCategoryIds)) {
+                List<MerchantsCategoryDTO> allByIdIn = merchantsCategoryService.findAllByIdIn(storeCategoryIds);
+                merchantsCategoryDTOMap = allByIdIn.stream().collect(Collectors.toMap(MerchantsCategoryDTO::getId, e -> e));
+            }
+            Map<Long, MerchantsCategoryDTO> finalMerchantsCategoryDTOMap = merchantsCategoryDTOMap;
+            storeInfoDTOS.stream().filter(e -> e.getCategoryId() != null).forEach(e -> {
+                e.setMerchantsCategoryDTO(finalMerchantsCategoryDTOMap.get(e.getCategoryId()));
+            });
+        }
+        return storeInfoDTOS;
+    }
+
+    @Override
+    public StoreInfoDTO getOne(Long id) {
+        StoreInfoDTO storeInfoDTO = storeInfoMapper.toDto(storeInfoRepository.getOne(id));
+        if (null != storeInfoDTO && storeInfoDTO.getCategoryId() != null) {
+            Optional<MerchantsCategoryDTO> one = merchantsCategoryService.findOne(storeInfoDTO.getCategoryId());
+            if(one.isPresent()){
+                storeInfoDTO.setMerchantsCategoryDTO(one.get());
+            }
+        }
+        return storeInfoDTO;
     }
 }

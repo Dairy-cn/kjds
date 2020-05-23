@@ -99,6 +99,18 @@ public class StoreInfoDTO implements Serializable {
     @ApiModelProperty(value = "商户审核信息")
     private MerchantsCheckInInfoDTO merchantsCheckInInfoDTO;
 
+    @ApiModelProperty(value = "商户类目信息",hidden = true)
+    private MerchantsCategoryDTO merchantsCategoryDTO;
+
+
+    public MerchantsCategoryDTO getMerchantsCategoryDTO() {
+        return merchantsCategoryDTO;
+    }
+
+    public void setMerchantsCategoryDTO(MerchantsCategoryDTO merchantsCategoryDTO) {
+        this.merchantsCategoryDTO = merchantsCategoryDTO;
+    }
+
     public MerchantsCheckInInfoDTO getMerchantsCheckInInfoDTO() {
         return merchantsCheckInInfoDTO;
     }

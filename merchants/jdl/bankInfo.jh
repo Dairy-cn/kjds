@@ -1,0 +1,18 @@
+       /** 银行信息 **/
+ entity  BankInfo{
+          /** id **/
+        id Long,
+         /** 银行名称 **/
+        name String,
+}
+
+// Set pagination options
+// paginate ActivityMain with infinite-scroll
+paginate * with pagination
+
+dto * with mapstruct
+
+// Set service options to all except few
+service all with serviceImpl
+// Set an angular suffix
+// angularSuffix * with mySuffix

@@ -145,6 +145,17 @@ public class GoodsDTO implements Serializable {
     @ApiModelProperty(value = "商品属性信息")
     private List<GoodsPropertyDTO> goodsPropertyDTOS;
 
+    @ApiModelProperty(value = "店铺信息", hidden = true)
+    private StoreInfoDTO storeInfoDTO;
+
+    public StoreInfoDTO getStoreInfoDTO() {
+        return storeInfoDTO;
+    }
+
+    public void setStoreInfoDTO(StoreInfoDTO storeInfoDTO) {
+        this.storeInfoDTO = storeInfoDTO;
+    }
+
     public Instant getCreateTime() {
         return createTime;
     }

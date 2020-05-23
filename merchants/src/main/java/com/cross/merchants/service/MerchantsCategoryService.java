@@ -34,6 +34,8 @@ public interface MerchantsCategoryService {
     List<MerchantsCategoryDTO> findAll();
 
 
+    List<MerchantsCategoryDTO> findAllByIdIn(List<Long> ids);
+
     /**
      * Get the "id" merchantsCategory.
      *

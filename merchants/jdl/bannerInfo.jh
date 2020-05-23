@@ -1,0 +1,44 @@
+       /** 广告设置 **/
+ entity  BannerInfo{
+          /** id **/
+        id Long,
+        /** 广告类型 1 商户广告 2 大后台广告 **/
+        bannerType Integer  required,
+         /** 店铺id **/
+        storeId Long,
+       /** 品牌id **/
+       brandId Long,
+       /** 位置类型 1 顶部轮播 2 弹窗 3 A区广告位   **/
+        positionType Integer required,
+         /** 广告位置 1  顶部轮播   2 弹窗 3 A1 4 A2 5 A3  **/
+        positionCode Integer required,
+       /** 图片名称 **/
+        pictureName String required,
+
+      /** 图片地址 **/
+        pictureUrl String required,
+      /** 链接类型 （1 商户商铺  2 商户营业类目 3 商户商品 4 商户商品品类 5 仅展示 6 链接地址 ） **/
+        linkType Integer required,
+      /** 链接地址url **/
+        linkAddress String ,
+
+      /** 展示频率 **/
+    bannerPopSetting String,
+          /** 显示状态  **/
+     showState Boolean,
+            /** 是否置顶  **/
+       top Boolean,
+            /** 业务id  根据链接类型不同  如链接类型为1  businessId 代表商户商铺的id **/
+       businessId Long
+}
+
+// Set pagination options
+// paginate ActivityMain with infinite-scroll
+paginate * with pagination
+
+dto * with mapstruct
+
+// Set service options to all except few
+service all with serviceImpl
+// Set an angular suffix
+// angularSuffix * with mySuffix

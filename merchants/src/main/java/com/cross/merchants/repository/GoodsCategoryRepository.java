@@ -2,6 +2,7 @@ package com.cross.merchants.repository;
 
 import com.cross.merchants.domain.GoodsCategory;
 
+import com.cross.merchants.domain.MerchantsCategory;
 import org.springframework.data.jpa.repository.*;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -42,5 +43,8 @@ public interface GoodsCategoryRepository extends JpaRepository<GoodsCategory, Lo
 
 
     List<GoodsCategory> findByIdIn(List<Long> pid);
+
+
+    List<GoodsCategory> findAllByIdIn(List<Long> ids);
 
 }

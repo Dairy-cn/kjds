@@ -1,0 +1,102 @@
+{
+    "name": "BannerInfo",
+    "fields": [
+        {
+            "fieldName": "bannerType",
+            "javadoc": "广告类型 1 商户广告 2 大后台广告",
+            "fieldType": "Integer",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "storeId",
+            "javadoc": "店铺id",
+            "fieldType": "Long"
+        },
+        {
+            "fieldName": "brandId",
+            "javadoc": "品牌id",
+            "fieldType": "Long"
+        },
+        {
+            "fieldName": "positionType",
+            "javadoc": "位置类型 1 顶部轮播 2 弹窗 3 A区广告位",
+            "fieldType": "Integer",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "positionCode",
+            "javadoc": "广告位置 1  顶部轮播   2 弹窗 3 A1 4 A2 5 A3",
+            "fieldType": "Integer",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "pictureName",
+            "javadoc": "图片名称",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "pictureUrl",
+            "javadoc": "图片地址",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "linkType",
+            "javadoc": "链接类型 （1 商户商铺  2 商户营业类目 3 商户商品 4 商户商品品类 5 仅展示 6 链接地址 ）",
+            "fieldType": "Integer",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "linkAddress",
+            "javadoc": "链接地址url",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "bannerPopSetting",
+            "javadoc": "展示频率",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "showState",
+            "javadoc": "显示状态",
+            "fieldType": "Boolean"
+        },
+        {
+            "fieldName": "top",
+            "javadoc": "是否置顶",
+            "fieldType": "Boolean"
+        },
+        {
+            "fieldName": "businessId",
+            "javadoc": "业务id  根据链接类型不同  如链接类型为1  businessId 代表商户商铺的id",
+            "fieldType": "Long"
+        }
+    ],
+    "relationships": [],
+    "changelogDate": "20200519150900",
+    "javadoc": "广告设置",
+    "entityTableName": "banner_info",
+    "dto": "mapstruct",
+    "pagination": "pagination",
+    "service": "serviceImpl",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "readOnly": false,
+    "embedded": false,
+    "clientRootFolder": "merchants",
+    "applications": "*",
+    "microserviceName": "merchants"
+}

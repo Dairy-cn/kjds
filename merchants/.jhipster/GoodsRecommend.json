@@ -1,0 +1,50 @@
+{
+    "name": "GoodsRecommend",
+    "fields": [
+        {
+            "fieldName": "top",
+            "javadoc": "是否置顶",
+            "fieldType": "Boolean"
+        },
+        {
+            "fieldName": "goodsId",
+            "javadoc": "商品id",
+            "fieldType": "Long",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "bannerId",
+            "javadoc": "广告位置id",
+            "fieldType": "Long",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "createTime",
+            "javadoc": "创建时间",
+            "fieldType": "Instant"
+        },
+        {
+            "fieldName": "updateTime",
+            "javadoc": "更新时间",
+            "fieldType": "Instant"
+        }
+    ],
+    "relationships": [],
+    "changelogDate": "20200520144700",
+    "javadoc": "商品推荐",
+    "entityTableName": "goods_recommend",
+    "dto": "mapstruct",
+    "pagination": "pagination",
+    "service": "serviceImpl",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "readOnly": false,
+    "embedded": false,
+    "clientRootFolder": "merchants",
+    "applications": "*",
+    "microserviceName": "merchants"
+}

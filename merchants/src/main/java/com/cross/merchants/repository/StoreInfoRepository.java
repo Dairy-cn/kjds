@@ -22,4 +22,11 @@ public interface StoreInfoRepository extends JpaRepository<StoreInfo, Long> {
 
 
     StoreInfo findFirstByCreateUserId(Long userId);
+
+    List<StoreInfo> findAllByIdIn(List<Long> ids);
+
+
+    StoreInfo findFirstByMerchantsCheckInInfoId(Long merchantId);
+
+
 }

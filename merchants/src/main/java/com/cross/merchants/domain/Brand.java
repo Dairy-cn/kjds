@@ -1,6 +1,7 @@
 package com.cross.merchants.domain;
 
 
+import com.cross.merchants.service.dto.OwerOfAttorneyDTO;
 import io.swagger.annotations.ApiModelProperty;
 
 import javax.persistence.*;
@@ -78,11 +79,26 @@ public class Brand implements Serializable {
     @Column(name = "brand_auth_type")
     private Integer brandAuthType;
 
+
+
     /**
-     * 授权书信息
+     * 一级授权书信息
      */
-    @Column(name = "ower_of_attorney")
-    private String owerOfAttorney;
+    @ApiModelProperty(value = "一级授权书信息")
+    @Column(name = "one_ower_of_attorney")
+    private String owerOfAttorneyPicLevelOne;
+    /**
+     * 二级授权书信息
+     */
+    @ApiModelProperty(value = "二级授权书信息")
+    @Column(name = "two_ower_of_attorney")
+    private String owerOfAttorneyPicLevelTwo;
+    /**
+     * 三级授权书信息
+     */
+    @ApiModelProperty(value = "三级授权书信息")
+    @Column(name = "three_ower_of_attorney")
+    private String owerOfAttorneyPicLevelThree;
 
     /**
      * 审核状态 -1 未审核 0 未通过  1 通过
@@ -124,6 +140,30 @@ public class Brand implements Serializable {
     private Instant applicationTime;
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
 
+
+    public String getOwerOfAttorneyPicLevelOne() {
+        return owerOfAttorneyPicLevelOne;
+    }
+
+    public void setOwerOfAttorneyPicLevelOne(String owerOfAttorneyPicLevelOne) {
+        this.owerOfAttorneyPicLevelOne = owerOfAttorneyPicLevelOne;
+    }
+
+    public String getOwerOfAttorneyPicLevelTwo() {
+        return owerOfAttorneyPicLevelTwo;
+    }
+
+    public void setOwerOfAttorneyPicLevelTwo(String owerOfAttorneyPicLevelTwo) {
+        this.owerOfAttorneyPicLevelTwo = owerOfAttorneyPicLevelTwo;
+    }
+
+    public String getOwerOfAttorneyPicLevelThree() {
+        return owerOfAttorneyPicLevelThree;
+    }
+
+    public void setOwerOfAttorneyPicLevelThree(String owerOfAttorneyPicLevelThree) {
+        this.owerOfAttorneyPicLevelThree = owerOfAttorneyPicLevelThree;
+    }
 
     public Long getProposer() {
         return proposer;
@@ -268,18 +308,6 @@ public class Brand implements Serializable {
         this.brandAuthType = brandAuthType;
     }
 
-    public String getOwerOfAttorney() {
-        return owerOfAttorney;
-    }
-
-    public Brand owerOfAttorney(String owerOfAttorney) {
-        this.owerOfAttorney = owerOfAttorney;
-        return this;
-    }
-
-    public void setOwerOfAttorney(String owerOfAttorney) {
-        this.owerOfAttorney = owerOfAttorney;
-    }
 
 
     public Brand checkStatus(Integer checkStatus) {
@@ -347,7 +375,9 @@ public class Brand implements Serializable {
             ", certificateValidEndTime='" + certificateValidEndTime + '\'' +
             ", brandDesc='" + brandDesc + '\'' +
             ", brandAuthType=" + brandAuthType +
-            ", owerOfAttorney='" + owerOfAttorney + '\'' +
+            ", owerOfAttorneyPicLevelOne='" + owerOfAttorneyPicLevelOne + '\'' +
+            ", owerOfAttorneyPicLevelTwo=" + owerOfAttorneyPicLevelTwo +
+            ", owerOfAttorneyPicLevelThree=" + owerOfAttorneyPicLevelThree +
             ", checkStatus=" + checkStatus +
             ", checkFailureReasons='" + checkFailureReasons + '\'' +
             ", checkTime=" + checkTime +

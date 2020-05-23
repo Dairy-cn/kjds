@@ -77,6 +77,12 @@ public class MerchantsCategoryServiceImpl implements MerchantsCategoryService {
         return merchantsCategoryMapper.toDto(merchantsCategoryRepository.findAll());
     }
 
+    @Override
+    public List<MerchantsCategoryDTO> findAllByIdIn(List<Long> ids) {
+        return merchantsCategoryMapper.toDto(merchantsCategoryRepository.findAllByIdIn(ids));
+
+    }
+
     /**
      * Get one merchantsCategory by id.
      *

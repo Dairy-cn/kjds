@@ -1,12 +1,18 @@
 package com.cross.merchants.web.rest;
 
+import com.cross.merchants.domain.MerchantsCheckInInfo;
 import com.cross.merchants.domain.StoreOperatingRecord;
+import com.cross.merchants.service.MerchantsCategoryService;
+import com.cross.merchants.service.MerchantsCheckInInfoService;
 import com.cross.merchants.service.StoreInfoService;
 import com.cross.merchants.service.StoreOperatingRecordService;
+import com.cross.merchants.service.dto.MerchantsCategoryDTO;
+import com.cross.merchants.service.dto.MerchantsCheckInInfoDTO;
 import com.cross.merchants.service.dto.StoreOperatingRecordDTO;
 import com.cross.merchants.web.rest.errors.BadRequestAlertException;
 import com.cross.merchants.service.dto.StoreInfoDTO;
 
+import com.cross.utils.CommonUtil;
 import com.cross.utils.R;
 import io.github.jhipster.web.util.HeaderUtil;
 import io.github.jhipster.web.util.PaginationUtil;
@@ -50,6 +56,14 @@ public class StoreInfoResource {
 
     @Autowired
     private StoreOperatingRecordService storeOperatingRecordService;
+
+
+    @Autowired
+    private MerchantsCheckInInfoService merchantsCheckInInfoService;
+
+    @Autowired
+    private MerchantsCategoryService merchantsCategoryService;
+
 
     public StoreInfoResource(StoreInfoService storeInfoService) {
         this.storeInfoService = storeInfoService;
@@ -116,10 +130,29 @@ public class StoreInfoResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the storeInfoDTO, or with status {@code 404 (Not Found)}.
      */
     @GetMapping("/store-infos/{id}")
-    public ResponseEntity<StoreInfoDTO> getStoreInfo(@PathVariable Long id) {
+    @ApiOperation("根据id获取店铺详细信息")
+    public R getStoreInfo(@PathVariable Long id) {
         log.debug("REST request to get StoreInfo : {}", id);
         Optional<StoreInfoDTO> storeInfoDTO = storeInfoService.findOne(id);
-        return ResponseUtil.wrapOrNotFound(storeInfoDTO);
+        return R.ok(storeInfoDTO.get());
+    }
+
+    @GetMapping("/store-infos-by-self")
+    @ApiOperation("根据用户获取店铺详细信息")
+    public R getStoreInfoByUserId() {
+        Long id = CommonUtil.getCurrentLoginUser().getId();
+        MerchantsCheckInInfoDTO oneWithSelfByCheckState = merchantsCheckInInfoService.findOneWithSelfByCheckState(id, 1);
+        if (oneWithSelfByCheckState == null) {
+            return R.error("你未入驻或入驻申请未通过");
+        }
+        StoreInfoDTO storeInfoDTO = storeInfoService.findFirstByMerchantId(oneWithSelfByCheckState.getId());
+        if(storeInfoDTO!=null && storeInfoDTO.getCategoryId()!=null){
+            Optional<MerchantsCategoryDTO> merchantsCategoryServiceOne = merchantsCategoryService.findOne(storeInfoDTO.getCategoryId());
+            if(merchantsCategoryServiceOne.isPresent()){
+                storeInfoDTO.setMerchantsCategoryDTO(merchantsCategoryServiceOne.get());
+            }
+        }
+        return R.ok(storeInfoDTO);
     }
 
     /**
@@ -185,7 +218,7 @@ public class StoreInfoResource {
         return R.ok(storeInfoDTO);
     }
 
-    @DeleteMapping("/store-operating-record-infos/{storeId}")
+    @GetMapping("/store-operating-record-infos/{storeId}")
     @ApiOperation("获取店铺开关闭记录列表")
     public R getStoreOperatingRecordList(@ApiParam("店铺id") @PathVariable Long storeId,
                                          @ApiParam("page") Pageable pageable) {

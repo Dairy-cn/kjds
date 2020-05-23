@@ -50,8 +50,17 @@ public interface StoreInfoService {
 
     StoreInfoDTO updateStoreOperatingStatusInfoWithMerchants(Long id, Integer status);
 
-    StoreInfoDTO updateStoreOperatingStatusInfoWithPlatform(Long id, Integer status,String closeReason);
+    StoreInfoDTO updateStoreOperatingStatusInfoWithPlatform(Long id, Integer status, String closeReason);
 
     StoreInfoDTO findByCreateUserId(Long userId);
+
+
+    StoreInfoDTO findFirstByMerchantId(Long merchantId);
+
+
+    List<StoreInfoDTO> findAllByIdIn(List<Long> ids);
+
+
+    StoreInfoDTO getOne(Long id);
 
 }

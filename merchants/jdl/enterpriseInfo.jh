@@ -1,0 +1,53 @@
+       /** 企业信息 **/
+ entity  EnterpriseInfo{
+          /** id **/
+        id Long,
+        /** 商户id **/
+       merchantId Long,
+
+       /** 开户证明图片 **/
+       openAccountPic String,
+
+             /** 开户银行id **/
+       bankId Long  ,
+
+              /** 对公银行账号 **/
+       forCorporateBankAccountNumber String,
+               /** 开户银行支行 **/
+     bankBranch String,
+  /** 省id **/
+  provinceId Long,
+
+  /** 市Id **/
+  cityId Long,
+
+  /** 国家Id **/
+  countryID Long,
+
+  /** 省 **/
+  province String,
+
+  /** 市 **/
+  city String,
+
+  /** 国家 **/
+  country String,
+
+
+  /** 开户所在详细地址 **/
+  address String,
+    /** 发票类型 1增值税普通发票  2增值税专用发票 **/
+  invoiceType Integer,
+  /** 财务联系电话 **/
+  financialContactNumber String
+ }
+// Set pagination options
+// paginate ActivityMain with infinite-scroll
+paginate * with pagination
+
+dto * with mapstruct
+
+// Set service options to all except few
+service all with serviceImpl
+// Set an angular suffix
+// angularSuffix * with mySuffix

@@ -1,0 +1,77 @@
+       /** 仓库信息 **/
+ entity  WarehouseInfo{
+          /** id **/
+        id Long,
+        /** 商户id **/
+       merchantId Long,
+        /** 发货区域类型 1 保税仓库区 2  境内非保税区 3 跨境直邮 **/
+      shippingRegionType Integer,
+      /** 物流类型 1 商家发货 **/
+      shippingRegionType Integer,
+   /** 仓库类型 1 自有仓库 2 三方代发 **/
+      warehouseType Integer,
+      /** 仓库面积 **/
+     warehouseArea Double,
+     /** 仓库操作人员数量 **/
+     warehouseOperatorsNumber  Integer,
+
+      /** 日发货单量 (单/日)**/
+       dailyInvoiceQuantity  Integer,
+  /**  签约快递 **/
+           signedDelivery  String,
+     /** 发货软件名称 **/
+     shippingSoftwareName  String,
+          /** 联系人 **/
+      contacts  String,
+       /** 发货仓库手机 **/
+       telephone  String,
+       /** 仓库详细地址 **/
+     address  String,
+       /** 退货仓库信息是否和发货仓库信息一致  **/
+       shipmentsAndReturnsInfoNoDifference  Boolean,
+     /** 是否支持自主售后 **/
+     openIndependentAfterSales  Boolean,
+      /** 仓库操作人员数量 **/
+      warehouseOperatorsNumber  Integer,
+       /** 退货仓库联系人 **/
+       returnWarehouseContact  String,
+       /** 退货仓库联系人 **/
+      returnWarehousePhone String,
+        /** 发货仓库省id **/
+        provinceId Long,
+        /** 发货仓库市Id **/
+        cityId Long,
+        /** 发货仓库国家Id **/
+        countryID Long,
+        /** 发货仓库省 **/
+        province String,
+
+        /** 发货仓库市 **/
+        city String,
+        /** 发货仓库国家 **/
+        country String,
+          /** 退货仓库省id(如果shipmentsAndReturnsInfoNoDifference为true 不传) **/
+          returnWarehouseProvinceId Long,
+          /** 退货仓库市Id (如果shipmentsAndReturnsInfoNoDifference为true 不传) **/
+          returnWarehouseCityId Long,
+          /** 退货仓库国家Id (如果shipmentsAndReturnsInfoNoDifference为true 不传) **/
+          returnWarehouseCountryID Long,
+          /** 退货仓库省 **/
+          returnWarehouseProvince String,
+          /** 退货仓库市 **/
+          returnWarehouseCity String,
+          /** 退货仓库国家 **/
+          returnWarehouseCountry String,
+
+}
+
+// Set pagination options
+// paginate ActivityMain with infinite-scroll
+paginate * with pagination
+
+dto * with mapstruct
+
+// Set service options to all except few
+service all with serviceImpl
+// Set an angular suffix
+// angularSuffix * with mySuffix

@@ -34,8 +34,14 @@ public class BrandMapper  {
         } else {
             Brand brand = new Brand();
             BeanUtils.copyProperties(dto,brand);
-            if(!CollectionUtils.isEmpty(dto.getOwerOfAttorney())) {
-                brand.setOwerOfAttorney(JsonUtil.objectToJson(dto.getOwerOfAttorney()));
+            if(dto.getOwerOfAttorneyPicLevelOne()!=null) {
+                brand.setOwerOfAttorneyPicLevelOne(JsonUtil.objectToJson(dto.getOwerOfAttorneyPicLevelOne()));
+            }
+            if(dto.getOwerOfAttorneyPicLevelTwo()!=null) {
+                brand.setOwerOfAttorneyPicLevelTwo(JsonUtil.objectToJson(dto.getOwerOfAttorneyPicLevelTwo()));
+            }
+            if(dto.getOwerOfAttorneyPicLevelThree()!=null) {
+                brand.setOwerOfAttorneyPicLevelThree(JsonUtil.objectToJson(dto.getOwerOfAttorneyPicLevelThree()));
             }
             if(!CollectionUtils.isEmpty(dto.getTradeMarkRegistrationPic())) {
                 brand.setTradeMarkRegistrationPic(JsonUtil.objectToJson(dto.getTradeMarkRegistrationPic()));
@@ -50,8 +56,15 @@ public class BrandMapper  {
         } else {
             BrandDTO brandDTO = new BrandDTO();
            BeanUtils.copyProperties(entity,brandDTO);
-            if(!StringUtils.isEmpty(entity.getOwerOfAttorney())){
-                brandDTO.setOwerOfAttorney(CommonUtil.jsonStringConvertToList(entity.getOwerOfAttorney(), OwerOfAttorneyDTO[].class));
+
+            if(!StringUtils.isEmpty(entity.getOwerOfAttorneyPicLevelOne())) {
+                brandDTO.setOwerOfAttorneyPicLevelOne((OwerOfAttorneyDTO) JsonUtil.jsonToBean(entity.getOwerOfAttorneyPicLevelOne(),OwerOfAttorneyDTO.class));
+            }
+            if(!StringUtils.isEmpty(entity.getOwerOfAttorneyPicLevelTwo())) {
+                brandDTO.setOwerOfAttorneyPicLevelTwo((OwerOfAttorneyDTO) JsonUtil.jsonToBean(entity.getOwerOfAttorneyPicLevelTwo(),OwerOfAttorneyDTO.class));
+            }
+            if(!StringUtils.isEmpty(entity.getOwerOfAttorneyPicLevelThree())) {
+                brandDTO.setOwerOfAttorneyPicLevelThree((OwerOfAttorneyDTO) JsonUtil.jsonToBean(entity.getOwerOfAttorneyPicLevelThree(),OwerOfAttorneyDTO.class));
             }
             if(!StringUtils.isEmpty(entity.getTradeMarkRegistrationPic())){
                 brandDTO.setTradeMarkRegistrationPic(CommonUtil.jsonStringConvertToList(entity.getTradeMarkRegistrationPic(), String[].class));

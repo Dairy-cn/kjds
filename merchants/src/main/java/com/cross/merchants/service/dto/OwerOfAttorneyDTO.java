@@ -16,7 +16,7 @@ import java.util.List;
 @ApiModel(description = "授权书信息")
 public class OwerOfAttorneyDTO  implements Serializable {
 
-    @ApiModelProperty(value = "供应商代理等级 1 一级 2 二级 3 三级")
+    @ApiModelProperty(value = "品牌授权类型 1 一级 2 二级 3 三级")
     private Integer brandAuthLevel;
 
     @ApiModelProperty(value = "授权书信息")

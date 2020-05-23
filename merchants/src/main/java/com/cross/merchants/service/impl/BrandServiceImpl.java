@@ -59,16 +59,32 @@ public class BrandServiceImpl implements BrandService {
 
     private boolean checkParam(BrandDTO brandDTO) {
 
-        if (!CollectionUtils.isEmpty(brandDTO.getOwerOfAttorney())) {
-            Set<Integer> set = new HashSet<>();
-            brandDTO.getOwerOfAttorney().stream().forEach(e -> {
-                set.add(e.getBrandAuthLevel());
-            });
-            if (set.size() != brandDTO.getOwerOfAttorney().size()) {
-                throw new MerchantsException(400, "销售授权链不能重复");
+
+        if (brandDTO.getBrandAuthType() == null) {
+            throw new MerchantsException(400, "供应商代理等级不能为空");
+        }
+        if (1 == brandDTO.getBrandAuthType() && brandDTO.getOwerOfAttorneyPicLevelOne() == null) {
+            throw new MerchantsException(400, "一级授权书信息不能为空");
+        }
+        if (2 == brandDTO.getBrandAuthType()) {
+            if(brandDTO.getOwerOfAttorneyPicLevelOne() == null){
+                throw new MerchantsException(400, "一级授权书信息不能为空");
+            }
+            if(brandDTO.getOwerOfAttorneyPicLevelTwo() == null){
+                throw new MerchantsException(400, "二级授权书信息不能为空");
             }
         }
-
+        if (3== brandDTO.getBrandAuthType()) {
+            if(brandDTO.getOwerOfAttorneyPicLevelOne() == null){
+                throw new MerchantsException(400, "一级授权书信息不能为空");
+            }
+            if(brandDTO.getOwerOfAttorneyPicLevelTwo() == null){
+                throw new MerchantsException(400, "二级授权书信息不能为空");
+            }
+            if(brandDTO.getOwerOfAttorneyPicLevelThree() == null){
+                throw new MerchantsException(400, "三级授权书信息不能为空");
+            }
+        }
         Brand brand = brandRepository.findFirstByStoreIdAndBrandName(brandDTO.getStoreId(), brandDTO.getBrandName());
         if (brandDTO.getId() == null) {
             if (brand != null) {

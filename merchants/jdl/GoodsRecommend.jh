@@ -1,0 +1,28 @@
+ /** 商品推荐 **/
+entity GoodsRecommend {
+	 /** id **/
+    id Long,
+
+    /** 是否置顶**/
+    top Boolean,
+    /** 商品id**/
+    goodsId Long required,
+    /** 广告位置id**/
+    bannerId Long required,
+     /** 创建时间 **/
+    createTime Instant,
+    /** 更新时间 **/
+    updateTime Instant
+
+}
+
+
+// Set pagination options
+paginate * with infinite-scroll
+paginate * with pagination
+dto * with mapstruct
+// Set service options to all except few  except *
+service all with serviceImpl
+// Set an angular suffix
+// angularSuffix * with mySuffix
+

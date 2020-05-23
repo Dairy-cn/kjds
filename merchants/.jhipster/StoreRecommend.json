@@ -1,0 +1,42 @@
+{
+    "name": "StoreRecommend",
+    "fields": [
+        {
+            "fieldName": "storeId",
+            "javadoc": "商户id",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "top",
+            "javadoc": "是否置顶",
+            "fieldType": "Boolean"
+        },
+        {
+            "fieldName": "createTime",
+            "javadoc": "创建时间",
+            "fieldType": "Instant"
+        },
+        {
+            "fieldName": "updateTime",
+            "javadoc": "更新时间",
+            "fieldType": "Instant"
+        }
+    ],
+    "relationships": [],
+    "changelogDate": "20200520132200",
+    "javadoc": "商户推荐",
+    "entityTableName": "store_recommend",
+    "dto": "mapstruct",
+    "pagination": "pagination",
+    "service": "serviceImpl",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "readOnly": false,
+    "embedded": false,
+    "clientRootFolder": "merchants",
+    "applications": "*",
+    "microserviceName": "merchants"
+}

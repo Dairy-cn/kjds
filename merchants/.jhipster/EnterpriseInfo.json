@@ -1,0 +1,89 @@
+{
+    "name": "EnterpriseInfo",
+    "fields": [
+        {
+            "fieldName": "merchantId",
+            "javadoc": "商户id",
+            "fieldType": "Long"
+        },
+        {
+            "fieldName": "openAccountPic",
+            "javadoc": "开户证明图片",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "bankId",
+            "javadoc": "开户银行id",
+            "fieldType": "Long"
+        },
+        {
+            "fieldName": "forCorporateBankAccountNumber",
+            "javadoc": "对公银行账号",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "bankBranch",
+            "javadoc": "开户银行支行",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "provinceId",
+            "javadoc": "省id",
+            "fieldType": "Long"
+        },
+        {
+            "fieldName": "cityId",
+            "javadoc": "市Id",
+            "fieldType": "Long"
+        },
+        {
+            "fieldName": "countryID",
+            "javadoc": "国家Id",
+            "fieldType": "Long"
+        },
+        {
+            "fieldName": "province",
+            "javadoc": "省",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "city",
+            "javadoc": "市",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "country",
+            "javadoc": "国家",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "address",
+            "javadoc": "开户所在详细地址",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "invoiceType",
+            "javadoc": "发票类型 1增值税普通发票  2增值税专用发票",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "financialContactNumber",
+            "javadoc": "财务联系电话",
+            "fieldType": "String"
+        }
+    ],
+    "relationships": [],
+    "changelogDate": "20200519123600",
+    "javadoc": "企业信息",
+    "entityTableName": "enterprise_info",
+    "dto": "mapstruct",
+    "pagination": "pagination",
+    "service": "serviceImpl",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "readOnly": false,
+    "embedded": false,
+    "clientRootFolder": "merchants",
+    "applications": "*",
+    "microserviceName": "merchants"
+}
