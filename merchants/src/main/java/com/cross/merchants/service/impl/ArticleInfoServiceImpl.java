@@ -6,6 +6,8 @@ import com.cross.merchants.domain.ArticleInfo;
 import com.cross.merchants.repository.ArticleInfoRepository;
 import com.cross.merchants.service.dto.ArticleInfoDTO;
 import com.cross.merchants.service.mapper.ArticleInfoMapper;
+import com.cross.utils.CommonUtil;
+import com.cross.utils.RandomUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,8 +18,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.criteria.Predicate;
-import java.time.Instant;
+import java.text.SimpleDateFormat;
+import java.time.*;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -50,6 +54,24 @@ public class ArticleInfoServiceImpl implements ArticleInfoService {
         log.debug("Request to save ArticleInfo : {}", articleInfoDTO);
         if (articleInfoDTO.getId() == null) {
             articleInfoDTO.setCreateTime(Instant.now());
+            String articleNo = "A" + new SimpleDateFormat("yyyyMMdd").format(new Date());
+            //当天零点
+            LocalDateTime todayStart = LocalDateTime.of(LocalDate.now(), LocalTime.MIN);
+            LocalDateTime todayEnd = LocalDateTime.of(LocalDate.now(), LocalTime.MAX);
+            log.info("todayStart" + todayStart);
+            log.info("todayStart instant" + todayStart.toInstant(ZoneOffset.UTC));
+            ArticleInfo articleInfo = articleInfoRepository.findFirstByCreateTimeGreaterThanEqualAndCreateTimeLessThanOrderByIdDesc(todayStart.toInstant(ZoneOffset.UTC), todayEnd.toInstant(ZoneOffset.UTC));
+            String titleNo = articleInfo.getTitleNo();
+            if (articleInfo == null || titleNo == null) {
+                articleNo = articleNo + "001";
+            } else {
+                String substring = titleNo.substring(titleNo.length() - 3, titleNo.length());
+                Long no = Long.valueOf(substring);
+                ++no;
+                articleNo = articleNo + no;
+            }
+            articleInfoDTO.setPageview(0);
+            articleInfoDTO.setTitleNo(articleNo);
         } else {
             articleInfoDTO.setUpdateTime(Instant.now());
         }
@@ -83,7 +105,7 @@ public class ArticleInfoServiceImpl implements ArticleInfoService {
             if (!StringUtils.isBlank(keyWord)) {
                 List<Predicate> listPermission = new ArrayList<>();
                 listPermission.add(b.like(r.get("titleNo").as(String.class), "%" + keyWord.trim() + "%"));
-//                listPermission.add(b.like(r.get("goodsName").as(String.class), "%" + keyWord.trim() + "%"));
+                listPermission.add(b.like(r.get("title").as(String.class), "%" + keyWord.trim() + "%"));
                 Predicate[] predicatesPermissionArr = new Predicate[listPermission.size()];
                 listPredicates.add(b.or(listPermission.toArray(predicatesPermissionArr)));
             }

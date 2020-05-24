@@ -1,0 +1,45 @@
+       /** 用户收货地址  **/
+ entity UserAddress {
+          /** id **/
+        id Long,
+
+  userId Long required/**
+        收货人 **/
+    userName String maxlength(18)
+    /** 地址详情 **/
+    address String maxlength(120)
+
+    /** 手机号 **/
+    phone String maxlength(12)
+    /** 状态1正常-0删除 **/
+    deleteFlag Integer
+    /** 排序 **/
+    sort Integer
+
+    /** 性别 1 男 2 女  0 未知 **/
+    sex Integer
+
+    /** 市 **/
+    city String
+
+    /** 省 **/
+    province String
+
+    /** 县 **/
+    county String
+
+    /** 是否是默认地址 **/
+    defaultFlag Boolean
+
+
+ }
+// Set pagination options
+// paginate ActivityMain with infinite-scroll
+paginate * with pagination
+
+dto * with mapstruct
+
+// Set service options to all except few
+service all with serviceImpl
+// Set an angular suffix
+// angularSuffix * with mySuffix

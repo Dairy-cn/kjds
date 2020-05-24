@@ -1,0 +1,30 @@
+       /** 推荐商品广告 **/
+ entity  GoodsRecommendBrand{
+          /** id **/
+       id Long,
+
+
+      /** 广告上传位置一**/
+     positionOne String,
+      /** 广告上传位置二**/
+     positionTwo String,
+      /** 广告上传位置三**/
+      positionThree String,
+      /** 专区名称 **/
+      divisionName String required,
+
+        /** 是否置顶  **/
+       top Boolean
+
+        }
+
+        // Set pagination options
+        // paginate ActivityMain with infinite-scroll
+        paginate * with pagination
+
+        dto * with mapstruct
+
+        // Set service options to all except few
+        service all with serviceImpl
+        // Set an angular suffix
+        // angularSuffix * with mySuffix

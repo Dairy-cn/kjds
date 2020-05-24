@@ -101,6 +101,13 @@ public class ArticleInfoResource {
         Page<ArticleInfoDTO> page = articleInfoService.findAllByCondition(pageable, keyWord, showState);
         return R.ok(page.getContent(), page.getTotalElements());
     }
+    @GetMapping("/article-infos-c")
+    @ApiOperation("C端-----根据条件获取文件分页列表")
+    public R getAllArticleInfos(Pageable pageable, @ApiParam("关键字查询 文章标题  编号") @RequestParam String keyWord) {
+        log.debug("REST request to get a page of ArticleInfos");
+        Page<ArticleInfoDTO> page = articleInfoService.findAllByCondition(pageable, keyWord, true);
+        return R.ok(page.getContent(), page.getTotalElements());
+    }
 
     /**
      * {@code GET  /article-infos/:id} : get the "id" articleInfo.

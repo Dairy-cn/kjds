@@ -91,7 +91,7 @@ public class BannerInfoServiceImpl implements BannerInfoService {
                         if (count >= 3) {
                             throw new MerchantsException(400, "A区最多可添加3条广告");
                         } else {
-                            int countByCode = bannerInfoRepository.countAllByBannerTypeAndPositionType(bannerInfoDTO.getBannerType(), bannerInfoDTO.getPositionType());
+                            int countByCode = bannerInfoRepository.countAllByBannerTypeAndPositionTypeAndPositionCode(bannerInfoDTO.getBannerType(), bannerInfoDTO.getPositionType(),bannerInfoDTO.getPositionCode());
                             if (countByCode >= 1) {
                                 throw new MerchantsException(400, "A区各区域最多可分别添加1条广告");
                             }
@@ -177,11 +177,7 @@ public class BannerInfoServiceImpl implements BannerInfoService {
         return list;
     }
 
-    @Override
-    public List<BannerInfoDTO> findAllByBannerTypeGroupByPositionCode(Integer bannerType) {
-        List<BannerInfoDTO> list = bannerInfoMapper.toDto(bannerInfoRepository.findAllByBannerTypeGroupByPositionCode(bannerType));
-        return list;
-    }
+
 
     @Override
     public List<BannerInfoDTO> findAllByStoreId(Long storeId) {

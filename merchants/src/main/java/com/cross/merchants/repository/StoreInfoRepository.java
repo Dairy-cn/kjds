@@ -1,5 +1,6 @@
 package com.cross.merchants.repository;
 
+import com.cross.merchants.domain.ArticleInfo;
 import com.cross.merchants.domain.StoreInfo;
 
 import org.springframework.data.jpa.repository.*;
@@ -13,7 +14,7 @@ import java.util.List;
  */
 @SuppressWarnings("unused")
 @Repository
-public interface StoreInfoRepository extends JpaRepository<StoreInfo, Long> {
+public interface StoreInfoRepository extends JpaRepository<StoreInfo, Long> , JpaSpecificationExecutor<StoreInfo>{
 
     @Query(value = "SELECT category_id,COUNT(category_id) AS COUNT FROM store_info    WHERE `category_id` IN :ids GROUP BY category_id ", nativeQuery = true)
     List<Object[]> countMerchantsWithCategoryIds(@Param("ids") List<Long> ids);

@@ -1,0 +1,257 @@
+{
+    "name": "OrderItem",
+    "fields": [
+        {
+            "fieldName": "memberId",
+            "javadoc": "用户Id",
+            "fieldType": "Long"
+        },
+        {
+            "fieldName": "memberName",
+            "javadoc": "用户名称",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "memberPhone",
+            "javadoc": "用户手机号码",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "payOrderId",
+            "javadoc": "支付Id",
+            "fieldType": "Long"
+        },
+        {
+            "fieldName": "payOrderPaymentCode",
+            "javadoc": "支付交易单号",
+            "fieldType": "Long"
+        },
+        {
+            "fieldName": "orderSn",
+            "javadoc": "订单编号",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "createTime",
+            "javadoc": "提交时间",
+            "fieldType": "Instant"
+        },
+        {
+            "fieldName": "memberUsername",
+            "javadoc": "用户帐号",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "totalAmount",
+            "javadoc": "订单总金额",
+            "fieldType": "BigDecimal"
+        },
+        {
+            "fieldName": "payAmount",
+            "javadoc": "应付金额（实际支付金额）",
+            "fieldType": "BigDecimal"
+        },
+        {
+            "fieldName": "freightAmount",
+            "javadoc": "运费金额",
+            "fieldType": "BigDecimal"
+        },
+        {
+            "fieldName": "payType",
+            "javadoc": "支付方式：0->未支付；1->支付宝；2->微信",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "status",
+            "javadoc": "订单状态：0->待付款；1->待发货；2->已发货；3->已完成；4->已关闭；5->无效订单",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "orderType",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "deliveryCompany",
+            "javadoc": "物流公司(配送方式)",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "deliverySn",
+            "javadoc": "物流单号",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "autoConfirmDay",
+            "javadoc": "自动确认时间（天）",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "receiverName",
+            "javadoc": "收货人姓名",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "receiverPhone",
+            "javadoc": "收货人电话",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "receiverPostCode",
+            "javadoc": "收货人邮编",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "receiverProvince",
+            "javadoc": "省份/直辖市",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "receiverCity",
+            "javadoc": "城市",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "receiverRegion",
+            "javadoc": "区",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "receiverDetailAddress",
+            "javadoc": "详细地址",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "note",
+            "javadoc": "订单备注",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "confirmStatus",
+            "javadoc": "确认收货状态：0->未确认；1->已确认",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "deleteStatus",
+            "javadoc": "删除状态：0->未删除；1->已删除",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "paymentTime",
+            "javadoc": "支付时间",
+            "fieldType": "Instant"
+        },
+        {
+            "fieldName": "deliveryTime",
+            "javadoc": "发货时间",
+            "fieldType": "Instant"
+        },
+        {
+            "fieldName": "receiveTime",
+            "javadoc": "确认收货时间",
+            "fieldType": "Instant"
+        },
+        {
+            "fieldName": "commentTime",
+            "javadoc": "修评价时间改时间",
+            "fieldType": "Instant"
+        },
+        {
+            "fieldName": "processingTime",
+            "fieldType": "Instant"
+        },
+        {
+            "fieldName": "modifyTime",
+            "javadoc": "修改时间",
+            "fieldType": "Instant"
+        },
+        {
+            "fieldName": "productId",
+            "javadoc": "产品id",
+            "fieldType": "Long"
+        },
+        {
+            "fieldName": "productPic",
+            "javadoc": "产品图片",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "productName",
+            "javadoc": "产品名称",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "productStoreId",
+            "javadoc": "产品店铺id",
+            "fieldType": "Long"
+        },
+        {
+            "fieldName": "storeName",
+            "javadoc": "产品店铺",
+            "fieldType": "Long"
+        },
+        {
+            "fieldName": "storeNo",
+            "javadoc": "产品店铺编号",
+            "fieldType": "Long"
+        },
+        {
+            "fieldName": "productBrandId",
+            "javadoc": "产品品牌id",
+            "fieldType": "Long"
+        },
+        {
+            "fieldName": "productPrice",
+            "javadoc": "销售价格",
+            "fieldType": "BigDecimal"
+        },
+        {
+            "fieldName": "productQuantity",
+            "javadoc": "购买数量",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "productSkuId",
+            "javadoc": "商品sku编号",
+            "fieldType": "Long"
+        },
+        {
+            "fieldName": "productSkuCode",
+            "javadoc": "商品sku条码",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "productCategoryId",
+            "javadoc": "商品分类id",
+            "fieldType": "Long"
+        },
+        {
+            "fieldName": "productAttr",
+            "javadoc": "商品销售属性:[{'key':'颜色','value':'颜色'},{'key':'容量','value':'4G'}]",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "promotionAmount",
+            "javadoc": "促销优化金额",
+            "fieldType": "BigDecimal"
+        },
+        {
+            "fieldName": "taxesFees",
+            "javadoc": "税费",
+            "fieldType": "BigDecimal"
+        }
+    ],
+    "relationships": [],
+    "changelogDate": "20200524065500",
+    "javadoc": "订单",
+    "entityTableName": "order_item",
+    "dto": "mapstruct",
+    "pagination": "pagination",
+    "service": "serviceImpl",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "readOnly": false,
+    "embedded": false,
+    "clientRootFolder": "merchants",
+    "applications": "*",
+    "microserviceName": "merchants"
+}

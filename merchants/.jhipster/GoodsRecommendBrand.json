@@ -1,0 +1,47 @@
+{
+    "name": "GoodsRecommendBrand",
+    "fields": [
+        {
+            "fieldName": "positionOne",
+            "javadoc": "广告上传位置一",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "positionTwo",
+            "javadoc": "广告上传位置二",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "positionThree",
+            "javadoc": "广告上传位置三",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "divisionName",
+            "javadoc": "专区名称",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "top",
+            "javadoc": "是否置顶",
+            "fieldType": "Boolean"
+        }
+    ],
+    "relationships": [],
+    "changelogDate": "20200523035100",
+    "javadoc": "推荐商品广告",
+    "entityTableName": "goods_recommend_brand",
+    "dto": "mapstruct",
+    "pagination": "pagination",
+    "service": "serviceImpl",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "readOnly": false,
+    "embedded": false,
+    "clientRootFolder": "merchants",
+    "applications": "*",
+    "microserviceName": "merchants"
+}

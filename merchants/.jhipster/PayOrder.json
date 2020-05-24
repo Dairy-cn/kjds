@@ -1,0 +1,159 @@
+{
+    "name": "PayOrder",
+    "fields": [
+        {
+            "fieldName": "memberId",
+            "javadoc": "用户Id",
+            "fieldType": "Long"
+        },
+        {
+            "fieldName": "orderSn",
+            "javadoc": "订单编号",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "createTime",
+            "javadoc": "提交时间",
+            "fieldType": "Instant"
+        },
+        {
+            "fieldName": "memberUsername",
+            "javadoc": "用户帐号",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "totalAmount",
+            "javadoc": "订单总金额",
+            "fieldType": "BigDecimal"
+        },
+        {
+            "fieldName": "payAmount",
+            "javadoc": "应付金额（实际支付金额）",
+            "fieldType": "BigDecimal"
+        },
+        {
+            "fieldName": "freightAmount",
+            "javadoc": "运费金额",
+            "fieldType": "BigDecimal"
+        },
+        {
+            "fieldName": "payType",
+            "javadoc": "支付方式：0->未支付；1->支付宝；2->微信",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "sourceType",
+            "javadoc": "订单来源：0->PC订单；1->app订单",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "status",
+            "javadoc": "订单状态：0->待付款；1->待发货；2->已发货；3->已完成；4->已关闭；5->无效订单",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "deliveryCompany",
+            "javadoc": "物流公司(配送方式)",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "deliverySn",
+            "javadoc": "物流单号",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "autoConfirmDay",
+            "javadoc": "自动确认时间（天）",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "receiverName",
+            "javadoc": "收货人姓名",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "receiverPhone",
+            "javadoc": "收货人电话",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "receiverPostCode",
+            "javadoc": "收货人邮编",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "receiverProvince",
+            "javadoc": "省份/直辖市",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "receiverCity",
+            "javadoc": "城市",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "receiverRegion",
+            "javadoc": "区",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "receiverDetailAddress",
+            "javadoc": "详细地址",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "note",
+            "javadoc": "订单备注",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "confirmStatus",
+            "javadoc": "确认收货状态：0->未确认；1->已确认",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "deleteStatus",
+            "javadoc": "删除状态：0->未删除；1->已删除",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "paymentTime",
+            "javadoc": "支付时间",
+            "fieldType": "Instant"
+        },
+        {
+            "fieldName": "deliveryTime",
+            "javadoc": "发货时间",
+            "fieldType": "Instant"
+        },
+        {
+            "fieldName": "receiveTime",
+            "javadoc": "确认收货时间",
+            "fieldType": "Instant"
+        },
+        {
+            "fieldName": "commentTime",
+            "javadoc": "修评价时间改时间",
+            "fieldType": "Instant"
+        },
+        {
+            "fieldName": "modifyTime",
+            "javadoc": "修改时间",
+            "fieldType": "Instant"
+        }
+    ],
+    "relationships": [],
+    "changelogDate": "20200524065300",
+    "javadoc": "支付支付订单",
+    "entityTableName": "pay_order",
+    "dto": "mapstruct",
+    "pagination": "pagination",
+    "service": "serviceImpl",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "readOnly": false,
+    "embedded": false,
+    "clientRootFolder": "merchants",
+    "applications": "*",
+    "microserviceName": "merchants"
+}

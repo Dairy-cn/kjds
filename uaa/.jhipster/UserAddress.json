@@ -1,0 +1,87 @@
+{
+    "name": "UserAddress",
+    "fields": [
+        {
+            "fieldName": "userId",
+            "javadoc": "收货人",
+            "fieldType": "Long",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "userName",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "maxlength"
+            ],
+            "fieldValidateRulesMaxlength": "18"
+        },
+        {
+            "fieldName": "address",
+            "javadoc": "地址详情",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "maxlength"
+            ],
+            "fieldValidateRulesMaxlength": "120"
+        },
+        {
+            "fieldName": "phone",
+            "javadoc": "手机号",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "maxlength"
+            ],
+            "fieldValidateRulesMaxlength": "12"
+        },
+        {
+            "fieldName": "deleteFlag",
+            "javadoc": "状态1正常-0删除",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "sort",
+            "javadoc": "排序",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "sex",
+            "javadoc": "性别 1 男 2 女  0 未知",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "city",
+            "javadoc": "市",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "province",
+            "javadoc": "省",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "county",
+            "javadoc": "县",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "defaultFlag",
+            "javadoc": "是否是默认地址",
+            "fieldType": "Boolean"
+        }
+    ],
+    "relationships": [],
+    "changelogDate": "20200523102300",
+    "javadoc": "用户收货地址",
+    "entityTableName": "user_address",
+    "dto": "mapstruct",
+    "pagination": "pagination",
+    "service": "serviceImpl",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "readOnly": false,
+    "embedded": false,
+    "clientRootFolder": "",
+    "applications": "*"
+}

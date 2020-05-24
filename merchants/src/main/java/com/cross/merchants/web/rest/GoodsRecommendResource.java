@@ -1,9 +1,11 @@
 package com.cross.merchants.web.rest;
 
 import com.cross.merchants.domain.Goods;
+import com.cross.merchants.service.GoodsRecommendBannerService;
 import com.cross.merchants.service.GoodsRecommendService;
 import com.cross.merchants.service.GoodsService;
 import com.cross.merchants.service.dto.GoodsDTO;
+import com.cross.merchants.service.dto.GoodsRecommendBannerDTO;
 import com.cross.merchants.web.rest.errors.BadRequestAlertException;
 import com.cross.merchants.service.dto.GoodsRecommendDTO;
 
@@ -13,6 +15,7 @@ import io.github.jhipster.web.util.PaginationUtil;
 import io.github.jhipster.web.util.ResponseUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -54,10 +57,12 @@ public class GoodsRecommendResource {
 
     private final GoodsService goodsService;
 
+    private final GoodsRecommendBannerService goodsRecommendBannerService;
 
-    public GoodsRecommendResource(GoodsRecommendService goodsRecommendService, GoodsService goodsService) {
+    public GoodsRecommendResource(GoodsRecommendService goodsRecommendService, GoodsService goodsService, GoodsRecommendBannerService goodsRecommendBannerService) {
         this.goodsRecommendService = goodsRecommendService;
         this.goodsService = goodsService;
+        this.goodsRecommendBannerService = goodsRecommendBannerService;
     }
 
     /**
@@ -108,9 +113,9 @@ public class GoodsRecommendResource {
      */
     @GetMapping("/goods-recommends")
     @ApiOperation("大后台---推荐商品List")
-    public R getAllGoodsRecommends(Pageable pageable) {
+    public R getAllGoodsRecommends(Pageable pageable,@ApiParam("推荐商品类型 1 单品推荐 2 专区推荐") @RequestParam(required = true) Integer goodsRecommendType) {
         log.debug("REST request to get a page of GoodsRecommends");
-        Page<GoodsRecommendDTO> page = goodsRecommendService.findAll(pageable);
+        Page<GoodsRecommendDTO> page = goodsRecommendService.findAllByType(pageable,goodsRecommendType);
         List<GoodsRecommendDTO> list = setParam(page.getContent());
         return R.ok(list, page.getTotalElements());
     }
@@ -162,10 +167,18 @@ public class GoodsRecommendResource {
     private List<GoodsRecommendDTO> setParam(List<GoodsRecommendDTO> goodsRecommendDTOS) {
         if (!CollectionUtils.isEmpty(goodsRecommendDTOS)) {
             List<Long> goodsIds = goodsRecommendDTOS.stream().map(GoodsRecommendDTO::getGoodsId).collect(Collectors.toList());
+            List<Long> goodsBannerIds = goodsRecommendDTOS.stream().filter(e->e.getGoodsRecommendType()==2).map(GoodsRecommendDTO::getGoodsRecommendBannerId).collect(Collectors.toList());
+
             Map<Long, GoodsDTO> goodsDTOMap = goodsService.finAllMapInfo(goodsIds);
             goodsRecommendDTOS.stream().forEach(e -> {
                 e.setGoodsDTO(goodsDTOMap.get(e.getGoodsId()));
             });
+            if(!CollectionUtils.isEmpty(goodsBannerIds)){
+                Map<Long, GoodsRecommendBannerDTO> goodsRecommendBannerDTOMap = goodsRecommendBannerService.finAllMapInfo(goodsBannerIds);
+                goodsRecommendDTOS.stream().filter(e->e.getGoodsRecommendType()==2).forEach(e->{
+                    e.setGoodsRecommendBannerDTO(goodsRecommendBannerDTOMap.get(e.getGoodsRecommendBannerId()));
+                });
+            }
         }
         return goodsRecommendDTOS;
     }

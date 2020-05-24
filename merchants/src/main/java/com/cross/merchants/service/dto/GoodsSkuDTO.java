@@ -88,6 +88,30 @@ public class GoodsSkuDTO implements Serializable {
     private Boolean deleteFlag;
 
 
+
+
+    @ApiModelProperty(value = "销量")
+    private Integer saleVolume;
+
+    @ApiModelProperty(value = "锁定库存",hidden = true)
+    private  Integer lockStock;
+
+    public Integer getLockStock() {
+        return lockStock;
+    }
+
+    public void setLockStock(Integer lockStock) {
+        this.lockStock = lockStock;
+    }
+
+    public Integer getSaleVolume() {
+        return saleVolume;
+    }
+
+    public void setSaleVolume(Integer saleVolume) {
+        this.saleVolume = saleVolume;
+    }
+
     public Long getGoodsId() {
         return goodsId;
     }

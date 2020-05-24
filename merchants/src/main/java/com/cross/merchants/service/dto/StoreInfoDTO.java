@@ -6,6 +6,7 @@ import io.swagger.annotations.ApiModelProperty;
 import javax.persistence.Column;
 import java.time.Instant;
 import java.io.Serializable;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -102,6 +103,17 @@ public class StoreInfoDTO implements Serializable {
     @ApiModelProperty(value = "商户类目信息",hidden = true)
     private MerchantsCategoryDTO merchantsCategoryDTO;
 
+
+    @ApiModelProperty(value = "商品信息",hidden = true)
+    private List<GoodsDTO> goodsDTOList;
+
+    public List<GoodsDTO> getGoodsDTOList() {
+        return goodsDTOList;
+    }
+
+    public void setGoodsDTOList(List<GoodsDTO> goodsDTOList) {
+        this.goodsDTOList = goodsDTOList;
+    }
 
     public MerchantsCategoryDTO getMerchantsCategoryDTO() {
         return merchantsCategoryDTO;
@@ -226,7 +238,6 @@ public class StoreInfoDTO implements Serializable {
     public Long getCategoryId() {
         return categoryId;
     }
-
     public void setCategoryId(Long categoryId) {
         this.categoryId = categoryId;
     }

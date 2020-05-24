@@ -1,0 +1,124 @@
+       /** 订单  **/
+ entity OrderItem {
+ /** id **/
+   id Long
+  /** 用户Id **/
+      memberId Long
+
+/** 用户名称 **/
+  memberName String
+
+/** 用户手机号码 **/
+  memberPhone String
+
+  /** 支付Id **/
+      payOrderId Long
+  /** 支付交易单号 **/
+      payOrderPaymentCode Long
+  /** 订单编号 **/
+      orderSn String
+  /** 提交时间 **/
+      createTime Instant
+  /** 用户帐号 **/
+      memberUsername String
+  /** 订单总金额 **/
+      totalAmount BigDecimal
+  /** 应付金额（实际支付金额） **/
+      payAmount BigDecimal
+  /** 运费金额 **/
+      freightAmount BigDecimal
+
+
+
+  /** 支付方式：0->未支付；1->支付宝；2->微信 **/
+      payType Integer
+  /** 订单状态：0->待付款；1->待发货；2->已发货；3->已完成；4->已关闭；5->无效订单 **/
+      status Integer
+
+      orderType Integer
+  /** 物流公司(配送方式) **/
+      deliveryCompany String
+  /** 物流单号 **/
+      deliverySn String
+  /** 自动确认时间（天） **/
+      autoConfirmDay Integer
+
+
+  /** 收货人姓名 **/
+       receiverName  String
+  /** 收货人电话 **/
+      receiverPhone  String
+  /** 收货人邮编 **/
+      receiverPostCode  String
+  /** 省份/直辖市 **/
+      receiverProvince  String
+  /** 城市 **/
+      receiverCity  String
+  /** 区 **/
+      receiverRegion  String
+  /** 详细地址 **/
+      receiverDetailAddress String
+  /** 订单备注 **/
+      note  String
+  /** 确认收货状态：0->未确认；1->已确认 **/
+         confirmStatus Integer
+  /** 删除状态：0->未删除；1->已删除 **/
+      deleteStatus Integer
+
+  /** 支付时间 **/
+      paymentTime Instant
+  /** 发货时间 **/
+      deliveryTime Instant
+  /** 确认收货时间 **/
+      receiveTime  Instant
+  /** 修评价时间改时间 **/
+      commentTime  Instant
+      processingTime  Instant
+    /** 修改时间 **/
+      modifyTime  Instant
+
+          /** 产品id **/
+        productId  Long
+                /** 产品图片 **/
+         productPic String
+                /** 产品名称 **/
+        productName  String
+                /** 产品店铺id **/
+       productStoreId Long
+         /** 产品店铺 **/
+      storeName Long
+        /** 产品店铺编号 **/
+      storeNo Long
+                    /** 产品品牌id **/
+         productBrandId Long
+                /** 销售价格 **/
+            productPrice BigDecimal
+                /** 购买数量 **/
+            productQuantity Integer
+                /** 商品sku编号 **/
+            productSkuId Long
+
+                /** 商品sku条码 **/
+            productSkuCode String
+
+                /** 商品分类id **/
+            productCategoryId Long
+
+           /** 商品销售属性:[{'key':'颜色','value':'颜色'},{'key':'容量','value':'4G'}] **/
+            productAttr String
+               /** 促销优化金额 **/
+           promotionAmount BigDecimal
+            /** 税费 **/
+           taxesFees BigDecimal
+
+ }
+// Set pagination options
+// paginate ActivityMain with infinite-scroll
+paginate * with pagination
+
+dto * with mapstruct
+
+// Set service options to all except few
+service all with serviceImpl
+// Set an angular suffix
+// angularSuffix * with mySuffix

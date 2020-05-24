@@ -93,8 +93,36 @@ public class GoodsSku implements Serializable {
     @Column(name = "delete_flag")
     private Boolean deleteFlag;
 
+    @Column(name = "sale_volume")
+    private Integer saleVolume;
+
+    @Column(name = "lock_stock")
+    private  Integer lockStock;
+
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
 
+
+    public Integer getLockStock() {
+        return lockStock;
+    }
+    public GoodsSku lockStock(Integer lockStock) {
+        this.lockStock = lockStock;
+        return this;
+    }
+    public void setLockStock(Integer lockStock) {
+        this.lockStock = lockStock;
+    }
+
+    public Integer getSaleVolume() {
+        return saleVolume;
+    }
+    public GoodsSku saleVolume(Integer saleVolume) {
+        this.saleVolume = saleVolume;
+        return this;
+    }
+    public void setSaleVolume(Integer saleVolume) {
+        this.saleVolume = saleVolume;
+    }
 
     public Long getGoodsId() {
         return goodsId;

@@ -50,7 +50,6 @@ public interface BannerInfoService {
 
     List<BannerInfoDTO> findAllByBannerType(Integer bannerType);
 
-    List<BannerInfoDTO> findAllByBannerTypeGroupByPositionCode(Integer bannerType);
 
 
     List<BannerInfoDTO> findAllByStoreId(Long storeId);

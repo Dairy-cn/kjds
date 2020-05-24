@@ -35,9 +35,6 @@ public interface BannerInfoRepository extends JpaRepository<BannerInfo, Long> {
 
 
 
-    @Query(value=" SELECT *  FROM `banner_info` WHERE banner_type = :bannerType  GROUP BY position_code ORDER BY id DESC ",nativeQuery=true)
-    List<BannerInfo> findAllByBannerTypeGroupByPositionCode(@Param("bannerType") Integer bannerType);
-
     @Query(value="update   banner_info set top =false  where banner_type=2",nativeQuery=true)
     @Modifying
     int updateTopStateFalseByPlatform();

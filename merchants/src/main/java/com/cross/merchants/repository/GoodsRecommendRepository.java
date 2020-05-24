@@ -2,6 +2,8 @@ package com.cross.merchants.repository;
 
 import com.cross.merchants.domain.GoodsRecommend;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.*;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -13,8 +15,9 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface GoodsRecommendRepository extends JpaRepository<GoodsRecommend, Long> {
 
-    int countAllByBanner(Integer banner);
+    int countAllByGoodsRecommendType(Integer type);
 
+    int countAllByGoodsRecommendTypeAndGoodsRecommendBannerId(Integer type,Long bannerId);
 
     int countAllByGoodsId(Long goodsId);
 
@@ -27,4 +30,7 @@ public interface GoodsRecommendRepository extends JpaRepository<GoodsRecommend, 
     @Query(value = "update   goods_recommend set top =false  where id = :id", nativeQuery = true)
     @Modifying
     int updateTopStateTrueById(@Param("id") Long id);
+
+
+    Page<GoodsRecommend> findAllByGoodsRecommendTypeOrderByTopDescIdDesc(Pageable pageable, Integer type);
 }

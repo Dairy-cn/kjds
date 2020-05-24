@@ -63,4 +63,6 @@ public interface StoreInfoService {
 
     StoreInfoDTO getOne(Long id);
 
+    List<StoreInfoDTO> findAllByOperatingStatus(Integer state,Long categoryId,String keyWord);
+
 }

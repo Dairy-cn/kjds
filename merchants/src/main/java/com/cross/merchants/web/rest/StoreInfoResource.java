@@ -146,9 +146,9 @@ public class StoreInfoResource {
             return R.error("你未入驻或入驻申请未通过");
         }
         StoreInfoDTO storeInfoDTO = storeInfoService.findFirstByMerchantId(oneWithSelfByCheckState.getId());
-        if(storeInfoDTO!=null && storeInfoDTO.getCategoryId()!=null){
+        if (storeInfoDTO != null && storeInfoDTO.getCategoryId() != null) {
             Optional<MerchantsCategoryDTO> merchantsCategoryServiceOne = merchantsCategoryService.findOne(storeInfoDTO.getCategoryId());
-            if(merchantsCategoryServiceOne.isPresent()){
+            if (merchantsCategoryServiceOne.isPresent()) {
                 storeInfoDTO.setMerchantsCategoryDTO(merchantsCategoryServiceOne.get());
             }
         }
@@ -225,5 +225,15 @@ public class StoreInfoResource {
         log.debug("REST request to delete StoreInfo : {}", storeId);
         Page<StoreOperatingRecordDTO> page = storeOperatingRecordService.findAllAndStoreId(pageable, storeId);
         return R.ok(page.getContent(), page.getTotalElements());
+    }
+
+
+    @GetMapping("/store-infos-list")
+    @ApiOperation("根据条件获取审核通过且在运营的店铺列表")
+    public R getAllStoreInfosByCondition(@ApiParam(required = false, value = "主营业务id") @RequestParam Long categoryId,
+                                         @ApiParam(required = false, value = "店铺名称或编号") @RequestParam String keyWord) {
+        log.debug("REST request to get a page of StoreInfos");
+        List<StoreInfoDTO> page = storeInfoService.findAllByOperatingStatus(1,categoryId,keyWord);
+        return R.ok(page);
     }
 }

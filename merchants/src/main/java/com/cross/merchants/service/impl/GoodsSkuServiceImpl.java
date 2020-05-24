@@ -110,6 +110,26 @@ public class GoodsSkuServiceImpl implements GoodsSkuService {
     @Override
     @Transactional
     public List<GoodsSku> saveAll(List<GoodsSkuDTO> goodsSkuDTOs) {
+        if (!CollectionUtils.isEmpty(goodsSkuDTOs)) {
+            List<GoodsSkuDTO> goodsSkuDTOS = goodsSkuDTOs.stream().filter(e -> e.getId() != null).collect(Collectors.toList());
+            List<Long> ids = goodsSkuDTOs.stream().filter(e -> e.getId() != null).map(GoodsSkuDTO::getId).collect(Collectors.toList());
+            List<GoodsSku> goodsSku = goodsSkuRepository.findAllByIdInAndDeleteFlag(ids, false);
+            Map<Long, GoodsSku> goodsSkuMap = new HashMap<>();
+            if (!CollectionUtils.isEmpty(goodsSku)) {
+                goodsSkuMap = goodsSku.stream().collect(Collectors.toMap(GoodsSku::getId, e -> e));
+            }
+            Map<Long, GoodsSku> finalGoodsSkuMap = goodsSkuMap;
+            goodsSkuDTOS.stream().forEach(e -> {
+                GoodsSku db = finalGoodsSkuMap.get(e.getId());
+                if (db != null) {
+                    e.setLockStock(db.getLockStock());
+                    e.setSaleVolume(db.getSaleVolume());
+                    e.setStock(db.getStock());
+                }
+            });
+        }
         return goodsSkuRepository.saveAll(goodsSkuMapper.toEntity(goodsSkuDTOs));
     }
+
 }
+

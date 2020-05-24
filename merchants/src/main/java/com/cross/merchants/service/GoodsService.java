@@ -39,7 +39,7 @@ public interface GoodsService {
     Page<GoodsDTO> getAllGoodsByCondition(Pageable pageable, Long storeId, Long brandId, Boolean saleState, Integer checkState, Instant startTime, Instant endTime, String keyWord, Integer goodsType);
 
 
-    Page<GoodsDTO> getAllGoodsByCondition(Pageable pageable, Long storeId, Long brandId, Integer checkState, Instant startTime, Instant endTime, String keyWord,Instant startCheckTime,Instant endCheckTime,Long oneCategoryId,Long twoCategoryId,Long thirdCategoryId);
+    Page<GoodsDTO> getAllGoodsByCondition(Pageable pageable, Long storeId, Long brandId, Integer checkState, Instant startTime, Instant endTime, String keyWord, Instant startCheckTime, Instant endCheckTime, Long oneCategoryId, Long twoCategoryId, Long thirdCategoryId);
 
     /**
      * Get the "id" goods.
@@ -57,5 +57,7 @@ public interface GoodsService {
     void delete(Long id);
 
     Map<Long, GoodsDTO> finAllMapInfo(List<Long> ids);
+
+    List<GoodsDTO> findAllByCategoryIdAndKeywordAndCheckStateAndSaleState(Long storeId,Long categoryId, String keyword, Boolean saleState,Integer checkState);
 
 }

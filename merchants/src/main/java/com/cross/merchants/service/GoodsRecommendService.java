@@ -50,6 +50,8 @@ public interface GoodsRecommendService {
 
     GoodsRecommendDTO getOne(Long id);
 
+    Page<GoodsRecommendDTO> findAllByType(Pageable pageable,Integer type);
+
 
 
 }

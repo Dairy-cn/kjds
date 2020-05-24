@@ -29,17 +29,27 @@ public class GoodsRecommendDTO implements Serializable {
     private Long goodsId;
 
     /**
-     * 广告位置
+     * 商品推荐类型
      */
     @NotNull
-    @ApiModelProperty(value = "广告位置   7 C1 8 C2 9 C3 10 C4 11 C5 12 C6", required = true)
-    private Integer banner;
+    @ApiModelProperty(value = "商品推荐类型 1 单品推荐 2 专区商品推荐", required = true)
+    private Integer goodsRecommendType;
+
+
+    /**
+     *推荐专区 专区id(商品推荐广告id)
+     */
+    @ApiModelProperty(value = "推荐专区 专区id(商品推荐广告id)")
+    private Long goodsRecommendBannerId;
+
 
     /**
      * 创建时间
      */
     @ApiModelProperty(value = "创建时间")
     private Instant createTime;
+
+
 
     /**
      * 更新时间
@@ -49,6 +59,21 @@ public class GoodsRecommendDTO implements Serializable {
 
     @ApiModelProperty(value = "商品信息",hidden = true)
     private GoodsDTO goodsDTO;
+
+
+    /**
+     *推荐专区信息
+     */
+    @ApiModelProperty(value = "推荐专区信息",hidden = true)
+    private GoodsRecommendBannerDTO goodsRecommendBannerDTO;
+
+    public GoodsRecommendBannerDTO getGoodsRecommendBannerDTO() {
+        return goodsRecommendBannerDTO;
+    }
+
+    public void setGoodsRecommendBannerDTO(GoodsRecommendBannerDTO goodsRecommendBannerDTO) {
+        this.goodsRecommendBannerDTO = goodsRecommendBannerDTO;
+    }
 
     public GoodsDTO getGoodsDTO() {
         return goodsDTO;
@@ -86,12 +111,20 @@ public class GoodsRecommendDTO implements Serializable {
         return top;
     }
 
-    public Integer getBanner() {
-        return banner;
+    public Integer getGoodsRecommendType() {
+        return goodsRecommendType;
     }
 
-    public void setBanner(Integer banner) {
-        this.banner = banner;
+    public void setGoodsRecommendType(Integer goodsRecommendType) {
+        this.goodsRecommendType = goodsRecommendType;
+    }
+
+    public Long getGoodsRecommendBannerId() {
+        return goodsRecommendBannerId;
+    }
+
+    public void setGoodsRecommendBannerId(Long goodsRecommendBannerId) {
+        this.goodsRecommendBannerId = goodsRecommendBannerId;
     }
 
     public Instant getCreateTime() {
@@ -134,12 +167,14 @@ public class GoodsRecommendDTO implements Serializable {
     @Override
     public String toString() {
         return "GoodsRecommendDTO{" +
-            "id=" + getId() +
-            ", top='" + isTop() + "'" +
-            ", goodsId=" + getGoodsId() +
-            ", bannerId=" + getBanner() +
-            ", createTime='" + getCreateTime() + "'" +
-            ", updateTime='" + getUpdateTime() + "'" +
-            "}";
+            "id=" + id +
+            ", top=" + top +
+            ", goodsId=" + goodsId +
+            ", goodsRecommendType=" + goodsRecommendType +
+            ", goodsRecommendBannerId=" + goodsRecommendBannerId +
+            ", createTime=" + createTime +
+            ", updateTime=" + updateTime +
+            ", goodsDTO=" + goodsDTO +
+            '}';
     }
 }

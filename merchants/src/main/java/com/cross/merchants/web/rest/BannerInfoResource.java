@@ -155,20 +155,14 @@ public class BannerInfoResource {
 
 
     @GetMapping("/banner-infos-type")
-    @ApiOperation("大后台--根据广告类型获取广告list")
-    public R getAllBannerInfosByType(@ApiParam("类型 1 商户广告 2 大后台广告 3 商户推荐广告  4 商品推荐广告") @RequestParam Integer bannerType) {
+    @ApiOperation("大后台/商户--根据广告类型获取广告list")
+    public R getAllBannerInfosByType(@ApiParam("类型 1 商户广告 2 大后台广告 3 商户推荐广告") @RequestParam Integer bannerType) {
         log.debug("REST request to get a page of BannerInfos");
         List<BannerInfoDTO> list = bannerInfoService.findAllByBannerType(bannerType);
 
         return R.ok(list);
     }
-    @GetMapping("/goods-recommend-banner-infos")
-    @ApiOperation("大后台--获取商品推荐广告列表(添加推荐商品时用的接口)")
-    public R getAllGoodsRecommentBannerInfosByType( ) {
-        log.debug("REST request to get a page of BannerInfos");
-        List<BannerInfoDTO> list = bannerInfoService.findAllByBannerTypeGroupByPositionCode(4);
-        return R.ok(list);
-    }
+
 
     @GetMapping("/banner-infos-merchant/{storeId}")
     @ApiOperation("大后台--根据条件获取广告list")

@@ -57,19 +57,29 @@ public class GoodsRecommendServiceImpl implements GoodsRecommendService {
     }
 
     private boolean checkParam(GoodsRecommendDTO goodsRecommendDTO) {
-        int countByBanner = goodsRecommendRepository.countAllByBanner(goodsRecommendDTO.getBanner());
-        if (goodsRecommendDTO.getId() == null && countByBanner > 4) {
-            throw new MerchantsException(400, "每个专区可推荐4个商品");
+
+        if (goodsRecommendDTO.getId() == null) {
+            int countByType = goodsRecommendRepository.countAllByGoodsRecommendType(goodsRecommendDTO.getGoodsRecommendType());
+            if (goodsRecommendDTO.getGoodsRecommendType() == 1 && countByType >= 9) {
+                throw new MerchantsException(400, "单品推荐最多可推荐9个");
+            } else if (goodsRecommendDTO.getGoodsRecommendType() == 2) {
+                if (goodsRecommendDTO.getGoodsRecommendBannerId() == null) {
+                    throw new MerchantsException(400, "请选择推荐专区");
+                }
+                int countByTypeAndPosition = goodsRecommendRepository.countAllByGoodsRecommendTypeAndGoodsRecommendBannerId(goodsRecommendDTO.getGoodsRecommendType(), goodsRecommendDTO.getGoodsRecommendBannerId());
+                if (countByTypeAndPosition >= 4) {
+                    throw new MerchantsException(400, "一个推荐专区最多可推荐4个");
+                }
+            }
+
+
         }
-        int countAllByGoodsId = goodsRecommendRepository.countAllByGoodsId(goodsRecommendDTO.getGoodsId());
-        if (countAllByGoodsId > 0) {
-            throw new MerchantsException(400, "该商品已添加,请勿重复添加");
-        }
+
         Goods one = goodsRepository.getOne(goodsRecommendDTO.getGoodsId());
-        if(one==null){
+        if (one == null) {
             throw new MerchantsException(400, "商品不存在");
         }
-        if(one.getSaleState()==null || !one.getSaleState()){
+        if (one.getSaleState() == null || !one.getSaleState()) {
             throw new MerchantsException(400, "该商品并未上架,请先上架后再操作");
         }
         return true;
@@ -125,6 +135,11 @@ public class GoodsRecommendServiceImpl implements GoodsRecommendService {
     @Override
     public GoodsRecommendDTO getOne(Long id) {
         return goodsRecommendMapper.toDto(goodsRecommendRepository.getOne(id));
+    }
+
+    @Override
+    public Page<GoodsRecommendDTO> findAllByType(Pageable pageable, Integer type) {
+        return goodsRecommendRepository.findAllByGoodsRecommendTypeOrderByTopDescIdDesc(pageable, type).map(goodsRecommendMapper::toDto);
     }
 
 

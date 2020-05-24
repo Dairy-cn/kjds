@@ -148,6 +148,29 @@ public class GoodsDTO implements Serializable {
     @ApiModelProperty(value = "店铺信息", hidden = true)
     private StoreInfoDTO storeInfoDTO;
 
+
+    @ApiModelProperty(value = "店铺信息", hidden = true)
+    private BrandDTO brandDTO;
+
+    @ApiModelProperty(value = "购物车信息", hidden = true)
+    private List<CartItemDTO> cartItemDTOS;
+
+    public List<CartItemDTO> getCartItemDTOS() {
+        return cartItemDTOS;
+    }
+
+    public void setCartItemDTOS(List<CartItemDTO> cartItemDTOS) {
+        this.cartItemDTOS = cartItemDTOS;
+    }
+
+    public BrandDTO getBrandDTO() {
+        return brandDTO;
+    }
+
+    public void setBrandDTO(BrandDTO brandDTO) {
+        this.brandDTO = brandDTO;
+    }
+
     public StoreInfoDTO getStoreInfoDTO() {
         return storeInfoDTO;
     }

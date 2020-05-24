@@ -1,0 +1,53 @@
+       /** 购物车相关  **/
+ entity CartItem {
+          /** id **/
+        id Long,
+     /** 产品id **/
+     productId Long,
+     /** 规格Id **/
+      productSkuId Long,
+      /** 用户Id **/
+      userId Long ,
+       /** 购买数量 **/
+     quantity Integer,
+  /** 添加到购物车的价格 **/
+       price BigDecimal,
+
+     /** 商品主图 **/
+      productPic String,
+            /** 商品名称 **/
+     productName String,
+         /** 商品副标题（卖点） **/
+     productSubTitle String,
+   /**商品sku条码 **/
+    productSkuCode String,
+       /**会员昵称 **/
+     memberNickname String,
+     /**创建时间 **/
+             createDate Instant,
+          /**修改时间 **/
+
+    modifyDate Instant,
+    /**是否删除 **/
+       Boolean deleteStatus,
+        /**商品分类 **/
+     productCategoryId Long,
+
+      /**商品编号 **/
+      productSn String,
+     /**商品销售属性:[{'key':'颜色','value':'颜色'},{'key':'容量','value':'4G'}] **/
+    productAttr String,
+     /**店铺Id **/
+    storeId Long,
+
+ }
+// Set pagination options
+// paginate ActivityMain with infinite-scroll
+paginate * with pagination
+
+dto * with mapstruct
+
+// Set service options to all except few
+service all with serviceImpl
+// Set an angular suffix
+// angularSuffix * with mySuffix

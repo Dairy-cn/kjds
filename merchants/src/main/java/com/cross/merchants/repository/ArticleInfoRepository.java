@@ -6,6 +6,8 @@ import org.springframework.data.jpa.repository.*;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.time.Instant;
+
 /**
  * Spring Data  repository for the ArticleInfo entity.
  */
@@ -25,7 +27,10 @@ public interface ArticleInfoRepository extends JpaRepository<ArticleInfo, Long>,
 
     @Query(value = "UPDATE `article_info` SET show_state= :state WHERE id= :id", nativeQuery = true)
     @Modifying
-    int updateShowState(@Param("id") Long id,@Param("state") Boolean state);
+    int updateShowState(@Param("id") Long id, @Param("state") Boolean state);
+
+
+    ArticleInfo findFirstByCreateTimeGreaterThanEqualAndCreateTimeLessThanOrderByIdDesc(Instant start, Instant endTime);
 
 
 }

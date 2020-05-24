@@ -19,10 +19,10 @@ public class BannerInfoDTO implements Serializable {
     private Long id;
 
     /**
-     * 广告类型 1 商户广告 2 大后台广告 3 商户推荐广告  4 商品推荐广告
+     * 广告类型 1 商户广告 2 大后台广告 3 商户推荐广告
      */
     @NotNull
-    @ApiModelProperty(value = "广告类型 1 商户广告 2 大后台广告 3 商户推荐广告  4 商品推荐广告", required = true)
+    @ApiModelProperty(value = "广告类型 1 商户广告 2 大后台广告 3 商户推荐广告 ", required = true)
     private Integer bannerType;
 
     /**
@@ -41,25 +41,17 @@ public class BannerInfoDTO implements Serializable {
      * 位置类型 1 顶部轮播 2 弹窗 3 A区广告位
      */
     @NotNull
-    @ApiModelProperty(value = "位置类型 1 顶部轮播 2 弹窗 3 A区广告位 4 B区广告位 5 C区广告位 ", required = true)
+    @ApiModelProperty(value = "位置类型 1 顶部轮播 2 弹窗 3 A区广告位 4 B区广告位  ", required = true)
     private Integer positionType;
 
     /**
      * 广告位置 1  顶部轮播   2 弹窗 3 A1 4 A2 5 A3
      */
     @NotNull
-    @ApiModelProperty(value = "广告位置 1  顶部轮播   2 弹窗 3 A1 4 A2 5 A3  6 B1 7 C1 8 C2 9 C3 10 C4 11 C5 12 C6  ", required = true)
+    @ApiModelProperty(value = "广告位置 1  顶部轮播   2 弹窗 3 A1 4 A2 5 A3  6 B1 ", required = true)
     private Integer positionCode;
 
 
-    /**
-     * 广告上传位置   1
-     */
-    @ApiModelProperty(value = "1 2 3 eg 如果是商品推荐广告 positionCode=7 则代表上传位置是C1-1 ")
-    private Integer subPositionCode;
-
-    @ApiModelProperty(value = "专区名称")
-    private String divisionName;
 
     /**
      * 图片名称
@@ -125,21 +117,7 @@ public class BannerInfoDTO implements Serializable {
     @ApiModelProperty(value = "广告状态（是否失效）")
     private Boolean bannerState;
 
-    public Integer getSubPositionCode() {
-        return subPositionCode;
-    }
 
-    public void setSubPositionCode(Integer subPositionCode) {
-        this.subPositionCode = subPositionCode;
-    }
-
-    public String getDivisionName() {
-        return divisionName;
-    }
-
-    public void setDivisionName(String divisionName) {
-        this.divisionName = divisionName;
-    }
 
     public String getBusinessName() {
         return businessName;

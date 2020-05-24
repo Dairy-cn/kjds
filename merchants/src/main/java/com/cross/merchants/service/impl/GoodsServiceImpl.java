@@ -89,6 +89,7 @@ public class GoodsServiceImpl implements GoodsService {
         Goods goods = goodsMapper.toEntity(goodsDTO);
         goods = goodsRepository.save(goods);
         if (goodsDTO.getId() == null) {
+            goodsDTO.setDeleteFlag(false);
             //添加sku
             if (!CollectionUtils.isEmpty(goodsDTO.getGoodsSkuDTOS())) {
                 Goods finalGoods = goods;
@@ -115,7 +116,7 @@ public class GoodsServiceImpl implements GoodsService {
             List<Long> dbIds = dbGoodsSku.stream().map(e -> e.getId()).collect(Collectors.toList());
             if (!CollectionUtils.isEmpty(goodsDTO.getGoodsSkuDTOS())) {
                 List<Long> updateIds = goodsDTO.getGoodsSkuDTOS().stream().filter(e -> e.getId() != null).map(GoodsSkuDTO::getId).collect(Collectors.toList());
-                dbIds = dbIds.stream().filter(e -> updateIds.contains(e)).collect(Collectors.toList());
+                dbIds = dbIds.stream().filter(e -> !updateIds.contains(e)).collect(Collectors.toList());
             }
             if (!CollectionUtils.isEmpty(dbIds)) {
                 goodsSkuRepository.deleteByIdIn(dbIds);
@@ -125,6 +126,10 @@ public class GoodsServiceImpl implements GoodsService {
                 goodsDTO.getGoodsSkuDTOS().stream().forEach(e -> {
                     e.setGoodsId(finalGoods1.getId());
                     e.setDeleteFlag(false);
+                    if (e.getId() == null) {
+                        e.setSaleVolume(0);
+                        e.setLockStock(0);
+                    }
                 });
                 goodsSkuService.saveAll(goodsDTO.getGoodsSkuDTOS());
             }
@@ -134,7 +139,7 @@ public class GoodsServiceImpl implements GoodsService {
             List<Long> dbGoodsPropertiesIds = goodsProperties.stream().map(e -> e.getId()).collect(Collectors.toList());
             if (!CollectionUtils.isEmpty(goodsDTO.getGoodsPropertyDTOS())) {
                 List<Long> updatePropertiesIds = goodsDTO.getGoodsPropertyDTOS().stream().filter(e -> e.getId() != null).map(GoodsPropertyDTO::getId).collect(Collectors.toList());
-                dbGoodsPropertiesIds = dbGoodsPropertiesIds.stream().filter(e -> updatePropertiesIds.contains(e)).collect(Collectors.toList());
+                dbGoodsPropertiesIds = dbGoodsPropertiesIds.stream().filter(e -> !updatePropertiesIds.contains(e)).collect(Collectors.toList());
             }
             if (!CollectionUtils.isEmpty(dbGoodsPropertiesIds)) {
                 goodsPropertyRepository.deleteByIdIn(dbGoodsPropertiesIds);
@@ -159,7 +164,7 @@ public class GoodsServiceImpl implements GoodsService {
     private boolean checkParam(GoodsDTO goodsDTO) {
         Goods dbGoods = goodsRepository.findFirstByStoreIdAndBrandIdAndGoodsNameAndDeleteFlag(goodsDTO.getStoreId(), goodsDTO.getBrandId(), goodsDTO.getGoodsName(), false);
         if (dbGoods != null) {
-            if (goodsDTO.getId() != null || goodsDTO.getId() != dbGoods.getId()) {
+            if (goodsDTO.getId() == null || (goodsDTO.getId() != null && goodsDTO.getId() != dbGoods.getId())) {
                 throw new MerchantsException(400, "该店铺下已存在相同名称的商品");
             }
         }
@@ -224,7 +229,7 @@ public class GoodsServiceImpl implements GoodsService {
             } else if (goodsType != null && 2 == goodsType) {
                 listPredicates.add(b.notEqual(r.get("checkStatus").as(Integer.class), 1));
             }
-
+            listPredicates.add(b.notEqual(r.get("deleteFlag").as(Boolean.class), true));
             if (!StringUtils.isBlank(keyWord)) {
                 List<Predicate> listPermission = new ArrayList<>();
                 listPermission.add(b.like(r.get("goodsNo").as(String.class), "%" + keyWord.trim() + "%"));
@@ -285,7 +290,7 @@ public class GoodsServiceImpl implements GoodsService {
             if (brandId != null) {
                 listPredicates.add(b.equal(r.get("brandId").as(Long.class), brandId));
             }
-
+            listPredicates.add(b.notEqual(r.get("deleteFlag").as(Boolean.class), true));
             if (checkState != null) {
                 listPredicates.add(b.equal(r.get("checkStatus").as(Integer.class), checkState));
             }
@@ -377,5 +382,37 @@ public class GoodsServiceImpl implements GoodsService {
             return goodsDTOS.stream().collect(Collectors.toMap(GoodsDTO::getId, e -> e));
         }
         return map;
+    }
+
+    @Override
+    public List<GoodsDTO> findAllByCategoryIdAndKeywordAndCheckStateAndSaleState(Long storeId,Long categoryId, String keyword, Boolean saleState, Integer checkState) {
+        List<Goods> list = goodsRepository.findAll((r, q, b) -> {
+            List<Predicate> listPredicates = new ArrayList<>();
+
+            if (storeId != null) {
+                listPredicates.add(b.equal(r.get("storeId").as(Long.class), storeId));
+            }
+            if (categoryId != null) {
+                listPredicates.add(b.equal(r.get("categoryId").as(Long.class), categoryId));
+            }
+            if (saleState != null) {
+                listPredicates.add(b.equal(r.get("saleState").as(Boolean.class), saleState));
+            }
+            listPredicates.add(b.notEqual(r.get("deleteFlag").as(Boolean.class), true));
+            if (checkState != null) {
+                listPredicates.add(b.equal(r.get("checkStatus").as(Integer.class), checkState));
+            }
+
+            if (!StringUtils.isBlank(keyword)) {
+                List<Predicate> listPermission = new ArrayList<>();
+                listPermission.add(b.like(r.get("goodsNo").as(String.class), "%" + keyword.trim() + "%"));
+                listPermission.add(b.like(r.get("goodsName").as(String.class), "%" + keyword.trim() + "%"));
+                Predicate[] predicatesPermissionArr = new Predicate[listPermission.size()];
+                listPredicates.add(b.or(listPermission.toArray(predicatesPermissionArr)));
+            }
+            Predicate[] arrayPredicates = new Predicate[listPredicates.size()];
+            return b.and(listPredicates.toArray(arrayPredicates));
+        });
+        return goodsMapper.toDto(list);
     }
 }

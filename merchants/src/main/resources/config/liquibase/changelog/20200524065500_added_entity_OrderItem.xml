@@ -1,0 +1,245 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd
+                        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+        <property name="autoIncrement" value="true"/>
+
+    <!--
+        Added the entity OrderItem.
+    -->
+    <changeSet id="20200524065500-1" author="jhipster">
+        <createTable tableName="order_item" remarks="订单">
+            <column name="id" type="bigint" autoIncrement="${autoIncrement}">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="member_id" type="bigint" remarks="用户Id">
+                <constraints nullable="true" />
+            </column>
+            <column name="member_name" type="varchar(255)" remarks="用户名称">
+                <constraints nullable="true" />
+            </column>
+            <column name="member_phone" type="varchar(255)" remarks="用户手机号码">
+                <constraints nullable="true" />
+            </column>
+            <column name="pay_order_id" type="bigint" remarks="支付Id">
+                <constraints nullable="true" />
+            </column>
+            <column name="pay_order_payment_code" type="bigint" remarks="支付交易单号">
+                <constraints nullable="true" />
+            </column>
+            <column name="order_sn" type="varchar(255)" remarks="订单编号">
+                <constraints nullable="true" />
+            </column>
+            <column name="create_time" type="datetime" remarks="提交时间">
+                <constraints nullable="true" />
+            </column>
+            <column name="member_username" type="varchar(255)" remarks="用户帐号">
+                <constraints nullable="true" />
+            </column>
+            <column name="total_amount" type="decimal(21,2)" remarks="订单总金额">
+                <constraints nullable="true" />
+            </column>
+            <column name="pay_amount" type="decimal(21,2)" remarks="应付金额（实际支付金额）">
+                <constraints nullable="true" />
+            </column>
+            <column name="freight_amount" type="decimal(21,2)" remarks="运费金额">
+                <constraints nullable="true" />
+            </column>
+            <column name="pay_type" type="integer" remarks="支付方式：0-&gt;未支付；1-&gt;支付宝；2-&gt;微信">
+                <constraints nullable="true" />
+            </column>
+            <column name="status" type="integer" remarks="订单状态：0-&gt;待付款；1-&gt;待发货；2-&gt;已发货；3-&gt;已完成；4-&gt;已关闭；5-&gt;无效订单">
+                <constraints nullable="true" />
+            </column>
+            <column name="order_type" type="integer">
+                <constraints nullable="true" />
+            </column>
+            <column name="delivery_company" type="varchar(255)" remarks="物流公司(配送方式)">
+                <constraints nullable="true" />
+            </column>
+            <column name="delivery_sn" type="varchar(255)" remarks="物流单号">
+                <constraints nullable="true" />
+            </column>
+            <column name="auto_confirm_day" type="integer" remarks="自动确认时间（天）">
+                <constraints nullable="true" />
+            </column>
+            <column name="receiver_name" type="varchar(255)" remarks="收货人姓名">
+                <constraints nullable="true" />
+            </column>
+            <column name="receiver_phone" type="varchar(255)" remarks="收货人电话">
+                <constraints nullable="true" />
+            </column>
+            <column name="receiver_post_code" type="varchar(255)" remarks="收货人邮编">
+                <constraints nullable="true" />
+            </column>
+            <column name="receiver_province" type="varchar(255)" remarks="省份/直辖市">
+                <constraints nullable="true" />
+            </column>
+            <column name="receiver_city" type="varchar(255)" remarks="城市">
+                <constraints nullable="true" />
+            </column>
+            <column name="receiver_region" type="varchar(255)" remarks="区">
+                <constraints nullable="true" />
+            </column>
+            <column name="receiver_detail_address" type="varchar(255)" remarks="详细地址">
+                <constraints nullable="true" />
+            </column>
+            <column name="note" type="varchar(255)" remarks="订单备注">
+                <constraints nullable="true" />
+            </column>
+            <column name="confirm_status" type="integer" remarks="确认收货状态：0-&gt;未确认；1-&gt;已确认">
+                <constraints nullable="true" />
+            </column>
+            <column name="delete_status" type="integer" remarks="删除状态：0-&gt;未删除；1-&gt;已删除">
+                <constraints nullable="true" />
+            </column>
+            <column name="payment_time" type="datetime" remarks="支付时间">
+                <constraints nullable="true" />
+            </column>
+            <column name="delivery_time" type="datetime" remarks="发货时间">
+                <constraints nullable="true" />
+            </column>
+            <column name="receive_time" type="datetime" remarks="确认收货时间">
+                <constraints nullable="true" />
+            </column>
+            <column name="comment_time" type="datetime" remarks="修评价时间改时间">
+                <constraints nullable="true" />
+            </column>
+            <column name="processing_time" type="datetime">
+                <constraints nullable="true" />
+            </column>
+            <column name="modify_time" type="datetime" remarks="修改时间">
+                <constraints nullable="true" />
+            </column>
+            <column name="product_id" type="bigint" remarks="产品id">
+                <constraints nullable="true" />
+            </column>
+            <column name="product_pic" type="varchar(255)" remarks="产品图片">
+                <constraints nullable="true" />
+            </column>
+            <column name="product_name" type="varchar(255)" remarks="产品名称">
+                <constraints nullable="true" />
+            </column>
+            <column name="product_store_id" type="bigint" remarks="产品店铺id">
+                <constraints nullable="true" />
+            </column>
+            <column name="store_name" type="bigint" remarks="产品店铺">
+                <constraints nullable="true" />
+            </column>
+            <column name="store_no" type="bigint" remarks="产品店铺编号">
+                <constraints nullable="true" />
+            </column>
+            <column name="product_brand_id" type="bigint" remarks="产品品牌id">
+                <constraints nullable="true" />
+            </column>
+            <column name="product_price" type="decimal(21,2)" remarks="销售价格">
+                <constraints nullable="true" />
+            </column>
+            <column name="product_quantity" type="integer" remarks="购买数量">
+                <constraints nullable="true" />
+            </column>
+            <column name="product_sku_id" type="bigint" remarks="商品sku编号">
+                <constraints nullable="true" />
+            </column>
+            <column name="product_sku_code" type="varchar(255)" remarks="商品sku条码">
+                <constraints nullable="true" />
+            </column>
+            <column name="product_category_id" type="bigint" remarks="商品分类id">
+                <constraints nullable="true" />
+            </column>
+            <column name="product_attr" type="varchar(255)" remarks="商品销售属性:[{&apos;key&apos;:&apos;颜色&apos;,&apos;value&apos;:&apos;颜色&apos;},{&apos;key&apos;:&apos;容量&apos;,&apos;value&apos;:&apos;4G&apos;}]">
+                <constraints nullable="true" />
+            </column>
+            <column name="promotion_amount" type="decimal(21,2)" remarks="促销优化金额">
+                <constraints nullable="true" />
+            </column>
+            <column name="taxes_fees" type="decimal(21,2)" remarks="税费">
+                <constraints nullable="true" />
+            </column>
+            <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here, do not remove-->
+        </createTable>
+        <dropDefaultValue tableName="order_item" columnName="create_time" columnDataType="datetime"/>
+        <dropDefaultValue tableName="order_item" columnName="payment_time" columnDataType="datetime"/>
+        <dropDefaultValue tableName="order_item" columnName="delivery_time" columnDataType="datetime"/>
+        <dropDefaultValue tableName="order_item" columnName="receive_time" columnDataType="datetime"/>
+        <dropDefaultValue tableName="order_item" columnName="comment_time" columnDataType="datetime"/>
+        <dropDefaultValue tableName="order_item" columnName="processing_time" columnDataType="datetime"/>
+        <dropDefaultValue tableName="order_item" columnName="modify_time" columnDataType="datetime"/>
+    </changeSet>
+
+    <changeSet id="20200524065500-1-relations" author="jhipster">
+
+    </changeSet>
+    <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here, do not remove-->
+
+    <!--
+        Load sample data generated with Faker.js
+        - This data can be easily edited using a CSV editor (or even MS Excel) and
+          is located in the 'src/main/resources/config/liquibase/fake-data' directory
+        - By default this data is applied when running with the JHipster 'dev' profile.
+          This can be customized by adding or removing 'faker' in the 'spring.liquibase.contexts'
+          Spring Boot configuration key.
+    -->
+    <changeSet id="20200524065500-1-data" author="jhipster" context="faker">
+        <loadData
+                  file="config/liquibase/fake-data/order_item.csv"
+                  separator=";"
+                  tableName="order_item">
+            <column name="id" type="numeric"/>
+            <column name="member_id" type="numeric"/>
+            <column name="member_name" type="string"/>
+            <column name="member_phone" type="string"/>
+            <column name="pay_order_id" type="numeric"/>
+            <column name="pay_order_payment_code" type="numeric"/>
+            <column name="order_sn" type="string"/>
+            <column name="create_time" type="datetime"/>
+            <column name="member_username" type="string"/>
+            <column name="total_amount" type="numeric"/>
+            <column name="pay_amount" type="numeric"/>
+            <column name="freight_amount" type="numeric"/>
+            <column name="pay_type" type="numeric"/>
+            <column name="status" type="numeric"/>
+            <column name="order_type" type="numeric"/>
+            <column name="delivery_company" type="string"/>
+            <column name="delivery_sn" type="string"/>
+            <column name="auto_confirm_day" type="numeric"/>
+            <column name="receiver_name" type="string"/>
+            <column name="receiver_phone" type="string"/>
+            <column name="receiver_post_code" type="string"/>
+            <column name="receiver_province" type="string"/>
+            <column name="receiver_city" type="string"/>
+            <column name="receiver_region" type="string"/>
+            <column name="receiver_detail_address" type="string"/>
+            <column name="note" type="string"/>
+            <column name="confirm_status" type="numeric"/>
+            <column name="delete_status" type="numeric"/>
+            <column name="payment_time" type="datetime"/>
+            <column name="delivery_time" type="datetime"/>
+            <column name="receive_time" type="datetime"/>
+            <column name="comment_time" type="datetime"/>
+            <column name="processing_time" type="datetime"/>
+            <column name="modify_time" type="datetime"/>
+            <column name="product_id" type="numeric"/>
+            <column name="product_pic" type="string"/>
+            <column name="product_name" type="string"/>
+            <column name="product_store_id" type="numeric"/>
+            <column name="store_name" type="numeric"/>
+            <column name="store_no" type="numeric"/>
+            <column name="product_brand_id" type="numeric"/>
+            <column name="product_price" type="numeric"/>
+            <column name="product_quantity" type="numeric"/>
+            <column name="product_sku_id" type="numeric"/>
+            <column name="product_sku_code" type="string"/>
+            <column name="product_category_id" type="numeric"/>
+            <column name="product_attr" type="string"/>
+            <column name="promotion_amount" type="numeric"/>
+            <column name="taxes_fees" type="numeric"/>
+            <!-- jhipster-needle-liquibase-add-loadcolumn - JHipster (and/or extensions) can add load columns here, do not remove-->
+        </loadData>
+    </changeSet>
+
+</databaseChangeLog>

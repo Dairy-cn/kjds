@@ -37,12 +37,20 @@ public class GoodsRecommend implements Serializable {
     private Long goodsId;
 
     /**
-     * 广告位置
+     * 商品推荐类型
      */
     @NotNull
-    @ApiModelProperty(value = "广告位置   7 C1 8 C2 9 C3 10 C4 11 C5 12 C6", required = true)
-    @Column(name = "banner")
-    private Integer banner;
+    @Column(name = "goods_recommend_type", nullable = false)
+    @ApiModelProperty(value = "商品推荐类型 1 单品推荐 2 专区商品推荐", required = true)
+    private Integer goodsRecommendType;
+
+
+    /**
+     *推荐专区 专区id(商品推荐广告id)
+     */
+    @ApiModelProperty(value = "推荐专区 专区id(商品推荐广告id)")
+    @Column(name = "goods_recommend_banner_id")
+    private Long goodsRecommendBannerId;
 
     /**
      * 创建时间
@@ -57,6 +65,31 @@ public class GoodsRecommend implements Serializable {
     private Instant updateTime;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
+
+
+    public Integer getGoodsRecommendType() {
+        return goodsRecommendType;
+    }
+
+    public GoodsRecommend goodsRecommendType(Integer goodsRecommendType) {
+        this.goodsRecommendType = goodsRecommendType;
+        return this;
+    }
+    public void setGoodsRecommendType(Integer goodsRecommendType) {
+        this.goodsRecommendType = goodsRecommendType;
+    }
+
+    public Long getGoodsRecommendBannerId() {
+        return goodsRecommendBannerId;
+    }
+    public GoodsRecommend goodsRecommendBannerId(Long goodsRecommendBannerId) {
+        this.goodsRecommendBannerId = goodsRecommendBannerId;
+        return this;
+    }
+    public void setGoodsRecommendBannerId(Long goodsRecommendBannerId) {
+        this.goodsRecommendBannerId = goodsRecommendBannerId;
+    }
+
     public Long getId() {
         return id;
     }
@@ -95,16 +128,6 @@ public class GoodsRecommend implements Serializable {
         return top;
     }
 
-    public Integer getBanner() {
-        return banner;
-    }
-    public GoodsRecommend banner(Integer banner) {
-        this.banner = banner;
-        return this;
-    }
-    public void setBanner(Integer banner) {
-        this.banner = banner;
-    }
 
     public Instant getCreateTime() {
         return createTime;
@@ -152,12 +175,13 @@ public class GoodsRecommend implements Serializable {
     @Override
     public String toString() {
         return "GoodsRecommend{" +
-            "id=" + getId() +
-            ", top='" + isTop() + "'" +
-            ", goodsId=" + getGoodsId() +
-            ", bannerId=" + getBanner() +
-            ", createTime='" + getCreateTime() + "'" +
-            ", updateTime='" + getUpdateTime() + "'" +
-            "}";
+            "id=" + id +
+            ", top=" + top +
+            ", goodsId=" + goodsId +
+            ", goodsRecommendType=" + goodsRecommendType +
+            ", goodsRecommendBannerId=" + goodsRecommendBannerId +
+            ", createTime=" + createTime +
+            ", updateTime=" + updateTime +
+            '}';
     }
 }

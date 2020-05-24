@@ -1,5 +1,6 @@
 package com.cross.merchants.service.impl;
 
+import com.cross.merchants.domain.Goods;
 import com.cross.merchants.domain.StoreOperatingRecord;
 import com.cross.merchants.repository.StoreOperatingRecordRepository;
 import com.cross.merchants.service.MerchantsCategoryService;
@@ -10,6 +11,7 @@ import com.cross.merchants.service.dto.MerchantsCategoryDTO;
 import com.cross.merchants.service.dto.StoreInfoDTO;
 import com.cross.merchants.service.mapper.StoreInfoMapper;
 import com.cross.utils.CommonUtil;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -19,11 +21,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
+import javax.persistence.criteria.Predicate;
 import java.time.Instant;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -200,5 +200,30 @@ public class StoreInfoServiceImpl implements StoreInfoService {
             }
         }
         return storeInfoDTO;
+    }
+
+    @Override
+    public List<StoreInfoDTO> findAllByOperatingStatus(Integer state, Long categoryId, String keyWord) {
+        List<StoreInfo> list = storeInfoRepository.findAll((r, q, b) -> {
+            List<Predicate> listPredicates = new ArrayList<>();
+            if (categoryId != null) {
+                listPredicates.add(b.equal(r.get("categoryId").as(Long.class), categoryId));
+            }
+            if (state != null) {
+                listPredicates.add(b.equal(r.get("operatingStatus").as(Integer.class), state));
+            }
+
+
+            if (!StringUtils.isBlank(keyWord)) {
+                List<Predicate> listPermission = new ArrayList<>();
+//                listPermission.add(b.like(r.get("id").as(String.class), keyWord));
+                listPermission.add(b.like(r.get("storeName").as(String.class), "%" + keyWord.trim() + "%"));
+                Predicate[] predicatesPermissionArr = new Predicate[listPermission.size()];
+                listPredicates.add(b.or(listPermission.toArray(predicatesPermissionArr)));
+            }
+            Predicate[] arrayPredicates = new Predicate[listPredicates.size()];
+            return b.and(listPredicates.toArray(arrayPredicates));
+        });
+        return storeInfoMapper.toDto(list);
     }
 }
