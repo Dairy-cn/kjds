@@ -2,9 +2,11 @@ package com.cross.merchants.service;
 
 import com.cross.merchants.service.dto.MerchantsCheckInInfoDTO;
 
+import com.cross.merchants.service.dto.StoreInfoDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.time.Instant;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -38,7 +40,7 @@ public interface MerchantsCheckInInfoService {
      * @param id the id of the entity.
      * @return the entity.
      */
-    Optional<MerchantsCheckInInfoDTO> findOne(Long id);
+    MerchantsCheckInInfoDTO findOne(Long id);
 
     /**
      * Delete the "id" merchantsCheckInInfo.
@@ -53,7 +55,7 @@ public interface MerchantsCheckInInfoService {
 
     MerchantsCheckInInfoDTO findOneWithSelf(Long submitId);
 
-    MerchantsCheckInInfoDTO findOneWithSelfByCheckState(Long submitId,Integer state);
+    MerchantsCheckInInfoDTO findOneWithSelfByCheckState(Long submitId, Integer state);
 
     MerchantsCheckInInfoDTO merchantsCheckInInfo(MerchantsCheckInInfoDTO merchantsCheckInInfoDTO);
 
@@ -61,4 +63,8 @@ public interface MerchantsCheckInInfoService {
 
     long countByCategoryId(Long categoryId);
 
+    Page<MerchantsCheckInInfoDTO> findAllByCondition(Pageable pageable, Integer tradeMode, Integer checkState, Instant startTime, Instant endTime, Instant startCheckTime, Instant endCheckTime, String keyWord);
+
+
+    Map<Long, List<StoreInfoDTO>> findAllByCategoryIds(List<Long> categoryIds);
 }

@@ -1,10 +1,6 @@
 package com.cross.merchants.redis;
 
-/**
- * @Auther: le
- * @Date: 2018/8/9 16:28
- * @Description:
- */
+
 public class GoodsKey extends BasePrefix{
     private GoodsKey(int expireSeconds,String prefix){
         super(expireSeconds,prefix);

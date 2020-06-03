@@ -67,7 +67,7 @@ public class StoreRecommendResource {
      */
     @PostMapping("/store-recommends")
     @ApiOperation("添加商户推荐信息")
-    public R createStoreRecommend(@Valid @RequestBody StoreRecommendDTO storeRecommendDTO) throws URISyntaxException {
+    public R<StoreRecommendDTO> createStoreRecommend(@Valid @RequestBody StoreRecommendDTO storeRecommendDTO) throws URISyntaxException {
         log.debug("REST request to save StoreRecommend : {}", storeRecommendDTO);
         if (storeRecommendDTO.getId() != null) {
             return R.error("idexists");
@@ -87,7 +87,7 @@ public class StoreRecommendResource {
      */
     @PutMapping("/store-recommends")
     @ApiOperation("修改商户推荐信息")
-    public R updateStoreRecommend(@Valid @RequestBody StoreRecommendDTO storeRecommendDTO) throws URISyntaxException {
+    public R<StoreRecommendDTO> updateStoreRecommend(@Valid @RequestBody StoreRecommendDTO storeRecommendDTO) throws URISyntaxException {
         log.debug("REST request to update StoreRecommend : {}", storeRecommendDTO);
         if (storeRecommendDTO.getId() == null) {
             return R.error("idnull");
@@ -103,7 +103,7 @@ public class StoreRecommendResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of storeRecommends in body.
      */
     @GetMapping("/store-recommends")
-    public R getAllStoreRecommends(Pageable pageable) {
+    public R<List<StoreRecommendDTO>> getAllStoreRecommends(Pageable pageable) {
         log.debug("REST request to get a page of StoreRecommends");
         Page<StoreRecommendDTO> page = storeRecommendService.findAll(pageable);
         return R.ok(page.getContent(), page.getTotalElements());
@@ -111,7 +111,7 @@ public class StoreRecommendResource {
 
     @GetMapping("/store-recommends-list")
     @ApiOperation("获取商户推荐list")
-    public R getAllStoreRecommendsList() {
+    public R<List<StoreRecommendDTO>> getAllStoreRecommendsList() {
         log.debug("REST request to get a page of StoreRecommends");
         List<StoreRecommendDTO> list = storeRecommendService.findAllList();
         if (!CollectionUtils.isEmpty(list)) {
@@ -133,7 +133,7 @@ public class StoreRecommendResource {
      */
     @GetMapping("/store-recommends/{id}")
     @ApiOperation("根据id获取详细信息")
-    public R getStoreRecommend(@PathVariable Long id) {
+    public R<StoreRecommendDTO> getStoreRecommend(@PathVariable Long id) {
         log.debug("REST request to get StoreRecommend : {}", id);
         Optional<StoreRecommendDTO> optionalStoreRecommendDTO = storeRecommendService.findOne(id);
         if(!optionalStoreRecommendDTO.isPresent()){

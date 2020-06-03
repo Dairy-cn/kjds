@@ -1,6 +1,7 @@
 package com.cross.gateway.web.rest;
 
 import com.cross.gateway.security.oauth2.OAuth2AuthenticationService;
+import com.cross.utils.R;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.MediaType;
@@ -44,7 +45,7 @@ public class AuthResource {
      */
     @RequestMapping(value = "/login", method = RequestMethod.POST, consumes = MediaType
         .APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<OAuth2AccessToken> authenticate(HttpServletRequest request, HttpServletResponse response, @RequestBody
+    public R<OAuth2AccessToken> authenticate(HttpServletRequest request, HttpServletResponse response, @RequestBody
         Map<String, String> params) {
         return authenticationService.authenticate(request, response, params);
     }

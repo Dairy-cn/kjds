@@ -4,6 +4,7 @@ import com.cross.merchants.service.GoodsPropertyTagService;
 import com.cross.merchants.web.rest.errors.BadRequestAlertException;
 import com.cross.merchants.service.dto.GoodsPropertyTagDTO;
 
+import com.cross.utils.R;
 import io.github.jhipster.web.util.HeaderUtil;
 import io.github.jhipster.web.util.PaginationUtil;
 import io.github.jhipster.web.util.ResponseUtil;
@@ -52,15 +53,13 @@ public class GoodsPropertyTagResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PostMapping("/goods-property-tags")
-    public ResponseEntity<GoodsPropertyTagDTO> createGoodsPropertyTag(@Valid @RequestBody GoodsPropertyTagDTO goodsPropertyTagDTO) throws URISyntaxException {
+    public R<GoodsPropertyTagDTO> createGoodsPropertyTag(@Valid @RequestBody GoodsPropertyTagDTO goodsPropertyTagDTO) throws URISyntaxException {
         log.debug("REST request to save GoodsPropertyTag : {}", goodsPropertyTagDTO);
         if (goodsPropertyTagDTO.getId() != null) {
             throw new BadRequestAlertException("A new goodsPropertyTag cannot already have an ID", ENTITY_NAME, "idexists");
         }
         GoodsPropertyTagDTO result = goodsPropertyTagService.save(goodsPropertyTagDTO);
-        return ResponseEntity.created(new URI("/api/goods-property-tags/" + result.getId()))
-            .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
-            .body(result);
+        return R.ok(result);
     }
 
     /**

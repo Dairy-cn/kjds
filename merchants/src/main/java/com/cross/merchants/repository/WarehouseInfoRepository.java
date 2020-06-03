@@ -5,6 +5,8 @@ import com.cross.merchants.domain.WarehouseInfo;
 import org.springframework.data.jpa.repository.*;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 /**
  * Spring Data  repository for the WarehouseInfo entity.
  */
@@ -14,4 +16,10 @@ public interface WarehouseInfoRepository extends JpaRepository<WarehouseInfo, Lo
 
 
     WarehouseInfo findFirstByMerchantId(Long merchantId);
+
+    List<WarehouseInfo> findAllByWarehouseType(Integer type);
+
+    List<WarehouseInfo> findAllByMerchantIdIn(List<Long>  merchantIds);
+
+
 }

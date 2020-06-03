@@ -1,0 +1,29 @@
+{
+    "name": "ShippingList",
+    "fields": [
+        {
+            "fieldName": "name",
+            "javadoc": "快寄公司名称",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "code",
+            "javadoc": "编码",
+            "fieldType": "String"
+        }
+    ],
+    "relationships": [],
+    "changelogDate": "20200528143900",
+    "javadoc": "快寄公司编码表",
+    "entityTableName": "shipping_list",
+    "dto": "mapstruct",
+    "pagination": "pagination",
+    "service": "serviceImpl",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "readOnly": false,
+    "embedded": false,
+    "clientRootFolder": "merchants",
+    "applications": "*",
+    "microserviceName": "merchants"
+}

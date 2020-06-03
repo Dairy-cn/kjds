@@ -193,8 +193,25 @@ public class WarehouseInfo implements Serializable {
     @Column(name = "return_warehouse_address")
     private String returnWarehouseAddress;
 
+
+    @ApiModelProperty(value = "发货区域类型 1 保税仓库区 2 境内非保税区  3 跨境直邮")
+    @Column(name = "delivery_area_type")
+    private Integer deliveryAreaType;
+
+
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
 
+
+    public Integer getDeliveryAreaType() {
+        return deliveryAreaType;
+    }
+    public WarehouseInfo deliveryAreaType(Integer deliveryAreaType) {
+        this.deliveryAreaType = deliveryAreaType;
+        return this;
+    }
+    public void setDeliveryAreaType(Integer deliveryAreaType) {
+        this.deliveryAreaType = deliveryAreaType;
+    }
 
     public Boolean getShipmentsAndReturnsInfoNoDifference() {
         return shipmentsAndReturnsInfoNoDifference;

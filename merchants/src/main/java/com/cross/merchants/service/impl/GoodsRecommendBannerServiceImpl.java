@@ -61,6 +61,10 @@ public class GoodsRecommendBannerServiceImpl implements GoodsRecommendBannerServ
     public GoodsRecommendBannerDTO save(GoodsRecommendBannerDTO goodsRecommendBannerDTO) {
         log.debug("Request to save GoodsRecommendBanner : {}", goodsRecommendBannerDTO);
         this.checkParam(goodsRecommendBannerDTO);
+        if (goodsRecommendBannerDTO.getId() != null) {
+            GoodsRecommendBanner one = goodsRecommendBannerRepository.getOne(goodsRecommendBannerDTO.getId());
+            goodsRecommendBannerDTO.setTop(one.getTop());
+        }
         GoodsRecommendBanner goodsRecommendBanner = goodsRecommendBannerMapper.toEntity(goodsRecommendBannerDTO);
         goodsRecommendBanner = goodsRecommendBannerRepository.save(goodsRecommendBanner);
         return goodsRecommendBannerMapper.toDto(goodsRecommendBanner);
@@ -95,6 +99,15 @@ public class GoodsRecommendBannerServiceImpl implements GoodsRecommendBannerServ
     public Page<GoodsRecommendBannerDTO> findAll(Pageable pageable) {
         log.debug("Request to get all GoodsRecommendBanners");
         Page<GoodsRecommendBannerDTO> page = goodsRecommendBannerRepository.findAll(pageable).map(goodsRecommendBannerMapper::toDto);
+        if (!CollectionUtils.isEmpty(page.getContent())) {
+            return new PageImpl<GoodsRecommendBannerDTO>(this.setParam(page.getContent()), page.getPageable(), page.getTotalElements());
+        }
+        return page;
+    }
+
+    @Override
+    public Page<GoodsRecommendBannerDTO> findAllByC(Pageable pageable) {
+        Page<GoodsRecommendBannerDTO> page = goodsRecommendBannerRepository.findAllByOrderByTopDesc(pageable).map(goodsRecommendBannerMapper::toDto);
         if (!CollectionUtils.isEmpty(page.getContent())) {
             return new PageImpl<GoodsRecommendBannerDTO>(this.setParam(page.getContent()), page.getPageable(), page.getTotalElements());
         }
@@ -146,6 +159,11 @@ public class GoodsRecommendBannerServiceImpl implements GoodsRecommendBannerServ
     public Map<Long, GoodsRecommendBannerDTO> finAllMapInfo(List<Long> ids) {
         List<GoodsRecommendBannerDTO> goodsRecommendBannerDTOS = goodsRecommendBannerMapper.toDto(goodsRecommendBannerRepository.findAllByIdIn(ids));
         return goodsRecommendBannerDTOS.stream().collect(Collectors.toMap(GoodsRecommendBannerDTO::getId, e -> e));
+    }
+
+    @Override
+    public List<GoodsRecommendBannerDTO> finAllListInfo(List<Long> ids) {
+        return goodsRecommendBannerMapper.toDto(goodsRecommendBannerRepository.findAllByIdIn(ids));
     }
 
 

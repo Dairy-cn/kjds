@@ -72,6 +72,10 @@ public class StoreRecommend implements Serializable {
         return top;
     }
 
+    public Boolean getTop() {
+        return top;
+    }
+
     public StoreRecommend top(Boolean top) {
         this.top = top;
         return this;

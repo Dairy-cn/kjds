@@ -1,6 +1,8 @@
 package com.cross.merchants.domain;
 
 
+import io.swagger.annotations.ApiModelProperty;
+
 import javax.persistence.*;
 
 import java.io.Serializable;
@@ -49,7 +51,7 @@ public class OrderItem implements Serializable {
      * 支付交易单号
      */
     @Column(name = "pay_order_payment_code")
-    private Long payOrderPaymentCode;
+    private String payOrderPaymentCode;
 
     /**
      * 订单编号
@@ -245,11 +247,56 @@ public class OrderItem implements Serializable {
     @Column(name = "taxes_fees", precision = 21, scale = 2)
     private BigDecimal taxesFees;
 
+    /**
+     * 产品信息
+     */
     @Column(name = "product_info")
     private String productInfo;
 
+
+    /**
+     * 物流公司Code
+     */
+    @ApiModelProperty(value = "物流公司Code")
+    @Column(name = "delivery_code")
+    private String deliveryCode;
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
 
+    @ApiModelProperty(value = "发货状态 0 未发货 1 已发货")
+    @Column(name = "delivery_state")
+    private Integer deliveryState;
+
+
+    /**
+     * 商品名称
+     */
+    @ApiModelProperty(value = "商品名称")
+    @Column(name = "goods_name")
+    private String goodsName;
+
+    public String getGoodsName() {
+        return goodsName;
+    }
+
+    public void setGoodsName(String goodsName) {
+        this.goodsName = goodsName;
+    }
+
+    public Integer getDeliveryState() {
+        return deliveryState;
+    }
+
+    public void setDeliveryState(Integer deliveryState) {
+        this.deliveryState = deliveryState;
+    }
+
+    public String getDeliveryCode() {
+        return deliveryCode;
+    }
+
+    public void setDeliveryCode(String deliveryCode) {
+        this.deliveryCode = deliveryCode;
+    }
 
     public String getProductInfo() {
         return productInfo;
@@ -319,16 +366,16 @@ public class OrderItem implements Serializable {
         this.payOrderId = payOrderId;
     }
 
-    public Long getPayOrderPaymentCode() {
+    public String getPayOrderPaymentCode() {
         return payOrderPaymentCode;
     }
 
-    public OrderItem payOrderPaymentCode(Long payOrderPaymentCode) {
+    public OrderItem payOrderPaymentCode(String payOrderPaymentCode) {
         this.payOrderPaymentCode = payOrderPaymentCode;
         return this;
     }
 
-    public void setPayOrderPaymentCode(Long payOrderPaymentCode) {
+    public void setPayOrderPaymentCode(String payOrderPaymentCode) {
         this.payOrderPaymentCode = payOrderPaymentCode;
     }
 

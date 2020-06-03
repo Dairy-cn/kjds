@@ -1,6 +1,8 @@
 package com.cross.merchants.domain;
 
 
+import io.swagger.annotations.ApiModelProperty;
+
 import javax.persistence.*;
 
 import java.io.Serializable;
@@ -98,8 +100,60 @@ public class StoreInfo implements Serializable {
     @Column(name = "create_user_id")
     private Long createUserId;
 
+
+    /**
+     * 创建时间
+     */
+    @Column(name = "create_ime")
+    private Instant creatTime;
+
+    /**
+     * 店铺编号
+     */
+    @ApiModelProperty(value = "店铺编号")
+    @Column(name = "store_no")
+    private String storeNo;
+
+    /**
+     * 注册账号
+     */
+    @Column(name = "register_user_name")
+    private String registerUserName;
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
 
+
+    public String getRegisterUserName() {
+        return registerUserName;
+    }
+    public StoreInfo registerUserName(String registerUserName) {
+        this.registerUserName = registerUserName;
+        return this;
+    }
+    public void setRegisterUserName(String registerUserName) {
+        this.registerUserName = registerUserName;
+    }
+
+    public String getStoreNo() {
+        return storeNo;
+    }
+    public StoreInfo storeNo(String storeNo) {
+        this.storeNo = storeNo;
+        return this;
+    }
+    public void setStoreNo(String storeNo) {
+        this.storeNo = storeNo;
+    }
+
+    public Instant getCreatTime() {
+        return creatTime;
+    }
+    public StoreInfo creatTime(Instant creatTime) {
+        this.creatTime = creatTime;
+        return this;
+    }
+    public void setCreatTime(Instant creatTime) {
+        this.creatTime = creatTime;
+    }
 
     public Long getCreateUserId() {
         return createUserId;

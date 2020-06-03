@@ -26,7 +26,7 @@ public class GoodsCategoryDTO implements Serializable {
     /**
      * 品类名称
      */
-    @ApiModelProperty(value = "品类名称")
+    @ApiModelProperty(value = "品类名称",required = true)
     @NotNull(message = "品类名称不能为空")
     private String name;
 
@@ -39,7 +39,7 @@ public class GoodsCategoryDTO implements Serializable {
     /**
      * 级数 1 一级 2 二级 3 三级
      */
-    @ApiModelProperty(value = "级数 1 一级 2 二级 3 三级")
+    @ApiModelProperty(value = "级数 1 一级 2 二级 3 三级",required = true)
     @NotNull(message = "分类级数不能为空")
     private Integer level;
 

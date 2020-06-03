@@ -13,7 +13,7 @@ import java.util.List;
  * Description:
  * Author: Dairy
  * CreateTime: 2020/5/24
- * Copyright © 成都通吃岛信息技术有限公司 All right reserved
+
  ************************************************************/
 @ApiModel(description = "订单详情信息")
 public class OrderDetail  extends PayOrderDTO {

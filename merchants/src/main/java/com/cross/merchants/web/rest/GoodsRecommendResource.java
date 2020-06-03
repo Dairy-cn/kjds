@@ -32,10 +32,7 @@ import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.time.Instant;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -74,10 +71,10 @@ public class GoodsRecommendResource {
      */
     @PostMapping("/goods-recommends")
     @ApiOperation("大后台---添加推荐商品")
-    public R createGoodsRecommend(@Valid @RequestBody GoodsRecommendDTO goodsRecommendDTO) throws URISyntaxException {
+    public R<GoodsRecommendDTO> createGoodsRecommend(@Valid @RequestBody GoodsRecommendDTO goodsRecommendDTO) throws URISyntaxException {
         log.debug("REST request to save GoodsRecommend : {}", goodsRecommendDTO);
         if (goodsRecommendDTO.getId() != null) {
-            return R.ok("idexists");
+            return R.error("idexists");
         }
         goodsRecommendDTO.setCreateTime(Instant.now());
         GoodsRecommendDTO result = goodsRecommendService.save(goodsRecommendDTO);
@@ -95,7 +92,7 @@ public class GoodsRecommendResource {
      */
     @PutMapping("/goods-recommends")
     @ApiOperation("大后台---编辑推荐商品")
-    public R updateGoodsRecommend(@Valid @RequestBody GoodsRecommendDTO goodsRecommendDTO) throws URISyntaxException {
+    public R<GoodsRecommendDTO> updateGoodsRecommend(@Valid @RequestBody GoodsRecommendDTO goodsRecommendDTO) throws URISyntaxException {
         log.debug("REST request to update GoodsRecommend : {}", goodsRecommendDTO);
         if (goodsRecommendDTO.getId() == null) {
             return R.error("idnull");
@@ -113,13 +110,30 @@ public class GoodsRecommendResource {
      */
     @GetMapping("/goods-recommends")
     @ApiOperation("大后台---推荐商品List")
-    public R getAllGoodsRecommends(Pageable pageable,@ApiParam("推荐商品类型 1 单品推荐 2 专区推荐") @RequestParam(required = true) Integer goodsRecommendType) {
+    public R<List<GoodsRecommendDTO>> getAllGoodsRecommends(Pageable pageable,@ApiParam("推荐商品类型 1 单品推荐 2 专区推荐") @RequestParam(required = true) Integer goodsRecommendType) {
         log.debug("REST request to get a page of GoodsRecommends");
         Page<GoodsRecommendDTO> page = goodsRecommendService.findAllByType(pageable,goodsRecommendType);
         List<GoodsRecommendDTO> list = setParam(page.getContent());
         return R.ok(list, page.getTotalElements());
     }
 
+    @GetMapping("/c-goods-recommends")
+    @ApiOperation("c端---根据推荐商品类型获取推荐商品List")
+    public R<List<GoodsRecommendDTO>> getAllGoodsRecommendsByC(Pageable pageable,@ApiParam("推荐商品类型 1 单品推荐 2 专区推荐") @RequestParam(required = true) Integer goodsRecommendType) {
+        log.debug("REST request to get a page of GoodsRecommends");
+        Page<GoodsRecommendDTO> page = goodsRecommendService.findAllByType(pageable,goodsRecommendType);
+        List<GoodsRecommendDTO> list = setParam(page.getContent());
+        return R.ok(list, page.getTotalElements());
+    }
+
+    @GetMapping("/goods-recommends-special-area")
+    @ApiOperation("大后台---推荐专区商品推荐List")
+    public R<List<GoodsRecommendBannerDTO>> getAllGoodsRecommends(Pageable pageable) {
+        log.debug("REST request to get a page of GoodsRecommends");
+        Page<GoodsRecommendDTO> page = goodsRecommendService.findAllByType(pageable,2);
+        List<GoodsRecommendBannerDTO> recommendBannerDTOS = setParamBannerDto(page.getContent());
+        return R.ok(recommendBannerDTOS, page.getTotalElements());
+    }
     /**
      * {@code GET  /goods-recommends/:id} : get the "id" goodsRecommend.
      *
@@ -128,7 +142,7 @@ public class GoodsRecommendResource {
      */
     @GetMapping("/goods-recommends/{id}")
     @ApiOperation("大后台---根据id获取推荐商品信息")
-    public R getGoodsRecommend(@PathVariable Long id) {
+    public R<GoodsRecommendDTO> getGoodsRecommend(@PathVariable Long id) {
         log.debug("REST request to get GoodsRecommend : {}", id);
         Optional<GoodsRecommendDTO> goodsRecommendDTO = goodsRecommendService.findOne(id);
         if (!goodsRecommendDTO.isPresent()) {
@@ -182,4 +196,25 @@ public class GoodsRecommendResource {
         }
         return goodsRecommendDTOS;
     }
+    private List<GoodsRecommendBannerDTO> setParamBannerDto(List<GoodsRecommendDTO> goodsRecommendDTOS) {
+        List<GoodsRecommendBannerDTO> goodsRecommendBannerDTOS=new ArrayList<>();
+        if (!CollectionUtils.isEmpty(goodsRecommendDTOS)) {
+            List<Long> goodsIds = goodsRecommendDTOS.stream().map(GoodsRecommendDTO::getGoodsId).collect(Collectors.toList());
+            List<Long> goodsBannerIds = goodsRecommendDTOS.stream().filter(e->e.getGoodsRecommendType()==2).map(GoodsRecommendDTO::getGoodsRecommendBannerId).collect(Collectors.toList());
+
+            Map<Long, GoodsDTO> goodsDTOMap = goodsService.finAllMapInfo(goodsIds);
+            goodsRecommendDTOS.stream().forEach(e -> {
+                e.setGoodsDTO(goodsDTOMap.get(e.getGoodsId()));
+            });
+            if(!CollectionUtils.isEmpty(goodsBannerIds)){
+                goodsRecommendBannerDTOS = goodsRecommendBannerService.finAllListInfo(goodsBannerIds);
+                Map<Long, List<GoodsRecommendDTO>> longListMap = goodsRecommendDTOS.stream().filter(e -> e.getGoodsRecommendType() == 2).collect(Collectors.groupingBy(GoodsRecommendDTO::getGoodsRecommendBannerId));
+                goodsRecommendBannerDTOS.stream().forEach(e->{
+                    e.setGoodsRecommendDTOS(longListMap.get(e.getId()));
+                });
+            }
+        }
+        return goodsRecommendBannerDTOS;
+    }
+
 }

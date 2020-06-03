@@ -13,7 +13,7 @@ import springfox.documentation.service.Parameter;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
-
+import springfox.documentation.service.Tag;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,7 +21,6 @@ import java.util.List;
  * Description:
  * Author: Dairy
  * CreateTime: 2020/1/17
- * Copyright © 成都通吃岛信息技术有限公司 All right reserved
  ************************************************************/
 
 @Configuration
@@ -33,11 +32,19 @@ public class SwaggerConfig {
     public Docket createPcRestApi() {
         return new Docket(DocumentationType.SWAGGER_2)
             .apiInfo(apiInfo())
-//            .groupName("Island")
+//            .groupName("kjds")
+//            .tags(new Tag("product", "接口"),getTags())
             .select()
             .apis(RequestHandlerSelectors.basePackage("com.cross.merchants.web.rest"))
             .paths(PathSelectors.any())
             .build().globalOperationParameters(parameter());
+    }
+    private Tag[] getTags() {
+        Tag[] tags = {
+            new Tag("user", "kjds接口"),
+            new Tag("api_product", "kjds接口")
+        };
+        return tags;
     }
 
     private ApiInfo apiInfo() {

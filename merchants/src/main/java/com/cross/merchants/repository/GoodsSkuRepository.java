@@ -32,8 +32,14 @@ public interface GoodsSkuRepository extends JpaRepository<GoodsSku, Long> {
     @Modifying
     int releaseSkuStockLock(@Param("id") Long id, @Param("lockStock") Integer lockStock);
 
-    @Query(value = "UPDATE `goods_sku` SET stock= stock - :lockStock, lock_stock= lock_stock - :lockStock WHERE id = :id", nativeQuery = true)
+    @Query(value = "UPDATE `goods_sku` SET stock= stock - :lockStock, lock_stock= lock_stock - :lockStock,sale_volume=sale_volume+ :lockStock WHERE id = :id", nativeQuery = true)
     @Modifying
     int updateSkuStock(@Param("id") Long id, @Param("lockStock") Integer lockStock);
+
+    GoodsSku getByIdAndDeleteFlag(Long id, Boolean flag);
+
+
+    @Query(value = "SELECT id FROM goods_sku a WHERE (SELECT COUNT(1) FROM goods_sku b WHERE a.`goods_id`=b.`goods_id` AND b.sale_price <= a.`sale_price`) <=1 AND a.`delete_flag` !=TRUE AND a.`goods_id` IN :goodsIds", nativeQuery = true)
+    List<Object[]> findAllByGoodsIdInAndDeleteFlag(@Param("goodsIds") List<Long> goodsIds);
 
 }

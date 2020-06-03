@@ -278,3 +278,8 @@ redis:
   key:
     orderId: 'kjds:orderId'
     subOrderId: 'kjds:subOrderId'
+pay:
+  weixin:
+    notifyUrl: http://kjds.natapp1.cc/services/merchants/api/notify/weixin/pay
+  alipay:
+    notifyUrl: http://kjds.natapp1.cc/services/merchants/api/notify/alipay/pay

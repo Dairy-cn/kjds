@@ -1,8 +1,10 @@
 package com.cross.merchants.web.rest;
 
 import com.cross.merchants.service.GlobalRegionService;
+import com.cross.merchants.service.MerchantsCategoryService;
 import com.cross.merchants.service.MerchantsCheckInInfoService;
 import com.cross.merchants.service.dto.GlobalRegionDTO;
+import com.cross.merchants.service.dto.MerchantsCategoryDTO;
 import com.cross.merchants.web.rest.errors.BadRequestAlertException;
 import com.cross.merchants.service.dto.MerchantsCheckInInfoDTO;
 
@@ -17,6 +19,7 @@ import io.swagger.annotations.ApiParam;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -57,6 +60,10 @@ public class MerchantsCheckInInfoResource {
 
     private final GlobalRegionService globalRegionService;
 
+
+    @Autowired
+    private MerchantsCategoryService merchantsCategoryService;
+
     public MerchantsCheckInInfoResource(MerchantsCheckInInfoService merchantsCheckInInfoService, GlobalRegionService globalRegionService) {
         this.merchantsCheckInInfoService = merchantsCheckInInfoService;
         this.globalRegionService = globalRegionService;
@@ -71,7 +78,7 @@ public class MerchantsCheckInInfoResource {
      */
     @PostMapping("/upload-merchants-check-in-infos")
     @ApiOperation("提交入驻资料")
-    public R createMerchantsCheckInInfo(@RequestBody MerchantsCheckInInfoDTO merchantsCheckInInfoDTO) throws URISyntaxException {
+    public R<MerchantsCheckInInfoDTO> createMerchantsCheckInInfo(@RequestBody MerchantsCheckInInfoDTO merchantsCheckInInfoDTO) throws URISyntaxException {
         log.debug("REST request to save MerchantsCheckInInfo : {}", merchantsCheckInInfoDTO);
         if (merchantsCheckInInfoDTO.getId() != null) {
             R.error("idexists");
@@ -86,11 +93,12 @@ public class MerchantsCheckInInfoResource {
             } else if (0 == oneWithSelf.getCheckStatus()) {
                 return R.error("你已提交审核,请等待管理员审核");
             }
-
         }
         merchantsCheckInInfoDTO.setProposer(id);
         merchantsCheckInInfoDTO.setApplicationTime(Instant.now());
         merchantsCheckInInfoDTO.setCheckStatus(-1);
+        String user_name = CommonUtil.getCurrentLoginUser().getUser_name();
+        merchantsCheckInInfoDTO.setRegisterUserName(user_name);
         MerchantsCheckInInfoDTO result = merchantsCheckInInfoService.save(merchantsCheckInInfoDTO);
         return R.ok(result);
     }
@@ -105,7 +113,7 @@ public class MerchantsCheckInInfoResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
 //    @PutMapping("/merchants-check-in-infos/upload-company-info")
-    public R uploadCompanyInfo(@RequestBody MerchantsCheckInInfoDTO merchantsCheckInInfoDTO) throws URISyntaxException {
+    public R<MerchantsCheckInInfoDTO> uploadCompanyInfo(@RequestBody MerchantsCheckInInfoDTO merchantsCheckInInfoDTO) throws URISyntaxException {
         log.debug("REST request to update MerchantsCheckInInfo : {}", merchantsCheckInInfoDTO);
         if (merchantsCheckInInfoDTO.getId() == null) {
             return R.error("idnull");
@@ -116,13 +124,13 @@ public class MerchantsCheckInInfoResource {
 
     @PutMapping("/re-upload-merchants-check-in-infos")
     @ApiOperation("重新提交入驻资料")
-    public R reUploadCompanyInfo(@RequestBody MerchantsCheckInInfoDTO merchantsCheckInInfoDTO) throws URISyntaxException {
+    public R<MerchantsCheckInInfoDTO> reUploadCompanyInfo(@RequestBody MerchantsCheckInInfoDTO merchantsCheckInInfoDTO) throws URISyntaxException {
         log.debug("REST request to update MerchantsCheckInInfo : {}", merchantsCheckInInfoDTO);
         if (merchantsCheckInInfoDTO.getId() == null) {
             return R.error("idnull");
         }
 
-        MerchantsCheckInInfoDTO dbOne = merchantsCheckInInfoService.findOne(merchantsCheckInInfoDTO.getId()).get();
+        MerchantsCheckInInfoDTO dbOne = merchantsCheckInInfoService.findOne(merchantsCheckInInfoDTO.getId());
         if (dbOne == null) {
             return R.error("记录错误,找不到记录");
         }
@@ -142,11 +150,10 @@ public class MerchantsCheckInInfoResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of merchantsCheckInInfos in body.
      */
     @GetMapping("/merchants-check-in-infos")
-    public ResponseEntity<List<MerchantsCheckInInfoDTO>> getAllMerchantsCheckInInfos(Pageable pageable) {
+    public R<List<MerchantsCheckInInfoDTO>> getAllMerchantsCheckInInfos(Pageable pageable) {
         log.debug("REST request to get a page of MerchantsCheckInInfos");
         Page<MerchantsCheckInInfoDTO> page = merchantsCheckInInfoService.findAll(pageable);
-        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
-        return ResponseEntity.ok().headers(headers).body(page.getContent());
+        return R.ok(page.getContent(), page.getTotalElements());
     }
 
     /**
@@ -157,20 +164,19 @@ public class MerchantsCheckInInfoResource {
      */
     @GetMapping("/merchants-check-in-infos/{id}")
     @ApiOperation("根据id获取提交记录信息")
-    public R getMerchantsCheckInInfo(@PathVariable Long id) {
+    public R<MerchantsCheckInInfoDTO> getMerchantsCheckInInfo(@PathVariable Long id) {
         log.debug("REST request to get MerchantsCheckInInfo : {}", id);
-        Optional<MerchantsCheckInInfoDTO> one = merchantsCheckInInfoService.findOne(id);
-        if (!one.isPresent()) {
+        MerchantsCheckInInfoDTO merchantsCheckInInfoDTO = merchantsCheckInInfoService.findOne(id);
+        if (merchantsCheckInInfoDTO == null) {
             return R.error("记录不存在");
         }
-        MerchantsCheckInInfoDTO merchantsCheckInInfoDTO = one.get();
         this.getAddressInfo(merchantsCheckInInfoDTO);
         return R.ok(merchantsCheckInInfoDTO);
     }
 
     @GetMapping("/merchants-check-in-infos-with-self-submit")
     @ApiOperation("商户端--获取自己提交记录")
-    public R getMerchantsCheckInInfo() {
+    public R<MerchantsCheckInInfoDTO> getMerchantsCheckInInfo() {
         Long id = CommonUtil.getCurrentLoginUser().getId();
         if (id == null || -1L == id) {
             return R.accessError();
@@ -181,13 +187,15 @@ public class MerchantsCheckInInfoResource {
 
     @GetMapping("/merchants-info-with-check-success-self")
     @ApiOperation("商户端--企业管理--企业信息")
-    public R getMerchantsInfoWithCheckSuccessBySelf() {
+    public R<MerchantsCheckInInfoDTO> getMerchantsInfoWithCheckSuccessBySelf() {
         Long id = CommonUtil.getCurrentLoginUser().getId();
         if (id == null || -1L == id) {
             return R.accessError();
         }
         MerchantsCheckInInfoDTO merchantsCheckInInfoDTO = merchantsCheckInInfoService.findOneWithSelfByCheckState(id, 1);
-
+        if (merchantsCheckInInfoDTO != null) {
+            this.getAddressInfo(merchantsCheckInInfoDTO);
+        }
         return R.ok(merchantsCheckInInfoDTO);
     }
 
@@ -198,19 +206,19 @@ public class MerchantsCheckInInfoResource {
      * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
      */
     @DeleteMapping("/merchants-check-in-infos/{id}")
-    public ResponseEntity<Void> deleteMerchantsCheckInInfo(@PathVariable Long id) {
+    public R deleteMerchantsCheckInInfo(@PathVariable Long id) {
         log.debug("REST request to delete MerchantsCheckInInfo : {}", id);
         merchantsCheckInInfoService.delete(id);
-        return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString())).build();
+        return R.ok();
     }
 
     @PostMapping("/check-merchants-check-in-infos/{id}")
     @ApiOperation("大后台--商家入住审核")
-    public R merchantsCheckInInfo(@ApiParam("记录id") @PathVariable Long id,
-                                  @ApiParam("审核状态 true 通过 false 失败") @RequestParam Boolean status,
-                                  @ApiParam("失败原因") @RequestParam String checkFailureReasons) {
+    public R<MerchantsCheckInInfoDTO> merchantsCheckInInfo(@ApiParam("记录id") @PathVariable Long id,
+                                                           @ApiParam("审核状态 true 通过 false 失败") @RequestParam Boolean status,
+                                                           @ApiParam(value = "失败原因", required = false) @RequestParam(required = false) String checkFailureReasons) {
         log.debug("REST request to delete MerchantsCheckInInfo : {}", id);
-        MerchantsCheckInInfoDTO merchantsCheckInInfoDTO = merchantsCheckInInfoService.findOne(id).get();
+        MerchantsCheckInInfoDTO merchantsCheckInInfoDTO = merchantsCheckInInfoService.findOne(id);
         if (merchantsCheckInInfoDTO == null) {
             return R.error("记录不存在");
         }
@@ -230,7 +238,7 @@ public class MerchantsCheckInInfoResource {
 
     @GetMapping("/merchants-check-in-infos-wait-check-in-list-info")
     @ApiOperation("大后台--获取未审核记录")
-    public R getAllMerchantsCheckInInfosWithWaitCheckInInfo(Pageable pageable) {
+    public R<List<MerchantsCheckInInfoDTO>> getAllMerchantsCheckInInfosWithWaitCheckInInfo(Pageable pageable) {
         log.debug("REST request to get a page of MerchantsCheckInInfos");
         Page<MerchantsCheckInInfoDTO> page = merchantsCheckInInfoService.findAllWithWaitCheckIn(pageable);
         return R.ok(page.getContent(), page.getTotalElements());
@@ -239,23 +247,22 @@ public class MerchantsCheckInInfoResource {
 
     @GetMapping("/merchants-update-enterprise-info/{id}")
     @ApiOperation("大后台--修改审核成功后的企业信息")
-    public R updateMerchantsEnterpriseInfo(@ApiParam("记录id") @PathVariable Long id,
-                                           @ApiParam("国家id") @RequestParam(required = true) Long countryId,
-                                           @ApiParam("省id") @RequestParam(required = true) Long provinceId,
-                                           @ApiParam("城市id") @RequestParam(required = true) Long cityId,
-                                           @ApiParam("详细地址") @RequestParam(required = true) String address,
-                                           @ApiParam("官网地址") @RequestParam(required = true) String webAdd,
-                                           @ApiParam("联系人") @RequestParam(required = true) String linkMan,
-                                           @ApiParam("职位") @RequestParam(required = true) String position,
-                                           @ApiParam("邮箱") @RequestParam(required = true) String email,
-                                           @ApiParam("电话号码") @RequestParam(required = true) String telPhone
+    public R<MerchantsCheckInInfoDTO> updateMerchantsEnterpriseInfo(@ApiParam("记录id") @PathVariable Long id,
+                                                                    @ApiParam("国家id") @RequestParam(required = true) Long countryId,
+                                                                    @ApiParam(value = "省id", required = false) @RequestParam(required = false) Long provinceId,
+                                                                    @ApiParam(value = "城市id", required = false) @RequestParam(required = false) Long cityId,
+                                                                    @ApiParam("详细地址") @RequestParam(required = true) String address,
+                                                                    @ApiParam("官网地址") @RequestParam(required = true) String webAdd,
+                                                                    @ApiParam("联系人") @RequestParam(required = true) String linkMan,
+                                                                    @ApiParam("职位") @RequestParam(required = true) String position,
+                                                                    @ApiParam("邮箱") @RequestParam(required = true) String email,
+                                                                    @ApiParam("电话号码") @RequestParam(required = true) String telPhone
     ) {
         log.debug("REST request to get a page of MerchantsCheckInInfos");
-        Optional<MerchantsCheckInInfoDTO> one = merchantsCheckInInfoService.findOne(id);
-        if (!one.isPresent()) {
+        MerchantsCheckInInfoDTO merchantsCheckInInfoDTO = merchantsCheckInInfoService.findOne(id);
+        if (merchantsCheckInInfoDTO == null) {
             return R.errorData();
         }
-        MerchantsCheckInInfoDTO merchantsCheckInInfoDTO = one.get();
         merchantsCheckInInfoDTO.setCityId(cityId);
         merchantsCheckInInfoDTO.setProvinceId(provinceId);
         merchantsCheckInInfoDTO.setCountryId(countryId);
@@ -273,6 +280,7 @@ public class MerchantsCheckInInfoResource {
 
     /**
      * 获取地址信息
+     *
      * @param merchantsCheckInInfoDTO
      * @return
      */
@@ -304,5 +312,31 @@ public class MerchantsCheckInInfoResource {
             }
         }
         return merchantsCheckInInfoDTO;
+    }
+
+    @GetMapping("/merchants-check-in-infos-page")
+    @ApiOperation("大后台--根据条件获取入住审核列表")
+    public R<List<MerchantsCheckInInfoDTO>> getAllMerchantsCheckInInfosByCondition(Pageable pageable,
+                                                                                   @ApiParam("店铺贸易模式(1 一般贸易 2 跨境贸易") @RequestParam(required = false) Integer tradeMode,
+                                                                                   @ApiParam("审核状态 null 为全部 1 通过 -1 未审核 0 审核失败") @RequestParam(required = false) Integer checkState,
+                                                                                   @ApiParam("申请开始时间 eg 2017-11-27T03:16:03Z") @RequestParam(required = false) Instant startTime,
+                                                                                   @ApiParam("申请结束时间 eg 2017-11-27T03:16:03Z ") @RequestParam(required = false) Instant endTime,
+                                                                                   @ApiParam("审核开始时间 eg 2017-11-27T03:16:03Z") @RequestParam(required = false) Instant startCheckTime,
+                                                                                   @ApiParam("审核结束时间 eg 2017-11-27T03:16:03Z ") @RequestParam(required = false) Instant endCheckTime,
+                                                                                   @ApiParam("关键字查询") @RequestParam(required = false) String keyWord) {
+        log.debug("REST request to get a page of MerchantsCheckInInfos");
+        Page<MerchantsCheckInInfoDTO> page = merchantsCheckInInfoService.findAllByCondition(pageable, tradeMode, checkState, startTime, endTime, startCheckTime, endCheckTime, keyWord);
+        List<MerchantsCheckInInfoDTO> content = page.getContent();
+        if (!CollectionUtils.isEmpty(content)) {
+            List<Long> categoryIds = content.stream().map(MerchantsCheckInInfoDTO::getCategoryId).distinct().collect(Collectors.toList());
+            if (!CollectionUtils.isEmpty(categoryIds)) {
+                List<MerchantsCategoryDTO> allByIdIn = merchantsCategoryService.findAllByIdIn(categoryIds);
+                Map<Long, MerchantsCategoryDTO> map = allByIdIn.stream().collect(Collectors.toMap(MerchantsCategoryDTO::getId, e -> e));
+                content.stream().forEach(e -> {
+                    e.setMerchantsCategoryDTO(map.get(e.getCategoryId()));
+                });
+            }
+        }
+        return R.ok(content, page.getTotalElements());
     }
 }

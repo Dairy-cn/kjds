@@ -91,4 +91,9 @@ public class BankInfoServiceImpl implements BankInfoService {
     public List<BankInfoDTO> findAll() {
         return bankInfoMapper.toDto(bankInfoRepository.findAll());
     }
+
+    @Override
+    public List<BankInfoDTO> findAllByIdIn(List<Long> ids) {
+        return bankInfoMapper.toDto(bankInfoRepository.findAllByIdIn(ids));
+    }
 }

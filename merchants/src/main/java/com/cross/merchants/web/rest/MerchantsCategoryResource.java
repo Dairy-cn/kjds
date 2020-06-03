@@ -72,7 +72,7 @@ public class MerchantsCategoryResource {
      */
     @PostMapping("/merchants-categories")
     @ApiOperation("大后台--类目管理--添加类目")
-    public R createMerchantsCategory(@RequestBody MerchantsCategoryDTO merchantsCategoryDTO) throws URISyntaxException {
+    public R<MerchantsCategoryDTO> createMerchantsCategory(@RequestBody MerchantsCategoryDTO merchantsCategoryDTO) throws URISyntaxException {
         log.debug("REST request to save MerchantsCategory : {}", merchantsCategoryDTO);
         if (merchantsCategoryDTO.getId() != null) {
             R.error("id必须为null");
@@ -92,7 +92,7 @@ public class MerchantsCategoryResource {
      */
     @PutMapping("/merchants-categories")
     @ApiOperation("大后台--类目管理--修改类目")
-    public R updateMerchantsCategory(@RequestBody MerchantsCategoryDTO merchantsCategoryDTO) throws URISyntaxException {
+    public R<MerchantsCategoryDTO> updateMerchantsCategory(@RequestBody MerchantsCategoryDTO merchantsCategoryDTO) throws URISyntaxException {
         log.debug("REST request to update MerchantsCategory : {}", merchantsCategoryDTO);
         if (merchantsCategoryDTO.getId() == null) {
             R.error("id不能为null");
@@ -109,7 +109,7 @@ public class MerchantsCategoryResource {
      */
     @GetMapping("/merchants-categories")
     @ApiOperation("大后台--类目管理--获取类目信息列表")
-    public R getAllMerchantsCategories(@ApiParam("分页信息") Pageable pageable,
+    public R<List<MerchantsCategoryDTO>> getAllMerchantsCategories(@ApiParam("分页信息") Pageable pageable,
                                        @ApiParam("是否根据商户数量排序") @RequestParam(required = false) Boolean isOrderWithMerchantOrder,
                                        @ApiParam("排序方式 (只关联商户数量)") @RequestParam(required = false) Boolean isDesc) {
         log.debug("REST request to get a page of MerchantsCategories");
@@ -126,13 +126,17 @@ public class MerchantsCategoryResource {
         if (!CollectionUtils.isEmpty(list)) {
             List<Long> categoryIds = list.stream().map(MerchantsCategoryDTO::getId).collect(Collectors.toList());
             Map<Long, Integer> map = merchantsCheckInInfoService.countMerchantsWithCategoryIds(categoryIds);
+            Map<Long, List<StoreInfoDTO>> storeList = merchantsCheckInInfoService.findAllByCategoryIds(categoryIds);
+
             list.stream().forEach(e -> {
                 Integer integer = map.get(e.getId());
                 if (integer == null) {
                     integer = 0;
                 }
                 e.setCount(integer);
+                e.setStoreInfoDTO(storeList.get(e.getId()));
             });
+
         }
         return R.ok(list, count);
     }
@@ -145,7 +149,7 @@ public class MerchantsCategoryResource {
      */
     @GetMapping("/merchants-categories/{id}")
     @ApiOperation("大后台--类目管理--获取类目信息详情")
-    public R getMerchantsCategory(@PathVariable Long id) {
+    public R<MerchantsCategoryDTO> getMerchantsCategory(@PathVariable Long id) {
         log.debug("REST request to get MerchantsCategory : {}", id);
         //TODO 商户列表信息写入
         MerchantsCategoryDTO merchantsCategoryDTO = merchantsCategoryService.findOne(id).get();
@@ -193,8 +197,10 @@ public class MerchantsCategoryResource {
 
     @GetMapping("/merchants-categories-list")
     @ApiOperation("商户端--获取类目信息列表")
-    public R getAllMerchantsCategories() {
+    public R<List<MerchantsCategoryDTO>> getAllMerchantsCategories() {
         List<MerchantsCategoryDTO> list = merchantsCategoryService.findAll();
         return R.ok(list);
     }
+
+
 }

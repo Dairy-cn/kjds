@@ -194,6 +194,16 @@ public class PayOrderDTO implements Serializable {
     @ApiModelProperty("订单商品列表")
     private List<OrderItemDTO> orderItemList;
 
+    @ApiModelProperty("微信或支付宝方支付编号")
+    private String transactionId;
+
+    public String getTransactionId() {
+        return transactionId;
+    }
+
+    public void setTransactionId(String transactionId) {
+        this.transactionId = transactionId;
+    }
 
     public List<OrderItemDTO> getOrderItemList() {
         return orderItemList;

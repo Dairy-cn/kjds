@@ -10,7 +10,7 @@ import java.math.BigDecimal;
  * Description: 
  * Author: Dairy
  * CreateTime: 2019/10/10
- * Copyright © 成都通吃岛信息技术有限公司 All right reserved
+
  ************************************************************/
 
 @ApiModel(value = "系统websocket返回类")

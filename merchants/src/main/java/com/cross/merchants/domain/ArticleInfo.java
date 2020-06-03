@@ -77,6 +77,16 @@ public class ArticleInfo implements Serializable {
     private String content;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
+
+
+    public Boolean getShowState() {
+        return showState;
+    }
+
+    public Boolean getTop() {
+        return top;
+    }
+
     public Long getId() {
         return id;
     }

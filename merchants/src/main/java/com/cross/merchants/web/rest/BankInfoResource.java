@@ -18,7 +18,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
@@ -51,51 +50,47 @@ public class BankInfoResource {
      * {@code POST  /bank-infos} : Create a new bankInfo.
      *
      * @param bankInfoDTO the bankInfoDTO to create.
-     * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new bankInfoDTO, or with status {@code 400 (Bad Request)} if the bankInfo has already an ID.
+     * @return the {@link R} with status {@code 201 (Created)} and with body the new bankInfoDTO, or with status {@code 400 (Bad Request)} if the bankInfo has already an ID.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PostMapping("/bank-infos")
-    public ResponseEntity<BankInfoDTO> createBankInfo(@RequestBody BankInfoDTO bankInfoDTO) throws URISyntaxException {
+    public R<BankInfoDTO> createBankInfo(@RequestBody BankInfoDTO bankInfoDTO) throws URISyntaxException {
         log.debug("REST request to save BankInfo : {}", bankInfoDTO);
         if (bankInfoDTO.getId() != null) {
             throw new BadRequestAlertException("A new bankInfo cannot already have an ID", ENTITY_NAME, "idexists");
         }
         BankInfoDTO result = bankInfoService.save(bankInfoDTO);
-        return ResponseEntity.created(new URI("/api/bank-infos/" + result.getId()))
-            .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
-            .body(result);
+        return R.ok(result);
     }
 
     /**
      * {@code PUT  /bank-infos} : Updates an existing bankInfo.
      *
      * @param bankInfoDTO the bankInfoDTO to update.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated bankInfoDTO,
+     * @return the {@link R} with status {@code 200 (OK)} and with body the updated bankInfoDTO,
      * or with status {@code 400 (Bad Request)} if the bankInfoDTO is not valid,
      * or with status {@code 500 (Internal Server Error)} if the bankInfoDTO couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PutMapping("/bank-infos")
-    public ResponseEntity<BankInfoDTO> updateBankInfo(@RequestBody BankInfoDTO bankInfoDTO) throws URISyntaxException {
+    public R<BankInfoDTO> updateBankInfo(@RequestBody BankInfoDTO bankInfoDTO) throws URISyntaxException {
         log.debug("REST request to update BankInfo : {}", bankInfoDTO);
         if (bankInfoDTO.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
         BankInfoDTO result = bankInfoService.save(bankInfoDTO);
-        return ResponseEntity.ok()
-            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, bankInfoDTO.getId().toString()))
-            .body(result);
+        return R.ok(result);
     }
 
     /**
      * {@code GET  /bank-infos} : get all the bankInfos.
      *
      * @param pageable the pagination information.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of bankInfos in body.
+     * @return the {@link R} with status {@code 200 (OK)} and the list of bankInfos in body.
      */
     @GetMapping("/bank-infos")
     @ApiOperation("分页获取---list")
-    public R getAllBankInfosByPage(Pageable pageable) {
+    public R<List<BankInfoDTO>> getAllBankInfosByPage(Pageable pageable) {
         log.debug("REST request to get a page of BankInfos");
         Page<BankInfoDTO> page = bankInfoService.findAll(pageable);
         return R.ok(page.getContent(), page.getTotalElements());
@@ -103,7 +98,7 @@ public class BankInfoResource {
 
     @GetMapping("/bank-infos-no-page")
     @ApiOperation("获取所有---list")
-    public R getAllBankInfos() {
+    public R<List<BankInfoDTO>> getAllBankInfos() {
         log.debug("REST request to get a page of BankInfos");
         List<BankInfoDTO> page = bankInfoService.findAll();
         return R.ok(page);
@@ -113,25 +108,25 @@ public class BankInfoResource {
      * {@code GET  /bank-infos/:id} : get the "id" bankInfo.
      *
      * @param id the id of the bankInfoDTO to retrieve.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the bankInfoDTO, or with status {@code 404 (Not Found)}.
+     * @return the {@link R} with status {@code 200 (OK)} and with body the bankInfoDTO, or with status {@code 404 (Not Found)}.
      */
     @GetMapping("/bank-infos/{id}")
-    public ResponseEntity<BankInfoDTO> getBankInfo(@PathVariable Long id) {
+    public R<BankInfoDTO> getBankInfo(@PathVariable Long id) {
         log.debug("REST request to get BankInfo : {}", id);
         Optional<BankInfoDTO> bankInfoDTO = bankInfoService.findOne(id);
-        return ResponseUtil.wrapOrNotFound(bankInfoDTO);
+        return R.ok(bankInfoDTO.get());
     }
 
     /**
      * {@code DELETE  /bank-infos/:id} : delete the "id" bankInfo.
      *
      * @param id the id of the bankInfoDTO to delete.
-     * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
+     * @return the {@link R} with status {@code 204 (NO_CONTENT)}.
      */
     @DeleteMapping("/bank-infos/{id}")
-    public ResponseEntity<Void> deleteBankInfo(@PathVariable Long id) {
+    public R deleteBankInfo(@PathVariable Long id) {
         log.debug("REST request to delete BankInfo : {}", id);
         bankInfoService.delete(id);
-        return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString())).build();
+        return R.ok();
     }
 }

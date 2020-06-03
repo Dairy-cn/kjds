@@ -11,7 +11,7 @@ import java.time.Instant;
  * Description: 
  * Author: Dairy
  * CreateTime: 2019/12/19
- * Copyright © 成都通吃岛信息技术有限公司 All right reserved
+
  ************************************************************/
 public class InstantJacksonSerializer extends JsonSerializer<Instant> {
     

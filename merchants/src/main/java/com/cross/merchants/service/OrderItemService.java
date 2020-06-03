@@ -5,6 +5,7 @@ import com.cross.merchants.service.dto.OrderItemDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.time.Instant;
 import java.util.Optional;
 
 /**
@@ -42,4 +43,16 @@ public interface OrderItemService {
      * @param id the id of the entity.
      */
     void delete(Long id);
+
+    Page<OrderItemDTO> findAllCondition(Pageable pageable, Integer orderStatus, Long storeId, Instant startTime, Instant endTime, String keyWord, Integer deliveryState, String goodsName);
+
+    Page<OrderItemDTO> getMyOrder(Pageable pageable, Integer orderStatus, Long userId, Instant startTime, Instant endTime, String keyWord, Integer deliveryState);
+
+
+
+    /**
+     * 确认收货
+     */
+    void confirmReceiveOrder(Long orderId);
+
 }

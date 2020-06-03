@@ -12,6 +12,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiModelProperty;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -119,7 +120,7 @@ public class SystemInfoResource {
 
     @GetMapping("/system-infos/")
     @ApiOperation("获取平台基本信息（包括支付账号信息）")
-    public R getSystemInfoOne() {
+    public R<SystemInfoDTO> getSystemInfoOne() {
         Optional<SystemInfoDTO> systemInfoDTO = systemInfoService.findOne(1L);
         if (!systemInfoDTO.isPresent()) {
             return R.accessError();
@@ -142,9 +143,10 @@ public class SystemInfoResource {
 
     @PutMapping("/system-infos/{id}")
     @ApiOperation("修改系统设置信息")
-    public R updateSystemInfoBasicInfo(@ApiParam("记录id") @PathVariable Long id,
-                                       @ApiParam("平台名称") @RequestParam String platformName,
-                                       @ApiParam("平台logo") @RequestParam String platformLogo) throws URISyntaxException {
+    public R<SystemInfoDTO> updateSystemInfoBasicInfo(@ApiParam("记录id") @PathVariable Long id,
+                                                      @ApiParam("平台名称") @RequestParam String platformName,
+                                                      @ApiParam("平台logo") @RequestParam String platformLogo,
+                                                      @ApiParam("c端背景图") @RequestParam String webBackgroundPic) throws URISyntaxException {
 
         Optional<SystemInfoDTO> one = systemInfoService.findOne(id);
         if (!one.isPresent()) {
@@ -153,33 +155,49 @@ public class SystemInfoResource {
         SystemInfoDTO systemInfoDTO = one.get();
         systemInfoDTO.setPlatformName(platformName);
         systemInfoDTO.setPlatformLogo(platformLogo);
+        systemInfoDTO.setWebBackgroundPic(webBackgroundPic);
         SystemInfoDTO save = systemInfoService.save(systemInfoDTO);
         return R.ok(save);
     }
 
 
-
     @PutMapping("/system-pay-infos/{id}")
     @ApiOperation("修改系统支付信息")
-    public R updateSystemInfoPayInfo(@ApiParam("记录id") @PathVariable Long id,
-                                       @ApiParam("公众账号Id") @RequestParam String platformAppId,
-                                       @ApiParam("商户号") @RequestParam String platformAppNo,
-                                       @ApiParam("商户号密钥") @RequestParam String platformAppSecret,
-                                       @ApiParam("支付宝APPId") @RequestParam String aliAppId,
-                                       @ApiParam("应用公钥") @RequestParam String aliAppPublicKey,
-                                       @ApiParam("应用私钥") @RequestParam String aliAppPrivteKey) throws URISyntaxException {
+    public R<SystemInfoDTO> updateSystemInfoPayInfo(@ApiParam("记录id") @PathVariable Long id,
+                                                    @ApiParam("公众号Id") @RequestParam(required = false) String platformAppId,
+                                                    @ApiParam("商户号密钥") @RequestParam(required = false) String platformAppSecret,
+                                                    @ApiParam("商户号") @RequestParam(required = false) String mId,
+                                                    @ApiParam("商户号ApiKey") @RequestParam(required = false) String merchantApiKey,
+                                                    @ApiParam("支付宝APPId") @RequestParam(required = false) String aliAppId,
+                                                    @ApiParam("支付宝公钥") @RequestParam(required = false) String aliAppPublicKey,
+                                                    @ApiParam("应用私钥") @RequestParam(required = false) String aliAppPrivteKey) throws URISyntaxException {
 
         Optional<SystemInfoDTO> one = systemInfoService.findOne(id);
         if (!one.isPresent()) {
             return R.errorData();
         }
         SystemInfoDTO systemInfoDTO = one.get();
-        systemInfoDTO.setPlatAppId(platformAppId);
-        systemInfoDTO.setPlatAppSecret(platformAppSecret);
-        systemInfoDTO.setPlatAppNo(platformAppNo);
-        systemInfoDTO.setAliAppPrivteKey(aliAppPrivteKey);
-        systemInfoDTO.setAliAppId(aliAppId);
-        systemInfoDTO.setAliAppPublicKey(aliAppPublicKey);
+        if (platformAppId != null) {
+            systemInfoDTO.setPlatAppId(platformAppId);
+        }
+        if (platformAppSecret != null) {
+            systemInfoDTO.setPlatAppSecret(platformAppSecret);
+        }
+        if (mId != null) {
+            systemInfoDTO.setPlatAppNo(mId);
+        }
+        if (merchantApiKey != null) {
+            systemInfoDTO.setMerchantApiKey(merchantApiKey);
+        }
+        if (aliAppPrivteKey != null) {
+            systemInfoDTO.setAliAppPrivteKey(aliAppPrivteKey);
+        }
+        if (aliAppId != null) {
+            systemInfoDTO.setAliAppId(aliAppId);
+        }
+        if (aliAppPublicKey != null) {
+            systemInfoDTO.setAliAppPublicKey(aliAppPublicKey);
+        }
         SystemInfoDTO save = systemInfoService.save(systemInfoDTO);
         return R.ok(save);
     }

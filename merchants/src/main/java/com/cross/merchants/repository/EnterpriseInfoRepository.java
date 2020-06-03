@@ -5,6 +5,8 @@ import com.cross.merchants.domain.EnterpriseInfo;
 import org.springframework.data.jpa.repository.*;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 /**
  * Spring Data  repository for the EnterpriseInfo entity.
  */
@@ -14,4 +16,6 @@ public interface EnterpriseInfoRepository extends JpaRepository<EnterpriseInfo, 
 
 
     EnterpriseInfo findFirstByMerchantId(Long merchantId);
+
+    List<EnterpriseInfo> findAllByMerchantIdIn(List<Long> merchantIds);
 }

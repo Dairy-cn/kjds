@@ -155,6 +155,18 @@ public class GoodsDTO implements Serializable {
     @ApiModelProperty(value = "购物车信息", hidden = true)
     private List<CartItemDTO> cartItemDTOS;
 
+    @ApiModelProperty(value = "销量")
+    private Integer saleVolume;
+
+
+    public Integer getSaleVolume() {
+        return saleVolume;
+    }
+
+    public void setSaleVolume(Integer saleVolume) {
+        this.saleVolume = saleVolume;
+    }
+
     public List<CartItemDTO> getCartItemDTOS() {
         return cartItemDTOS;
     }

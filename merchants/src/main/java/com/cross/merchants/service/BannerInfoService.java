@@ -7,6 +7,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 /**
@@ -48,8 +49,10 @@ public interface BannerInfoService {
 
     List<BannerInfoDTO> findAllByCondition(Integer positionType);
 
-    List<BannerInfoDTO> findAllByBannerType(Integer bannerType);
+    List<BannerInfoDTO> findAllByConditionByC(Integer positionType);
 
+
+    List<BannerInfoDTO> findAllByBannerType(Integer bannerType);
 
 
     List<BannerInfoDTO> findAllByStoreId(Long storeId);
@@ -61,4 +64,9 @@ public interface BannerInfoService {
 
 
     boolean updateBannerInfoTopStateByMerchant(Long id);
+
+
+    Map<String, Object> getPopInfo(Long userId);
+
+    void updatePopRecord(Long userId);
 }

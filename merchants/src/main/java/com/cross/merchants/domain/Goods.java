@@ -145,9 +145,18 @@ public class Goods implements Serializable {
 
 
 
-
+    @Column(name = "sale_volume")
+    private Integer saleVolume;
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
 
+
+    public Integer getSaleVolume() {
+        return saleVolume;
+    }
+
+    public void setSaleVolume(Integer saleVolume) {
+        this.saleVolume = saleVolume;
+    }
 
     public Instant getCreateTime() {
         return createTime;

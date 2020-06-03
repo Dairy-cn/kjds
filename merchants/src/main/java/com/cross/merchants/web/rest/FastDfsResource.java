@@ -30,7 +30,7 @@ import java.io.InputStream;
  * Description:
  * Author: Dair
  * CreateTime: 2020/5/12
- * Copyright © 成都通吃岛信息技术有限公司 All right reserved
+
  ************************************************************/
 @RestController
 @RequestMapping("/api")

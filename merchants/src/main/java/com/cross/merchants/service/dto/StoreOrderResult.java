@@ -4,6 +4,7 @@ import com.cross.merchants.domain.Goods;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
+import javax.persistence.Column;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.List;
@@ -28,8 +29,22 @@ public class StoreOrderResult implements Serializable {
     @ApiModelProperty("店铺合计")
     private BigDecimal totalAmount;
 
-    @ApiModelProperty
+    @ApiModelProperty("商品list")
     private List<GoodsDTO> goodsDTOList;
+
+    /**
+     * 税费
+     */
+    @ApiModelProperty("税费")
+    private BigDecimal taxesFees;
+
+    public BigDecimal getTaxesFees() {
+        return taxesFees;
+    }
+
+    public void setTaxesFees(BigDecimal taxesFees) {
+        this.taxesFees = taxesFees;
+    }
 
     public List<GoodsDTO> getGoodsDTOList() {
         return goodsDTOList;

@@ -1,10 +1,6 @@
 package com.cross.merchants.redis;
 
-/**
- * @Auther: le
- * @Date: 2018/8/28 15:37
- * @Description:
- */
+
 public class CartPrefix extends BasePrefix{
 
     public CartPrefix(int expireSeconds, String prefix) {
@@ -15,4 +11,22 @@ public class CartPrefix extends BasePrefix{
      * 设置购物车缓存
      */
     public static CartPrefix getCartList= new CartPrefix(0,"cart");
+
+
+
+    /**
+     * 设置收藏緩存
+     */
+    public static CartPrefix getCollectList= new CartPrefix(0,"collect:goods");
+
+    /**
+     * 设置关注緩存
+     */
+    public static CartPrefix getFollowList= new CartPrefix(0,"follow:brand");
+
+
+    /**
+     * 设置弹窗广告
+     */
+    public static CartPrefix getPopAdList= new CartPrefix(86400,"adPop");
 }

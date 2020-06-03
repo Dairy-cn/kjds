@@ -6,6 +6,7 @@ import com.cross.merchants.service.dto.StoreInfoDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 
@@ -64,5 +65,12 @@ public interface StoreInfoService {
     StoreInfoDTO getOne(Long id);
 
     List<StoreInfoDTO> findAllByOperatingStatus(Integer state,Long categoryId,String keyWord);
+
+
+    Page<StoreInfoDTO> getAllStoreInfosByCondition(Pageable pageable, Integer operatingStatus, Long categoryId, Integer warehouseType, String keyWord, Instant startTime,Instant endTime);
+
+
+
+    List<StoreInfoDTO> findAllByMerchantIds(List<Long> merchantIds);
 
 }

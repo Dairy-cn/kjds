@@ -34,6 +34,7 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/api")
 @Api(tags = "用户收货地址相关接口")
+@Deprecated
 public class UserAddressResource {
 
     private final Logger log = LoggerFactory.getLogger(UserAddressResource.class);
@@ -58,7 +59,7 @@ public class UserAddressResource {
      */
     @PostMapping("/user-addresses")
     @ApiOperation("C端---添加用户收货地址")
-    public R createUserAddress(@Valid @RequestBody UserAddressDTO userAddressDTO) throws URISyntaxException {
+    public R<UserAddressDTO> createUserAddress(@Valid @RequestBody UserAddressDTO userAddressDTO) throws URISyntaxException {
         log.debug("REST request to save UserAddress : {}", userAddressDTO);
         if (userAddressDTO.getId() != null) {
             return R.error("idexists");
@@ -79,7 +80,7 @@ public class UserAddressResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PutMapping("/user-addresses")
-    public R updateUserAddress(@Valid @RequestBody UserAddressDTO userAddressDTO) throws URISyntaxException {
+    public R<UserAddressDTO> updateUserAddress(@Valid @RequestBody UserAddressDTO userAddressDTO) throws URISyntaxException {
         log.debug("REST request to update UserAddress : {}", userAddressDTO);
         if (userAddressDTO.getId() == null) {
             return R.error("idnull");

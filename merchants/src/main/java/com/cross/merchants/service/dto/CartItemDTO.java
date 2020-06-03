@@ -18,7 +18,7 @@ import java.time.Instant;
  * Description:
  * Author: Dairy
  * CreateTime: 2020/5/23
- * Copyright © 成都通吃岛信息技术有限公司 All right reserved
+
  ************************************************************/
 @ApiModel(description = "购物车")
 public class CartItemDTO implements Serializable {
@@ -27,6 +27,12 @@ public class CartItemDTO implements Serializable {
     private String id;
     @ApiModelProperty(value = "商品id")
     private Long productId;
+
+    @ApiModelProperty(value = "商户id")
+    private Long storeId;
+
+
+
     @ApiModelProperty(value = "商品规格id")
     private Long productSkuId;
     @ApiModelProperty(value = "用户id")
@@ -69,18 +75,38 @@ public class CartItemDTO implements Serializable {
     @ApiModelProperty(value = "商品分类")
     private Long productCategoryId;
 
-    @ApiModelProperty(value = "商品状态 true 为过期")
-    private Boolean goodsState;
+    @ApiModelProperty(value = "商品状态 true 为过期 ")
+    private Boolean goodsDeleteState;
 
     @ApiModelProperty(value = "商品销售属性:[{'key':'颜色','value':'颜色'},{'key':'容量','value':'4G'}]")
     private String productAttr;
 
-    public Boolean getGoodsState() {
-        return goodsState;
+
+    @ApiModelProperty(value = "产品规格信息",hidden = true)
+    private GoodsSkuDTO goodsSkuDTO;
+
+    public GoodsSkuDTO getGoodsSkuDTO() {
+        return goodsSkuDTO;
     }
 
-    public void setGoodsState(Boolean goodsState) {
-        this.goodsState = goodsState;
+    public void setGoodsSkuDTO(GoodsSkuDTO goodsSkuDTO) {
+        this.goodsSkuDTO = goodsSkuDTO;
+    }
+
+    public Long getStoreId() {
+        return storeId;
+    }
+
+    public void setStoreId(Long storeId) {
+        this.storeId = storeId;
+    }
+
+    public Boolean getGoodsDeleteState() {
+        return goodsDeleteState;
+    }
+
+    public void setGoodsDeleteState(Boolean goodsDeleteState) {
+        this.goodsDeleteState = goodsDeleteState;
     }
 
     public String getId() {

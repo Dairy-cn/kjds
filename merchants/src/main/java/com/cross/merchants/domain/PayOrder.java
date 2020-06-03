@@ -1,6 +1,8 @@
 package com.cross.merchants.domain;
 
 
+import io.swagger.annotations.ApiModelProperty;
+
 import javax.persistence.*;
 
 import java.io.Serializable;
@@ -191,6 +193,23 @@ public class PayOrder implements Serializable {
 
     @Column(name = "promotion_amount")
     private BigDecimal promotionAmount;
+
+
+
+    @ApiModelProperty("微信或支付宝方支付编号")
+    @Column(name = "transaction_id")
+    private String transactionId;
+
+    public String getTransactionId() {
+        return transactionId;
+    }
+    public PayOrder transactionId(String transactionId) {
+        this.transactionId = transactionId;
+        return this;
+    }
+    public void setTransactionId(String transactionId) {
+        this.transactionId = transactionId;
+    }
 
     public BigDecimal getPromotionAmount() {
         return promotionAmount;

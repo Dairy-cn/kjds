@@ -46,7 +46,7 @@ public class OrderItemDTO implements Serializable {
      * 支付交易单号
      */
     @ApiModelProperty(value = "支付交易单号")
-    private Long payOrderPaymentCode;
+    private String payOrderPaymentCode;
 
     /**
      * 订单编号
@@ -103,6 +103,13 @@ public class OrderItemDTO implements Serializable {
      */
     @ApiModelProperty(value = "物流公司(配送方式)")
     private String deliveryCompany;
+
+
+    /**
+     * 物流公司Code
+     */
+    @ApiModelProperty(value = "物流公司Code")
+    private String deliveryCode;
 
     /**
      * 物流单号
@@ -221,6 +228,10 @@ public class OrderItemDTO implements Serializable {
     @ApiModelProperty(value = "产品店铺")
     private String storeName;
 
+
+
+
+
     /**
      * 产品店铺编号
      */
@@ -243,6 +254,40 @@ public class OrderItemDTO implements Serializable {
 
     @ApiModelProperty(value = "产品信息")
     private List<GoodsDTO> productInfo;
+
+    @ApiModelProperty(value = "发货状态 0 未发货 1 已发货")
+    private Integer deliveryState;
+
+
+    /**
+     * 商品名称
+     */
+    @ApiModelProperty(value = "商品名称(集合拼接 用于查询)")
+    private String goodsName;
+
+    public String getGoodsName() {
+        return goodsName;
+    }
+
+    public void setGoodsName(String goodsName) {
+        this.goodsName = goodsName;
+    }
+
+    public Integer getDeliveryState() {
+        return deliveryState;
+    }
+
+    public void setDeliveryState(Integer deliveryState) {
+        this.deliveryState = deliveryState;
+    }
+
+    public String getDeliveryCode() {
+        return deliveryCode;
+    }
+
+    public void setDeliveryCode(String deliveryCode) {
+        this.deliveryCode = deliveryCode;
+    }
 
     public List<GoodsDTO> getProductInfo() {
         return productInfo;
@@ -292,11 +337,11 @@ public class OrderItemDTO implements Serializable {
         this.payOrderId = payOrderId;
     }
 
-    public Long getPayOrderPaymentCode() {
+    public String getPayOrderPaymentCode() {
         return payOrderPaymentCode;
     }
 
-    public void setPayOrderPaymentCode(Long payOrderPaymentCode) {
+    public void setPayOrderPaymentCode(String payOrderPaymentCode) {
         this.payOrderPaymentCode = payOrderPaymentCode;
     }
 

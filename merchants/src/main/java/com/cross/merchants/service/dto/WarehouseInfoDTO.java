@@ -184,6 +184,18 @@ public class WarehouseInfoDTO implements Serializable {
     @ApiModelProperty(value = "退货仓库详细地址 (如果shipmentsAndReturnsInfoNoDifference为true 不传)")
     private String returnWarehouseAddress;
 
+    @ApiModelProperty(value = "发货区域类型 1 保税仓库区 2 境内非保税区  3 跨境直邮")
+    private Integer deliveryAreaType;
+
+
+    public Integer getDeliveryAreaType() {
+        return deliveryAreaType;
+    }
+
+    public void setDeliveryAreaType(Integer deliveryAreaType) {
+        this.deliveryAreaType = deliveryAreaType;
+    }
+
     public String getReturnWarehouseAddress() {
         return returnWarehouseAddress;
     }

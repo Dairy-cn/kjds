@@ -47,4 +47,6 @@ public interface BankInfoService {
 
     List<BankInfoDTO> findAll();
 
+    List<BankInfoDTO> findAllByIdIn(List<Long> ids);
+
 }

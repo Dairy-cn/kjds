@@ -1,5 +1,6 @@
 package com.cross.gateway.security.oauth2;
 
+import com.cross.utils.R;
 import io.github.jhipster.security.PersistentTokenCache;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -58,24 +59,24 @@ public class OAuth2AuthenticationService {
      * @return the {@link OAuth2AccessToken} as a {@link ResponseEntity}. Will return {@code OK (200)}, if successful.
      * If the UAA cannot authenticate the user, the status code returned by UAA will be returned.
      */
-    public ResponseEntity<OAuth2AccessToken> authenticate(HttpServletRequest request, HttpServletResponse response,
-                                                          Map<String, String> params) {
-        try {
-            String username = params.get("username");
-            String password = params.get("password");
-            boolean rememberMe = Boolean.valueOf(params.get("rememberMe"));
-            OAuth2AccessToken accessToken = authorizationClient.sendPasswordGrant(username, password);
-            OAuth2Cookies cookies = new OAuth2Cookies();
-            cookieHelper.createCookies(request, accessToken, rememberMe, cookies);
-            cookies.addCookiesTo(response);
-            if (log.isDebugEnabled()) {
-                log.debug("successfully authenticated user {}", params.get("username"));
-            }
-            return ResponseEntity.ok(accessToken);
-        } catch (HttpClientErrorException ex) {
-            log.error("failed to get OAuth2 tokens from UAA", ex);
-            throw new BadCredentialsException("Invalid credentials");
+    public R<OAuth2AccessToken> authenticate(HttpServletRequest request, HttpServletResponse response,
+                                             Map<String, String> params) {
+        String username = params.get("username");
+        String password = params.get("password");
+        String webType = params.get("webType");
+        if (webType == null) {
+            return R.error("webType不能为空");
         }
+//            boolean rememberMe = Boolean.valueOf(params.get("rememberMe"));
+        R r = authorizationClient.sendPasswordGrant(username, password, webType);
+//            OAuth2Cookies cookies = new OAuth2Cookies();
+//            cookieHelper.createCookies(request, accessToken, rememberMe, cookies);
+//            cookies.addCookiesTo(response);
+//            if (log.isDebugEnabled()) {
+//                log.debug("successfully authenticated user {}", params.get("username"));
+//            }
+        return r;
+
     }
 
     /**

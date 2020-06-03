@@ -19,7 +19,7 @@ public interface PayOrderRepository extends JpaRepository<PayOrder, Long> {
     List<PayOrder> findAllByStatusAndCreateTimeLessThan(Integer status, Instant time);
 
 
-    PayOrder findAllByIdAndStatusAndDeleteStatus(Long id,Integer status, Integer deleteSatus);
+    PayOrder findAllByIdAndStatusAndDeleteStatus(Long id, Integer status, Integer deleteSatus);
 
-
+    PayOrder findFirstByOrderSn(String orderSn);
 }

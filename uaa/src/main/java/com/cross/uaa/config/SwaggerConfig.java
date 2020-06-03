@@ -22,7 +22,6 @@ import java.util.List;
  * Description:
  * Author: Dairy
  * CreateTime: 2020/1/17
- * Copyright © 成都通吃岛信息技术有限公司 All right reserved
  ************************************************************/
 
 @Configuration

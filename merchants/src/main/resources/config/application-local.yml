@@ -63,6 +63,8 @@ spring:
       hibernate.cache.use_second_level_cache: false
       hibernate.cache.use_query_cache: false
       hibernate.generate_statistics: false
+      hibernate.enable_lazy_load_no_trans: true
+
     generate-ddl: true
   liquibase:
     # Remove 'faker' if you do not want the sample data to be loaded automatically
@@ -98,7 +100,7 @@ spring:
         max-wait: 300000
         min-idle: 0
 server:
-  port: 8081
+  port: 8083
 
 # ===================================================================
 # JHipster specific properties

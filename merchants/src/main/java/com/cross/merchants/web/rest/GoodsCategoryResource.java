@@ -61,7 +61,7 @@ public class GoodsCategoryResource {
      */
     @PostMapping("/goods-categories")
     @ApiOperation("创建商品品类分类")
-    public R createGoodsCategory(@RequestBody GoodsCategoryDTO goodsCategoryDTO) throws URISyntaxException {
+    public R<GoodsCategoryDTO> createGoodsCategory(@RequestBody GoodsCategoryDTO goodsCategoryDTO) throws URISyntaxException {
         log.debug("REST request to save GoodsCategory : {}", goodsCategoryDTO);
         if (goodsCategoryDTO.getId() != null) {
             throw new BadRequestAlertException("A new goodsCategory cannot already have an ID", ENTITY_NAME, "idexists");
@@ -81,7 +81,7 @@ public class GoodsCategoryResource {
      */
     @PutMapping("/goods-categories")
     @ApiOperation("修改商品品类分类")
-    public R updateGoodsCategory(@RequestBody GoodsCategoryDTO goodsCategoryDTO) throws URISyntaxException {
+    public R<GoodsCategoryDTO> updateGoodsCategory(@RequestBody GoodsCategoryDTO goodsCategoryDTO) throws URISyntaxException {
         log.debug("REST request to update GoodsCategory : {}", goodsCategoryDTO);
         if (goodsCategoryDTO.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
@@ -98,7 +98,7 @@ public class GoodsCategoryResource {
      */
     @GetMapping("/goods-categories")
     @ApiOperation("大后台--获取商品分类列表")
-    public R getAllGoodsCategories() {
+    public R<List<GoodsCategoryDTO>> getAllGoodsCategories() {
         List<GoodsCategoryDTO> list = goodsCategoryService.findAllByLevel(1);
         if (!CollectionUtils.isEmpty(list)) {
             Map<Long, List<GoodsCategoryDTO>> childMap = new HashMap<>();
@@ -132,7 +132,7 @@ public class GoodsCategoryResource {
      */
     @GetMapping("/goods-categories/{id}")
     @ApiOperation("获取商品分类详情信息")
-    public R getGoodsCategory(@PathVariable Long id) {
+    public R<GoodsCategoryDTO> getGoodsCategory(@PathVariable Long id) {
         log.debug("REST request to get GoodsCategory : {}", id);
         Optional<GoodsCategoryDTO> goodsCategoryDTO = goodsCategoryService.findOne(id);
         if (goodsCategoryDTO.isPresent()) {
@@ -143,7 +143,7 @@ public class GoodsCategoryResource {
     }
     @GetMapping("/goods-categories-by-level/{level}")
     @ApiOperation("根据分类级别获取商品分类信息")
-    public R getGoodsCategoryByLevel(@PathVariable Integer level) {
+    public R<List<GoodsCategoryDTO>> getGoodsCategoryByLevel(@PathVariable Integer level) {
         log.debug("REST request to get GoodsCategory : {}", level);
         List<GoodsCategoryDTO> goodsCategoryDTO = goodsCategoryService.findAllByLevel(level);
         return R.ok(goodsCategoryDTO);
@@ -151,7 +151,7 @@ public class GoodsCategoryResource {
 
     @GetMapping("/goods-categories-by-pid/{pid}")
     @ApiOperation("根据分id获取商品分类信息")
-    public R getGoodsCategoryByPid(@PathVariable Long pid) {
+    public R<List<GoodsCategoryDTO>> getGoodsCategoryByPid(@PathVariable Long pid) {
         log.debug("REST request to get GoodsCategory : {}", pid);
         List<GoodsCategoryDTO> goodsCategoryDTO = goodsCategoryService.findAllByPid(pid);
         return R.ok(goodsCategoryDTO);
@@ -166,7 +166,6 @@ public class GoodsCategoryResource {
     @ApiOperation("删除商品分类信息")
     public R deleteGoodsCategory(@PathVariable Long id) {
         log.debug("REST request to delete GoodsCategory : {}", id);
-        //TODO 和商品数量关联删除
         goodsCategoryService.delete(id);
         return R.ok();
     }

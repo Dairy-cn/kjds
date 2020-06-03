@@ -4,6 +4,7 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
 import javax.persistence.Column;
+import java.math.BigDecimal;
 import java.time.Instant;
 import java.io.Serializable;
 import java.util.List;
@@ -106,6 +107,101 @@ public class StoreInfoDTO implements Serializable {
 
     @ApiModelProperty(value = "商品信息",hidden = true)
     private List<GoodsDTO> goodsDTOList;
+
+
+    /**
+     * 创建时间
+     */
+    @ApiModelProperty(value = "创建时间")
+    private Instant creatTime;
+
+    /**
+     * 店铺编号
+     */
+    @ApiModelProperty(value = "店铺编号")
+    private String storeNo;
+
+
+    /**
+     * 品牌数量
+     */
+    @ApiModelProperty(value = "品牌数量")
+    private Integer brandNumber;
+
+    /**
+     * 商品数量
+     */
+    @ApiModelProperty(value = "商品数量")
+    private Integer goodsNumber;
+
+    @ApiModelProperty(value = "累计销量")
+    private BigDecimal totalSales;
+
+
+    @ApiModelProperty(value = "累计营销额")
+    private BigDecimal totoalTurnover;
+
+    /**
+     * 注册账号
+     */
+    @ApiModelProperty(value = "注册账号")
+    private String registerUserName;
+
+    public String getRegisterUserName() {
+        return registerUserName;
+    }
+
+    public void setRegisterUserName(String registerUserName) {
+        this.registerUserName = registerUserName;
+    }
+
+    public Integer getBrandNumber() {
+        return brandNumber;
+    }
+
+    public void setBrandNumber(Integer brandNumber) {
+        this.brandNumber = brandNumber;
+    }
+
+    public Integer getGoodsNumber() {
+        return goodsNumber;
+    }
+
+    public void setGoodsNumber(Integer goodsNumber) {
+        this.goodsNumber = goodsNumber;
+    }
+
+    public BigDecimal getTotalSales() {
+        return totalSales;
+    }
+
+    public void setTotalSales(BigDecimal totalSales) {
+        this.totalSales = totalSales;
+    }
+
+    public BigDecimal getTotoalTurnover() {
+        return totoalTurnover;
+    }
+
+    public void setTotoalTurnover(BigDecimal totoalTurnover) {
+        this.totoalTurnover = totoalTurnover;
+    }
+
+    public String getStoreNo() {
+        return storeNo;
+    }
+
+    public void setStoreNo(String storeNo) {
+        this.storeNo = storeNo;
+    }
+
+    public Instant getCreatTime() {
+        return creatTime;
+    }
+
+    public void setCreatTime(Instant creatTime) {
+        this.creatTime = creatTime;
+    }
 
     public List<GoodsDTO> getGoodsDTOList() {
         return goodsDTOList;

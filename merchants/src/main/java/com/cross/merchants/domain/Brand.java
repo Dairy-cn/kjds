@@ -138,8 +138,56 @@ public class Brand implements Serializable {
     @ApiModelProperty(value = "申请时间")
     @Column(name = "application_time")
     private Instant applicationTime;
+
+
+    /**
+     * 品牌编号
+     */
+    @ApiModelProperty(value = "品牌编号")
+    @Column(name = "brand_no")
+    private String brandNo;
+
+    /**
+     * 申请人账号
+     */
+    @ApiModelProperty(value = "申请人账号")
+    @Column(name = "proposer_user_name")
+    private String  proposerUserName;
+
+
+    /**
+     * 创建时间
+     */
+    @ApiModelProperty(value = "创建时间")
+    @Column(name = "creat_time")
+    private Instant creatTime;
+
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
 
+
+    public Instant getCreatTime() {
+        return creatTime;
+    }
+
+    public void setCreatTime(Instant creatTime) {
+        this.creatTime = creatTime;
+    }
+
+    public String getProposerUserName() {
+        return proposerUserName;
+    }
+
+    public void setProposerUserName(String proposerUserName) {
+        this.proposerUserName = proposerUserName;
+    }
+
+    public String getBrandNo() {
+        return brandNo;
+    }
+
+    public void setBrandNo(String brandNo) {
+        this.brandNo = brandNo;
+    }
 
     public String getOwerOfAttorneyPicLevelOne() {
         return owerOfAttorneyPicLevelOne;

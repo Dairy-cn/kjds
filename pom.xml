@@ -10,10 +10,10 @@
     </parent>
 
     <groupId>com.cross</groupId>
-    <artifactId>border</artifactId>
+    <artifactId>kjds</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <packaging>pom</packaging>
-    <name>border</name>
+    <name>kjds</name>
 
     <modules>
         <module>gateway</module>

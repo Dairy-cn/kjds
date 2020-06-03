@@ -15,7 +15,7 @@ import org.springframework.data.redis.serializer.*;
  * Description:
  * Author: Dair
  * CreateTime: 2019/12/23
- * Copyright © 成都通吃岛信息技术有限公司 All right reserved
+
  ************************************************************/
 
 @Configuration

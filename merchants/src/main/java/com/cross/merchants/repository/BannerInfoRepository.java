@@ -24,33 +24,36 @@ public interface BannerInfoRepository extends JpaRepository<BannerInfo, Long> {
     int countAllByBannerType(Integer type);
 
 
-
     int countAllByBannerTypeAndPositionTypeAndPositionCode(Integer type, Integer positionType, Integer positionCode);
 
 
     List<BannerInfo> findAllByBannerTypeAndPositionTypeOrderByTopDescIdDesc(Integer type, Integer positionType);
 
 
+    List<BannerInfo> findAllByBannerTypeAndPositionTypeAndShowStateOrderByTopDescIdDesc(Integer type, Integer positionType,Boolean showState);
+
+
     List<BannerInfo> findAllByBannerTypeOrderByTopDescIdDesc(Integer bannerType);
 
 
-
-    @Query(value="update   banner_info set top =false  where banner_type=2",nativeQuery=true)
+    @Query(value = "update   banner_info set top =false  where banner_type=2", nativeQuery = true)
     @Modifying
     int updateTopStateFalseByPlatform();
 
 
-    @Query(value="update   banner_info set top =false  where banner_type=1 and store_id= :storeId",nativeQuery=true)
+    @Query(value = "update   banner_info set top =false  where banner_type=1 and store_id= :storeId", nativeQuery = true)
     @Modifying
     int updateTopStateFalseByStoreId(@Param("storeId") Long storeId);
 
-    @Query(value="update   banner_info set top =true  where id= :id",nativeQuery=true)
+    @Query(value = "update   banner_info set top =true  where id= :id", nativeQuery = true)
     @Modifying
     int updateTopStateById(@Param("id") Long id);
 
 
     List<BannerInfo> findAllByBannerTypeAndStoreIdOrderByTopDescIdDesc(Integer type, Long storeId);
 
+
+    BannerInfo findFirstByBannerTypeAndPositionTypeAndPositionCode(Integer bannerType, Integer positionType,Integer positionCode);
 
 
 }

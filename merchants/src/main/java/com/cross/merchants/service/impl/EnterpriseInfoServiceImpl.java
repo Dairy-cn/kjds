@@ -13,6 +13,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -89,5 +90,10 @@ public class EnterpriseInfoServiceImpl implements EnterpriseInfoService {
     @Override
     public EnterpriseInfoDTO findFristByMerchantId(Long merchantId) {
         return enterpriseInfoMapper.toDto(enterpriseInfoRepository.findFirstByMerchantId(merchantId));
+    }
+
+    @Override
+    public List<EnterpriseInfoDTO> findAllByMerchantIdIn(List<Long> merchantIds) {
+        return enterpriseInfoMapper.toDto(enterpriseInfoRepository.findAllByMerchantIdIn(merchantIds));
     }
 }

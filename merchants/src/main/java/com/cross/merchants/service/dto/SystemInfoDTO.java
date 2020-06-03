@@ -26,16 +26,25 @@ public class SystemInfoDTO implements Serializable {
     @ApiModelProperty(value = "平台Logo")
     private String platformLogo;
 
+
+
     /**
-     * 微信平台应用编号
+     * C端背景图
      */
-    @ApiModelProperty(value = "微信平台应用编号")
+    @ApiModelProperty(value = "C端背景图")
+    private String webBackgroundPic;
+
+
+    /**
+     * 微信平台公众号Id
+     */
+    @ApiModelProperty(value = "微信平台公众号Id")
     private String platAppId;
 
     /**
-     * 微信平台商户密钥
+     * 微信平台公众号密钥
      */
-    @ApiModelProperty(value = "微信平台商户密钥")
+    @ApiModelProperty(value = "微信平台公众号密钥")
     private String platAppSecret;
 
     /**
@@ -61,6 +70,29 @@ public class SystemInfoDTO implements Serializable {
      */
     @ApiModelProperty(value = "支付宝公钥")
     private String aliAppPublicKey;
+
+
+    /**
+     * 商户支付Api Key
+     */
+    @ApiModelProperty(value = "商户支付Api Key")
+    private String merchantApiKey;
+
+    public String getMerchantApiKey() {
+        return merchantApiKey;
+    }
+
+    public void setMerchantApiKey(String merchantApiKey) {
+        this.merchantApiKey = merchantApiKey;
+    }
+
+    public String getWebBackgroundPic() {
+        return webBackgroundPic;
+    }
+
+    public void setWebBackgroundPic(String webBackgroundPic) {
+        this.webBackgroundPic = webBackgroundPic;
+    }
 
     public String getPlatAppNo() {
         return platAppNo;

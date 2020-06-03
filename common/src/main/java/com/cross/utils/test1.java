@@ -6,7 +6,7 @@
 // * Description:
 // * Author: Dairy
 // * CreateTime: 2020/2/26
-// * Copyright © 成都通吃岛信息技术有限公司 All right reserved
+//
 // ************************************************************/
 //public class test1 {
 //

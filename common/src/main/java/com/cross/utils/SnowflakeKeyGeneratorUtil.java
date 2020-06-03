@@ -10,7 +10,7 @@ import java.util.Calendar;
 /*************************************************************
  * Description: 雪花算法实现生成相应的编号
  * CreateTime: 2020/2/26
- * Copyright © 成都通吃岛信息技术有限公司 All right reserved
+
  * @author drr
  ************************************************************/
 @Slf4j

@@ -210,9 +210,23 @@ public class MerchantsCheckInInfo implements Serializable {
     @Column(name = "customs_registration_and_import_and_export_record_receipt" ,length = 2000)
     private String customsRegistrationAndImportAndExportRecordReceipt;
 
+    /**
+     * 注册账号
+     */
+    @ApiModelProperty(value = "注册账号")
+    @Column(name = "register_user_name")
+    private String registerUserName ;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
 
+
+    public String getRegisterUserName() {
+        return registerUserName;
+    }
+
+    public void setRegisterUserName(String registerUserName) {
+        this.registerUserName = registerUserName;
+    }
 
     public String getDomesticEntrustedEnterpriseInfo() {
         return domesticEntrustedEnterpriseInfo;

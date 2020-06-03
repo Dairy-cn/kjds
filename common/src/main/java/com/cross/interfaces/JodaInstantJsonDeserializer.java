@@ -20,7 +20,6 @@ import java.util.TimeZone;
  * Description: 
  * Author: Dair
  * CreateTime: 2020/1/9
- * Copyright © 成都通吃岛信息技术有限公司 All right reserved
  ************************************************************/
 public class JodaInstantJsonDeserializer extends JsonDeserializer<Instant> {
     @Override

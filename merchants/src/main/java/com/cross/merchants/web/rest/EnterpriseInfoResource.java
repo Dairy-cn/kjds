@@ -1,14 +1,8 @@
 package com.cross.merchants.web.rest;
 
-import com.cross.merchants.service.BankInfoService;
-import com.cross.merchants.service.EnterpriseInfoService;
-import com.cross.merchants.service.GlobalRegionService;
-import com.cross.merchants.service.MerchantsCheckInInfoService;
-import com.cross.merchants.service.dto.BankInfoDTO;
-import com.cross.merchants.service.dto.GlobalRegionDTO;
-import com.cross.merchants.service.dto.MerchantsCheckInInfoDTO;
+import com.cross.merchants.service.*;
+import com.cross.merchants.service.dto.*;
 import com.cross.merchants.web.rest.errors.BadRequestAlertException;
-import com.cross.merchants.service.dto.EnterpriseInfoDTO;
 
 import com.cross.utils.CommonUtil;
 import com.cross.utils.R;
@@ -19,6 +13,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -61,6 +56,9 @@ public class EnterpriseInfoResource {
 
 
     private final BankInfoService bankInfoService;
+
+    @Autowired
+    private StoreInfoService storeInfoService;
 
     public EnterpriseInfoResource(EnterpriseInfoService enterpriseInfoService, MerchantsCheckInInfoService merchantsCheckInInfoService, GlobalRegionService globalRegionService, BankInfoService bankInfoService) {
         this.enterpriseInfoService = enterpriseInfoService;
@@ -219,5 +217,63 @@ public class EnterpriseInfoResource {
             }
         }
         return enterpriseInfoDTO;
+    }
+
+
+    @GetMapping("/enterprise-infos-page")
+    @ApiOperation("大后台--商户账户列表")
+    public R<List<EnterpriseInfoDTO>> getAllEnterpriseInfosNoPage(Pageable pageable) {
+        log.debug("REST request to get a page of EnterpriseInfos");
+        Page<EnterpriseInfoDTO> page = enterpriseInfoService.findAll(pageable);
+        List<EnterpriseInfoDTO> content = page.getContent();
+        if(!CollectionUtils.isEmpty(content)){
+            List<Long> brandIds = content.stream().filter(e -> e.getBankId() != null).map(EnterpriseInfoDTO::getBankId).collect(Collectors.toList());
+            if(!CollectionUtils.isEmpty(brandIds)){
+                List<BankInfoDTO> bankInfoDTOS = bankInfoService.findAllByIdIn(brandIds);
+                if(!CollectionUtils.isEmpty(bankInfoDTOS)){
+                    Map<Long, BankInfoDTO> BankInfoDTOMap = bankInfoDTOS.stream().collect(Collectors.toMap(BankInfoDTO::getId, e -> e));
+                    content.stream().filter(e->e.getBankId()!=null).forEach(e->{
+                        BankInfoDTO bankInfoDTO = BankInfoDTOMap.get(e.getBankId());
+                        if(bankInfoDTO!=null){
+                            e.setBankName(bankInfoDTO.getName());
+                        }
+                    });
+                }
+            }
+            List<Long> merchantIds = content.stream().filter(e -> e.getMerchantId() != null).map(EnterpriseInfoDTO::getMerchantId).collect(Collectors.toList());
+            if(!CollectionUtils.isEmpty(merchantIds)){
+                List<StoreInfoDTO> storeInfoDTOS = storeInfoService.findAllByMerchantIds(merchantIds);
+                Map<Long, StoreInfoDTO> storeInfoDTOMap = storeInfoDTOS.stream().collect(Collectors.toMap(StoreInfoDTO::getMerchantsCheckInInfoId, e -> e));
+                content.stream().forEach(e->{
+                    e.setStoreInfoDTO(storeInfoDTOMap.get(e.getMerchantId()));
+                });
+
+            }
+        }
+        return R.ok(content, page.getTotalElements());
+    }
+
+    @GetMapping("/enterprise-infos-by-merchantId/{storeId}")
+    @ApiOperation("根据商户id获取企业/商户账户信息")
+    public R<StoreInfoDTO> getEnterpriseInfoByMerchantId(@PathVariable Long storeId) {
+        Optional<StoreInfoDTO> optionalStoreInfoDTO = storeInfoService.findOne(storeId);
+        if (!optionalStoreInfoDTO.isPresent()) {
+            return R.error();
+        }
+        StoreInfoDTO storeInfoDTO = optionalStoreInfoDTO.get();
+        MerchantsCheckInInfoDTO checkInInfoServiceOne = merchantsCheckInInfoService.findOne(storeInfoDTO.getMerchantsCheckInInfoId());
+        if (checkInInfoServiceOne != null) {
+            EnterpriseInfoDTO enterpriseInfoDTO = enterpriseInfoService.findFristByMerchantId(storeInfoDTO.getMerchantsCheckInInfoId());
+            enterpriseInfoDTO = getAddressInfo(enterpriseInfoDTO);
+            if (enterpriseInfoDTO != null && enterpriseInfoDTO.getBankId() != null) {
+                Optional<BankInfoDTO> one = bankInfoService.findOne(enterpriseInfoDTO.getId());
+                if (one.isPresent()) {
+                    enterpriseInfoDTO.setBankName(one.get().getName());
+                }
+            }
+            checkInInfoServiceOne.setEnterpriseInfoDTO(enterpriseInfoDTO);
+        }
+        storeInfoDTO.setMerchantsCheckInInfoDTO(checkInInfoServiceOne);
+        return R.ok(storeInfoDTO);
     }
 }

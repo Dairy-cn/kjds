@@ -4,6 +4,7 @@ import com.cross.merchants.service.BannerInfoService;
 import com.cross.merchants.web.rest.errors.BadRequestAlertException;
 import com.cross.merchants.service.dto.BannerInfoDTO;
 
+import com.cross.utils.CommonUtil;
 import com.cross.utils.R;
 import io.github.jhipster.web.util.HeaderUtil;
 import io.github.jhipster.web.util.PaginationUtil;
@@ -26,6 +27,7 @@ import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 /**
@@ -58,7 +60,7 @@ public class BannerInfoResource {
      */
     @PostMapping("/banner-infos")
     @ApiOperation("商户端/大后台--添加广告信息")
-    public R createBannerInfo(@Valid @RequestBody BannerInfoDTO bannerInfoDTO) throws URISyntaxException {
+    public R<BannerInfoDTO> createBannerInfo(@Valid @RequestBody BannerInfoDTO bannerInfoDTO) throws URISyntaxException {
         log.debug("REST request to save BannerInfo : {}", bannerInfoDTO);
         if (bannerInfoDTO.getId() != null) {
             return R.error("idexists");
@@ -71,7 +73,7 @@ public class BannerInfoResource {
 
     @PostMapping("/banner-infos-merchant")
     @ApiOperation("商户端-店铺管理-店铺装修-添加广告信息")
-    public R createBannerInfoByMerchant(@Valid @RequestBody BannerInfoDTO bannerInfoDTO) throws URISyntaxException {
+    public R<BannerInfoDTO> createBannerInfoByMerchant(@Valid @RequestBody BannerInfoDTO bannerInfoDTO) throws URISyntaxException {
         log.debug("REST request to save BannerInfo : {}", bannerInfoDTO);
         if (bannerInfoDTO.getId() != null) {
             return R.error("idexists");
@@ -94,7 +96,7 @@ public class BannerInfoResource {
      */
     @PutMapping("/banner-infos")
     @ApiOperation("商户端/大后台--修改广告信息")
-    public R updateBannerInfo(@Valid @RequestBody BannerInfoDTO bannerInfoDTO) throws URISyntaxException {
+    public R<BannerInfoDTO> updateBannerInfo(@Valid @RequestBody BannerInfoDTO bannerInfoDTO) throws URISyntaxException {
         log.debug("REST request to update BannerInfo : {}", bannerInfoDTO);
         if (bannerInfoDTO.getId() == null) {
             return R.error("idnull");
@@ -105,7 +107,7 @@ public class BannerInfoResource {
 
     @PutMapping("/banner-infos-show-state/{id}")
     @ApiOperation("大后台--修改广告显示状态")
-    public R updateBannerInfoShowState(@PathVariable Long id, @ApiParam("显示状态 true 显示 false 隐藏 ") @RequestParam Boolean showState) throws URISyntaxException {
+    public R<BannerInfoDTO> updateBannerInfoShowState(@PathVariable Long id, @ApiParam("显示状态 true 显示 false 隐藏 ") @RequestParam Boolean showState) throws URISyntaxException {
 
         BannerInfoDTO one = bannerInfoService.getOne(id);
         if (one == null) {
@@ -129,6 +131,7 @@ public class BannerInfoResource {
             return R.error();
         }
     }
+
     @PutMapping("/banner-infos-top-state-merchant/{id}")
     @ApiOperation("商户端--修改广告置顶状态")
     public R updateBannerInfoTopStateByMerchant(@PathVariable Long id) throws URISyntaxException {
@@ -139,6 +142,7 @@ public class BannerInfoResource {
             return R.error();
         }
     }
+
     /**
      * {@code GET  /banner-infos} : get all the bannerInfos.
      *
@@ -147,16 +151,24 @@ public class BannerInfoResource {
      */
     @GetMapping("/banner-infos")
     @ApiOperation("大后台--根据条件获取广告list")
-    public R getAllBannerInfos(@ApiParam("位置类型 1 顶部轮播 2 弹窗 3 A区广告位") @RequestParam Integer positionType) {
+    public R<List<BannerInfoDTO>> getAllBannerInfos(@ApiParam("位置类型 1 顶部轮播 2 弹窗 3 A区广告位") @RequestParam Integer positionType) {
         log.debug("REST request to get a page of BannerInfos");
         List<BannerInfoDTO> list = bannerInfoService.findAllByCondition(positionType);
         return R.ok(list);
     }
 
 
+    @GetMapping("/c-banner-infos")
+    @ApiOperation("c端--根据位置获取广告信息")
+    public R<List<BannerInfoDTO>> getAllBannerInfosByPositionType(@ApiParam("位置类型 1 顶部轮播 2 弹窗 3 A区广告位 4 b区广告") @RequestParam Integer positionType) {
+        log.debug("REST request to get a page of BannerInfos");
+        List<BannerInfoDTO> list = bannerInfoService.findAllByConditionByC(positionType);
+        return R.ok(list);
+    }
+
     @GetMapping("/banner-infos-type")
     @ApiOperation("大后台/商户--根据广告类型获取广告list")
-    public R getAllBannerInfosByType(@ApiParam("类型 1 商户广告 2 大后台广告 3 商户推荐广告") @RequestParam Integer bannerType) {
+    public R<List<BannerInfoDTO>> getAllBannerInfosByType(@ApiParam("类型 1 商户广告 2 大后台广告 3 商户推荐广告") @RequestParam Integer bannerType) {
         log.debug("REST request to get a page of BannerInfos");
         List<BannerInfoDTO> list = bannerInfoService.findAllByBannerType(bannerType);
 
@@ -166,11 +178,12 @@ public class BannerInfoResource {
 
     @GetMapping("/banner-infos-merchant/{storeId}")
     @ApiOperation("大后台--根据条件获取广告list")
-    public R getAllBannerInfosByMerchant(@ApiParam("商户id") @PathVariable Long storeId) {
+    public R<List<BannerInfoDTO>> getAllBannerInfosByMerchant(@ApiParam("商户id") @PathVariable Long storeId) {
         log.debug("REST request to get a page of BannerInfos");
         List<BannerInfoDTO> list = bannerInfoService.findAllByStoreId(storeId);
         return R.ok(list);
     }
+
     /**
      * {@code GET  /banner-infos/:id} : get the "id" bannerInfo.
      *
@@ -179,7 +192,7 @@ public class BannerInfoResource {
      */
     @GetMapping("/banner-infos/{id}")
     @ApiOperation("商户端/大后台--根据id获取详情")
-    public R getBannerInfo(@PathVariable Long id) {
+    public R<BannerInfoDTO> getBannerInfo(@PathVariable Long id) {
         log.debug("REST request to get BannerInfo : {}", id);
         BannerInfoDTO bannerInfoDTO = bannerInfoService.getOne(id);
         return R.ok(bannerInfoDTO);
@@ -196,6 +209,24 @@ public class BannerInfoResource {
     public R deleteBannerInfo(@PathVariable Long id) {
         log.debug("REST request to delete BannerInfo : {}", id);
         bannerInfoService.delete(id);
+        return R.ok();
+    }
+
+
+    @GetMapping("/banner-infos-pop-ad")
+    @ApiOperation("C端--获取当前用户是否要弹窗广告,showState=true表示要弹出 会在adInfo中返回")
+    public R getPopInfo() {
+        Long id = CommonUtil.getCurrentLoginUser().getId();
+        Map<String, Object> info = bannerInfoService.getPopInfo(id);
+        return R.ok(info);
+    }
+
+
+    @GetMapping("/update-banner-infos-pop-ad")
+    @ApiOperation("C端--当用户点击弹窗广告后，确定为弹出一次，对该操作做记录")
+    public R updatePopRecord() {
+        Long id = CommonUtil.getCurrentLoginUser().getId();
+        bannerInfoService.updatePopRecord(id);
         return R.ok();
     }
 }

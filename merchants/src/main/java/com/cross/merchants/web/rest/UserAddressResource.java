@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.net.URISyntaxException;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -48,7 +49,7 @@ public class UserAddressResource {
      */
     @PostMapping("/user-addresses")
     @ApiOperation("C端---添加用户收货地址")
-    public R createUserAddress(@Valid @RequestBody UserAddressDTO userAddressDTO) throws URISyntaxException {
+    public R<UserAddressDTO> createUserAddress(@Valid @RequestBody UserAddressDTO userAddressDTO) throws URISyntaxException {
         log.debug("REST request to save UserAddress : {}", userAddressDTO);
         if (userAddressDTO.getId() != null) {
             return R.error("idexists");
@@ -69,7 +70,7 @@ public class UserAddressResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PutMapping("/user-addresses")
-    public R updateUserAddress(@Valid @RequestBody UserAddressDTO userAddressDTO) throws URISyntaxException {
+    public R<UserAddressDTO> updateUserAddress(@Valid @RequestBody UserAddressDTO userAddressDTO) throws URISyntaxException {
         log.debug("REST request to update UserAddress : {}", userAddressDTO);
         if (userAddressDTO.getId() == null) {
             return R.error("idnull");
@@ -86,7 +87,7 @@ public class UserAddressResource {
      */
     @GetMapping("/user-addresses")
     @ApiOperation("C-获取自己的收货地址分页信息")
-    public R getAllUserAddresses(Pageable pageable) {
+    public R<List<UserAddressDTO>> getAllUserAddresses(Pageable pageable) {
         log.debug("REST request to get a page of UserAddresses");
 
         Page<UserAddressDTO> page = userAddressService.findAll(pageable, CommonUtil.getCurrentLoginUser().getId());
@@ -101,7 +102,7 @@ public class UserAddressResource {
      */
     @GetMapping("/user-addresses/{id}")
     @ApiOperation("根据记录id获取详情")
-    public R getUserAddress(@PathVariable Long id) {
+    public R<UserAddressDTO> getUserAddress(@PathVariable Long id) {
         log.debug("REST request to get UserAddress : {}", id);
         Optional<UserAddressDTO> userAddressDTO = userAddressService.findOne(id);
         if (userAddressDTO.get().getDeleteFlag()) {

@@ -6,6 +6,7 @@ import com.cross.merchants.service.dto.GoodsRecommendDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.math.BigDecimal;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.util.List;
@@ -27,6 +28,8 @@ public interface GoodsService {
 
     GoodsDTO saveOnly(GoodsDTO goodsDTO);
 
+    GoodsDTO reCheckGoods(GoodsDTO goodsDTO);
+
     /**
      * Get all the goods.
      *
@@ -41,12 +44,13 @@ public interface GoodsService {
 
     Page<GoodsDTO> getAllGoodsByCondition(Pageable pageable, Long storeId, Long brandId, Integer checkState, Instant startTime, Instant endTime, String keyWord, Instant startCheckTime, Instant endCheckTime, Long oneCategoryId, Long twoCategoryId, Long thirdCategoryId);
 
-    /**
-     * Get the "id" goods.
-     *
-     * @param id the id of the entity.
-     * @return the entity.
-     */
+    List<GoodsDTO> getAllGoodsByConditionNoPage(Long storeId, Long brandId, Integer checkState, Instant startTime, Instant endTime, String keyWord, Instant startCheckTime, Instant endCheckTime, Long oneCategoryId, Long twoCategoryId, Long thirdCategoryId);
+        /**
+         * Get the "id" goods.
+         *
+         * @param id the id of the entity.
+         * @return the entity.
+         */
     Optional<GoodsDTO> findOne(Long id);
 
     /**
@@ -58,6 +62,20 @@ public interface GoodsService {
 
     Map<Long, GoodsDTO> finAllMapInfo(List<Long> ids);
 
-    List<GoodsDTO> findAllByCategoryIdAndKeywordAndCheckStateAndSaleState(Long storeId,Long categoryId, String keyword, Boolean saleState,Integer checkState);
+    List<GoodsDTO> findAllByCategoryIdAndKeywordAndCheckStateAndSaleState(Long storeId, Long categoryId, String keyword, Boolean saleState, Integer checkState);
 
+    List<GoodsDTO> findAllById(List<Long> ids);
+
+    GoodsDTO getOne(Long id);
+
+
+    List<GoodsDTO> findAllByBrandIdIn(List<Long> ids);
+
+    Page<GoodsDTO> findAllByStoreId(Pageable pageable, Long storeId);
+
+
+    List<GoodsDTO> queryGoodsList(String keyword,Long storeId);
+
+
+   Page<GoodsDTO> getAllGoodsByConditionByC(Pageable pageable, Long oneCategoryId, Long twoCategoryId, Long thirdCategoryId, BigDecimal minPrice, BigDecimal maxPrice, Integer sortType, Integer order);
 }

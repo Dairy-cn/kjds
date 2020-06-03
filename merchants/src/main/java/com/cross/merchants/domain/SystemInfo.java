@@ -71,8 +71,46 @@ public class SystemInfo implements Serializable {
     @Column(name = "plat_app_no")
     private String platAppNo;
 
+
+
+    /**
+     * C端背景图
+     */
+    @ApiModelProperty(value = "C端背景图")
+    @Column(name = "web_background_pic")
+    private String webBackgroundPic;
+
+
+    /**
+     * 商户支付Api Key
+     */
+    @ApiModelProperty(value = "商户支付Api Key")
+    @Column(name = "merchant_api_key")
+    private String merchantApiKey;
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
 
+
+    public String getMerchantApiKey() {
+        return merchantApiKey;
+    }
+    public SystemInfo merchantApiKey(String merchantApiKey) {
+        this.merchantApiKey = merchantApiKey;
+        return this;
+    }
+    public void setMerchantApiKey(String merchantApiKey) {
+        this.merchantApiKey = merchantApiKey;
+    }
+
+    public String getWebBackgroundPic() {
+        return webBackgroundPic;
+    }
+    public SystemInfo webBackgroundPic(String webBackgroundPic) {
+        this.webBackgroundPic = webBackgroundPic;
+        return this;
+    }
+    public void setWebBackgroundPic(String webBackgroundPic) {
+        this.webBackgroundPic = webBackgroundPic;
+    }
 
     public String getPlatAppNo() {
         return platAppNo;

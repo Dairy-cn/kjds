@@ -202,6 +202,69 @@ public class MerchantsCheckInInfoDTO implements Serializable {
     @ApiModelProperty(value = "海关登记书/进出口备案回执")
     private CustomsRegistrationAndImportAndExportRecordReceipt customsRegistrationAndImportAndExportRecordReceipt;
 
+    /**
+     * 注册账号
+     */
+    @ApiModelProperty(value = "注册账号")
+    private String registerUserName ;
+
+    @ApiModelProperty(value = "企业信息",hidden = true)
+    private EnterpriseInfoDTO enterpriseInfoDTO;
+
+
+    @ApiModelProperty(value = "仓库信息",hidden = true)
+    private WarehouseInfoDTO warehouseInfoDTO;
+
+    /**
+     * 商户编号
+     */
+    @ApiModelProperty(value = "商户编号")
+    private String merchantNo;
+
+    @ApiModelProperty(value = "商户类别",hidden = true)
+    private  MerchantsCategoryDTO merchantsCategoryDTO;
+
+
+    public MerchantsCategoryDTO getMerchantsCategoryDTO() {
+        return merchantsCategoryDTO;
+    }
+
+    public void setMerchantsCategoryDTO(MerchantsCategoryDTO merchantsCategoryDTO) {
+        this.merchantsCategoryDTO = merchantsCategoryDTO;
+    }
+
+    public WarehouseInfoDTO getWarehouseInfoDTO() {
+        return warehouseInfoDTO;
+    }
+
+    public void setWarehouseInfoDTO(WarehouseInfoDTO warehouseInfoDTO) {
+        this.warehouseInfoDTO = warehouseInfoDTO;
+    }
+
+    public String getMerchantNo() {
+        return merchantNo;
+    }
+
+    public void setMerchantNo(String merchantNo) {
+        this.merchantNo = merchantNo;
+    }
+
+    public String getRegisterUserName() {
+        return registerUserName;
+    }
+
+    public void setRegisterUserName(String registerUserName) {
+        this.registerUserName = registerUserName;
+    }
+
+    public EnterpriseInfoDTO getEnterpriseInfoDTO() {
+        return enterpriseInfoDTO;
+    }
+
+    public void setEnterpriseInfoDTO(EnterpriseInfoDTO enterpriseInfoDTO) {
+        this.enterpriseInfoDTO = enterpriseInfoDTO;
+    }
+
     public List<String> getBusinessLicense() {
         return businessLicense;
     }

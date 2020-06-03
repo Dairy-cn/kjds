@@ -1,6 +1,7 @@
 package com.cross.merchants.service.impl;
 
 import com.cross.merchants.exception.MerchantsException;
+import com.cross.merchants.repository.GoodsRepository;
 import com.cross.merchants.service.GoodsCategoryService;
 import com.cross.merchants.domain.GoodsCategory;
 import com.cross.merchants.repository.GoodsCategoryRepository;
@@ -9,6 +10,7 @@ import com.cross.merchants.service.mapper.GoodsCategoryMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -32,6 +34,9 @@ public class GoodsCategoryServiceImpl implements GoodsCategoryService {
     private final GoodsCategoryRepository goodsCategoryRepository;
 
     private final GoodsCategoryMapper goodsCategoryMapper;
+
+    @Autowired
+    private GoodsRepository goodsRepository;
 
     public GoodsCategoryServiceImpl(GoodsCategoryRepository goodsCategoryRepository, GoodsCategoryMapper goodsCategoryMapper) {
         this.goodsCategoryRepository = goodsCategoryRepository;
@@ -107,6 +112,9 @@ public class GoodsCategoryServiceImpl implements GoodsCategoryService {
 
 
     private boolean checkParam(GoodsCategoryDTO dto) {
+        if (dto.getLevel() == null) {
+            throw new MerchantsException(400, "分类等级不能为空");
+        }
         if (1 == dto.getLevel()) {
             dto.setPid(0L);
         }
@@ -207,6 +215,26 @@ public class GoodsCategoryServiceImpl implements GoodsCategoryService {
     @Override
     public void delete(Long id) {
         log.debug("Request to delete GoodsCategory : {}", id);
+        //获取下级菜单
+        List<Long> ids = new ArrayList<>();
+        ids.add(id);
+        List<GoodsCategory> childList = goodsCategoryRepository.findAllByPid(id);
+        if (!CollectionUtils.isEmpty(childList)) {
+            List<Long> childIds = childList.stream().map(GoodsCategory::getId).collect(Collectors.toList());
+            if (!CollectionUtils.isEmpty(childIds)) {
+                ids.addAll(childIds);
+                List<GoodsCategory> grandChildList = goodsCategoryRepository.findAllByPidIn(childIds);
+                List<Long> grandChildIds = grandChildList.stream().map(GoodsCategory::getId).collect(Collectors.toList());
+                if (!CollectionUtils.isEmpty(grandChildIds)) {
+                    ids.addAll(grandChildIds);
+                }
+            }
+        }
+        ids = ids.stream().distinct().collect(Collectors.toList());
+        int count = goodsRepository.countAllByCategoryIdInAndDeleteFlag(ids, false);
+        if (count > 0) {
+            throw new MerchantsException(400, "该分类下存在商品,不能删除");
+        }
         goodsCategoryRepository.deleteById(id);
     }
 
@@ -256,7 +284,7 @@ public class GoodsCategoryServiceImpl implements GoodsCategoryService {
         if (goodsCategoryDTO != null && 0 != goodsCategoryDTO.getPid()) {
             GoodsCategoryDTO parentDto = goodsCategoryMapper.toDto(goodsCategoryRepository.getOne(goodsCategoryDTO.getPid()));
 
-            if(parentDto!=null && 0!=parentDto.getPid()){
+            if (parentDto != null && 0 != parentDto.getPid()) {
                 GoodsCategoryDTO gandParentDto = goodsCategoryMapper.toDto(goodsCategoryRepository.getOne(parentDto.getPid()));
                 parentDto.setParentNode(gandParentDto);
             }

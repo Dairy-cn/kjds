@@ -1,5 +1,6 @@
 package com.cross.gateway.security.oauth2;
 
+import com.cross.utils.R;
 import org.springframework.security.oauth2.common.OAuth2AccessToken;
 
 /**
@@ -18,7 +19,7 @@ public interface OAuth2TokenEndpointClient {
      * @throws org.springframework.security.oauth2.common.exceptions.ClientAuthenticationException
      * if we cannot contact the token endpoint.
      */
-    OAuth2AccessToken sendPasswordGrant(String username, String password);
+    R<OAuth2AccessToken> sendPasswordGrant(String username, String password, String webType);
 
     /**
      * Send a refresh_token grant to the token endpoint.

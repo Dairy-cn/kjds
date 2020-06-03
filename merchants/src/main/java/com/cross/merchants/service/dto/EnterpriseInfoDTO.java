@@ -115,6 +115,17 @@ public class EnterpriseInfoDTO implements Serializable {
     @ApiModelProperty(value = "财务联系电话")
     private String financialContactNumber;
 
+    @ApiModelProperty(value = " 店铺信息",hidden = true)
+    private StoreInfoDTO storeInfoDTO;
+
+    public StoreInfoDTO getStoreInfoDTO() {
+        return storeInfoDTO;
+    }
+
+    public void setStoreInfoDTO(StoreInfoDTO storeInfoDTO) {
+        this.storeInfoDTO = storeInfoDTO;
+    }
+
     public String getBankName() {
         return bankName;
     }

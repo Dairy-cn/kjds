@@ -12,7 +12,7 @@ import java.util.List;
  */
 @SuppressWarnings("unused")
 @Repository
-public interface OrderItemRepository extends JpaRepository<OrderItem, Long> {
+public interface OrderItemRepository extends JpaRepository<OrderItem, Long> , JpaSpecificationExecutor<OrderItem> {
 
     List<OrderItem> findAllByPayOrderId(Long orderId);
 }

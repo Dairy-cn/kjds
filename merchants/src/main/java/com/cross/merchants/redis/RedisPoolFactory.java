@@ -6,11 +6,7 @@ import org.springframework.stereotype.Service;
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPoolConfig;
 
-/**
- * @Auther: le
- * @Date: 2018/8/9 16:42
- * @Description:
- */
+
 @Service
 public class RedisPoolFactory {
 

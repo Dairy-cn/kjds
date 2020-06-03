@@ -32,5 +32,8 @@ public interface ArticleInfoRepository extends JpaRepository<ArticleInfo, Long>,
 
     ArticleInfo findFirstByCreateTimeGreaterThanEqualAndCreateTimeLessThanOrderByIdDesc(Instant start, Instant endTime);
 
+    @Query(value = "UPDATE `article_info` SET pageview=IFNULL(pageview,0) +1  WHERE id = :id", nativeQuery = true)
+    @Modifying
+    int  updateReaderCountArticleInfo(@Param("id") Long id);
 
 }

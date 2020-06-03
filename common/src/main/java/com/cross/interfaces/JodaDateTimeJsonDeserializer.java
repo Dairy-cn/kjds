@@ -14,7 +14,6 @@ import java.io.IOException;
  * Description: 
  * Author: Dairy
  * CreateTime: 2020/1/9
- * Copyright © 成都通吃岛信息技术有限公司 All right reserved
  ************************************************************/
 public class JodaDateTimeJsonDeserializer extends JsonDeserializer<DateTime> {
     @Override

@@ -71,7 +71,9 @@ public class OrderItemMapper {
         }
         orderItem.setPromotionAmount( dto.getPromotionAmount() );
         orderItem.setTaxesFees( dto.getTaxesFees() );
-
+        orderItem.setDeliveryCode(dto.getDeliveryCode());
+        orderItem.setDeliveryState(dto.getDeliveryState());
+        orderItem.setGoodsName(dto.getGoodsName());
         return orderItem;
     }
 
@@ -124,7 +126,9 @@ public class OrderItemMapper {
         }
         orderItemDTO.setPromotionAmount( entity.getPromotionAmount() );
         orderItemDTO.setTaxesFees( entity.getTaxesFees() );
-
+        orderItemDTO.setDeliveryCode(entity.getDeliveryCode());
+        orderItemDTO.setDeliveryState(entity.getDeliveryState());
+        orderItemDTO.setGoodsName(entity.getGoodsName());
         return orderItemDTO;
     }
 

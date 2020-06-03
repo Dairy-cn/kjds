@@ -137,7 +137,7 @@ public class RegionResource {
      */
     @GetMapping("/regionsByParentId/{parentId}")
     @ApiOperation("根据父级ID获取全部地区")
-    public R getRegionsByParentId(@PathVariable Long parentId){
+    public R<List<RegionDTO>> getRegionsByParentId(@PathVariable Long parentId){
         log.debug("REST request to get regionsByParentId : {}", parentId);
         List<RegionDTO> regions = regionService.getAllByParentId(parentId);
         return R.ok(regions);

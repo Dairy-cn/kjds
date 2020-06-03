@@ -51,6 +51,7 @@ public interface PayOrderService {
 
     /**
      * 根据用户购物车信息生成确认单信息
+     *
      * @param cartIds
      */
     ConfirmOrderResult generateConfirmOrder(List<String> cartIds);
@@ -65,7 +66,8 @@ public interface PayOrderService {
      * 支付成功后的回调
      */
     @Transactional
-    Integer paySuccess(Long orderId, Integer payType);
+    @Deprecated
+    Integer paySuccess(PayOrderDTO payOrderDTO);
 
     /**
      * 自动取消超时订单
@@ -84,10 +86,6 @@ public interface PayOrderService {
      */
     void sendDelayMessageCancelOrder(Long orderId);
 
-    /**
-     * 确认收货
-     */
-    void confirmReceiveOrder(Long orderId);
 
     /**
      * 分页获取用户订单
@@ -103,4 +101,13 @@ public interface PayOrderService {
      * 用户根据订单ID删除订单
      */
     void deleteOrder(Long orderId);
+
+
+    PayOrderDTO findByOrderSn(String orderSn);
+
+
+    /**
+     * 支付订单.
+     */
+    void paid(PayOrderDTO orderDTO);
 }

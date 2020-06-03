@@ -1,10 +1,6 @@
 package com.cross.merchants.redis;
 
-/**
- * @Auther: le
- * @Date: 2018/8/9 16:14
- * @Description:
- */
+
 public interface KeyPrefix {
     /**
      * 有效期

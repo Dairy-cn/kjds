@@ -12,6 +12,7 @@ import com.cross.merchants.service.CartItemService;
 import com.cross.merchants.service.dto.CartItemDTO;
 import com.cross.merchants.service.dto.GoodsSkuDTO;
 import com.cross.merchants.service.mapper.GoodsSkuMapper;
+import com.cross.merchants.web.rest.DTO.UserCartItemDTO;
 import com.cross.model.LoginUserModel;
 import com.cross.utils.CommonUtil;
 import com.cross.utils.JsonUtil;
@@ -20,6 +21,7 @@ import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.HashOperations;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import java.time.Instant;
@@ -32,6 +34,7 @@ import java.util.stream.Collectors;
  * CreateTime: 2020/5/23
  ************************************************************/
 @Service
+@Transactional
 public class CartItemServiceImpl implements CartItemService {
 
 
@@ -48,8 +51,15 @@ public class CartItemServiceImpl implements CartItemService {
     private GoodsSkuMapper goodsSkuMapper;
 
     @Override
-    public int add(CartItemDTO cartItem) {
+    public int add(UserCartItemDTO userCartItemDTO) {
         LoginUserModel currentLoginUser = CommonUtil.getCurrentLoginUser();
+        CartItemDTO cartItem = new CartItemDTO();
+        cartItem.setProductId(userCartItemDTO.getProductId());
+        cartItem.setProductSkuId(userCartItemDTO.getProductSkuId());
+        cartItem.setQuantity(userCartItemDTO.getQuantity());
+        if (!CollectionUtils.isEmpty(userCartItemDTO.getProductAttr())) {
+            cartItem.setProductAttr(JsonUtil.objectToJson(userCartItemDTO.getProductAttr()));
+        }
 
         cartItem.setUserId(currentLoginUser.getId());
         cartItem.setMemberNickname(currentLoginUser.getUser_name());
@@ -69,9 +79,9 @@ public class CartItemServiceImpl implements CartItemService {
             }
             return 1;
         } else {
-            Goods goods = goodsRepository.getOne(cartItem.getProductId());
-            GoodsSku goodsSku = goodsSkuRepository.getOne(cartItem.getProductSkuId());
-            if (goods == null || goodsSku == null) {
+            Goods goods = goodsRepository.getByIdAndDeleteFlag(cartItem.getProductId(),false);
+            GoodsSku goodsSku = goodsSkuRepository.getByIdAndDeleteFlag(cartItem.getProductSkuId(),false);
+            if (goods == null || goodsSku == null || !goodsSku.getGoodsId().equals(goods.getId())) {
                 return 0;
             } else {
                 cartItem.setProductName(goods.getGoodsName());
@@ -79,6 +89,7 @@ public class CartItemServiceImpl implements CartItemService {
                 cartItem.setPrice(goodsSku.getSalePrice());
                 cartItem.setCreateDate(Instant.now());
                 cartItem.setProductSubTitle(goods.getGoodsDesc());
+                cartItem.setStoreId(goods.getStoreId());
                 redisService.hset(CartPrefix.getCartList, cartItem.getUserId().toString(), cartItem.getId(), JsonUtil.objectToJson(cartItem));
                 return 1;
             }
@@ -104,9 +115,9 @@ public class CartItemServiceImpl implements CartItemService {
         cartItemDTO.stream().forEach(e -> {
             Goods dbGoods = finalGoodsMap.get(e.getProductId());
             GoodsSku dbGoodsSku = finalGoodsSkuMap.get(e.getProductSkuId());
-            if (dbGoods == null || dbGoodsSku == null) {
-                if(!(e.getGoodsState() != null && e.getGoodsState())){
-                    e.setGoodsState(true);
+            if (dbGoods == null || dbGoodsSku == null || (!dbGoods.getId().equals(dbGoodsSku.getGoodsId()))) {
+                if (!(e.getGoodsDeleteState() != null && e.getGoodsDeleteState())) {
+                    e.setGoodsDeleteState(true);
                     redisService.hset(CartPrefix.getCartList, userId + "", e.getId(), JsonUtil.objectToJson(e));
                 }
             } else {
@@ -131,7 +142,7 @@ public class CartItemServiceImpl implements CartItemService {
             CartItemDTO cartDto = (CartItemDTO) JsonUtil.jsonToBean(json, CartItemDTO.class);
             cartDtoList.add(cartDto);
         }
-        checkGoods(memberId,cartDtoList);
+        checkGoods(memberId, cartDtoList);
         return cartDtoList;
     }
 
@@ -175,10 +186,10 @@ public class CartItemServiceImpl implements CartItemService {
     }
 
     @Override
-    public int updateAttr(CartItemDTO cartItem) {
+    public int updateAttr(UserCartItemDTO cartItem) {
         //删除原购物车信息
         CartItemDTO updateCart = new CartItemDTO();
-        redisService.hdel(CartPrefix.getCartList, cartItem.getUserId() + "", cartItem.getId() + "");
+        redisService.hdel(CartPrefix.getCartList, CommonUtil.getCurrentLoginUser().getId() + "", cartItem.getId() + "");
         cartItem.setId(null);
         add(cartItem);
         return 1;

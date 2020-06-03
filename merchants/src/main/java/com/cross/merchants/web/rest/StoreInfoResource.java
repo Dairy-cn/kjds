@@ -2,15 +2,9 @@ package com.cross.merchants.web.rest;
 
 import com.cross.merchants.domain.MerchantsCheckInInfo;
 import com.cross.merchants.domain.StoreOperatingRecord;
-import com.cross.merchants.service.MerchantsCategoryService;
-import com.cross.merchants.service.MerchantsCheckInInfoService;
-import com.cross.merchants.service.StoreInfoService;
-import com.cross.merchants.service.StoreOperatingRecordService;
-import com.cross.merchants.service.dto.MerchantsCategoryDTO;
-import com.cross.merchants.service.dto.MerchantsCheckInInfoDTO;
-import com.cross.merchants.service.dto.StoreOperatingRecordDTO;
+import com.cross.merchants.service.*;
+import com.cross.merchants.service.dto.*;
 import com.cross.merchants.web.rest.errors.BadRequestAlertException;
-import com.cross.merchants.service.dto.StoreInfoDTO;
 
 import com.cross.utils.CommonUtil;
 import com.cross.utils.R;
@@ -28,14 +22,20 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.time.Instant;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * REST controller for managing {@link com.cross.merchants.domain.StoreInfo}.
@@ -63,6 +63,16 @@ public class StoreInfoResource {
 
     @Autowired
     private MerchantsCategoryService merchantsCategoryService;
+
+
+    @Autowired
+    private GoodsService goodsService;
+
+    @Autowired
+    private EnterpriseInfoService enterpriseInfoService;
+
+    @Autowired
+    private WarehouseInfoService warehouseInfoService;
 
 
     public StoreInfoResource(StoreInfoService storeInfoService) {
@@ -131,15 +141,29 @@ public class StoreInfoResource {
      */
     @GetMapping("/store-infos/{id}")
     @ApiOperation("根据id获取店铺详细信息")
-    public R getStoreInfo(@PathVariable Long id) {
+    public R<StoreInfoDTO> getStoreInfo(@PathVariable Long id) {
         log.debug("REST request to get StoreInfo : {}", id);
         Optional<StoreInfoDTO> storeInfoDTO = storeInfoService.findOne(id);
-        return R.ok(storeInfoDTO.get());
+        if (!storeInfoDTO.isPresent()) {
+            return R.error("你未入驻或入驻申请未通过");
+        }
+        StoreInfoDTO infoDTO = storeInfoDTO.get();
+        MerchantsCheckInInfoDTO one = merchantsCheckInInfoService.findOne(infoDTO.getMerchantsCheckInInfoId());
+        if(one!=null){
+            EnterpriseInfoDTO enterpriseInfoDTO = enterpriseInfoService.findFristByMerchantId(one.getId());
+            one.setEnterpriseInfoDTO(enterpriseInfoDTO);
+        }
+        Optional<MerchantsCategoryDTO>  merchantsCategoryDTO= merchantsCategoryService.findOne(infoDTO.getCategoryId());
+        if(merchantsCategoryDTO.isPresent()){
+            infoDTO.setMerchantsCategoryDTO(merchantsCategoryDTO.get());
+        }
+        infoDTO.setMerchantsCheckInInfoDTO(one);
+        return R.ok(infoDTO);
     }
 
     @GetMapping("/store-infos-by-self")
     @ApiOperation("根据用户获取店铺详细信息")
-    public R getStoreInfoByUserId() {
+    public R<StoreInfoDTO> getStoreInfoByUserId() {
         Long id = CommonUtil.getCurrentLoginUser().getId();
         MerchantsCheckInInfoDTO oneWithSelfByCheckState = merchantsCheckInInfoService.findOneWithSelfByCheckState(id, 1);
         if (oneWithSelfByCheckState == null) {
@@ -170,9 +194,9 @@ public class StoreInfoResource {
 
     @PutMapping("/update-store-infos/{id}")
     @ApiOperation("商户端--更新店铺信息")
-    public R updateStoreInfo(@ApiParam("记录id") @PathVariable Long id,
-                             @ApiParam("店铺名称") @RequestParam String storeName,
-                             @ApiParam("店铺logo") @RequestParam String storeLogo) {
+    public R<StoreInfoDTO> updateStoreInfo(@ApiParam("记录id") @PathVariable Long id,
+                                           @ApiParam("店铺名称") @RequestParam String storeName,
+                                           @ApiParam("店铺logo") @RequestParam String storeLogo) {
         log.debug("REST request to delete StoreInfo : {}", id);
         StoreInfoDTO storeInfoDTO = storeInfoService.findOne(id).get();
         if (storeInfoDTO == null) {
@@ -186,8 +210,8 @@ public class StoreInfoResource {
 
     @PutMapping("/update-store-operating-status-infos-with-merchants/{id}")
     @ApiOperation("商户端--更新店铺营业状况")
-    public R updateStoreOperatingStatusInfo(@ApiParam("记录id") @PathVariable Long id,
-                                            @ApiParam("店铺名称营业状况 1 正常营业 0  休息") @RequestParam Integer operatingStatus) {
+    public R<StoreInfoDTO> updateStoreOperatingStatusInfo(@ApiParam("记录id") @PathVariable Long id,
+                                                          @ApiParam("店铺名称营业状况 1 正常营业 0  休息") @RequestParam Integer operatingStatus) {
         log.debug("REST request to delete StoreInfo : {}", id);
         if (operatingStatus == null) {
             return R.error("营业状况不能为空");
@@ -203,9 +227,9 @@ public class StoreInfoResource {
 
     @PutMapping("/update-store-operating-status-infos-with-platform/{id}")
     @ApiOperation("大后台--更新店铺营业状况")
-    public R updateStoreOperatingStatusInfoWithPlatform(@ApiParam("记录id") @PathVariable Long id,
-                                                        @ApiParam("店铺名称营业状况 1 正常营业 0  休息") @RequestParam Integer operatingStatus,
-                                                        @ApiParam(value = "关闭原因", required = false) @RequestParam(required = false) String closeReason) {
+    public R<StoreInfoDTO> updateStoreOperatingStatusInfoWithPlatform(@ApiParam("记录id") @PathVariable Long id,
+                                                                      @ApiParam("店铺名称营业状况 1 正常营业 0  休息") @RequestParam Integer operatingStatus,
+                                                                      @ApiParam(value = "关闭原因", required = false) @RequestParam(required = false) String closeReason) {
         log.debug("REST request to delete StoreInfo : {}", id);
         if (operatingStatus == null) {
             return R.error("营业状况不能为空");
@@ -220,8 +244,8 @@ public class StoreInfoResource {
 
     @GetMapping("/store-operating-record-infos/{storeId}")
     @ApiOperation("获取店铺开关闭记录列表")
-    public R getStoreOperatingRecordList(@ApiParam("店铺id") @PathVariable Long storeId,
-                                         @ApiParam("page") Pageable pageable) {
+    public R<List<StoreOperatingRecordDTO>> getStoreOperatingRecordList(@ApiParam("店铺id") @PathVariable Long storeId,
+                                                                        @ApiParam("page") Pageable pageable) {
         log.debug("REST request to delete StoreInfo : {}", storeId);
         Page<StoreOperatingRecordDTO> page = storeOperatingRecordService.findAllAndStoreId(pageable, storeId);
         return R.ok(page.getContent(), page.getTotalElements());
@@ -230,10 +254,73 @@ public class StoreInfoResource {
 
     @GetMapping("/store-infos-list")
     @ApiOperation("根据条件获取审核通过且在运营的店铺列表")
-    public R getAllStoreInfosByCondition(@ApiParam(required = false, value = "主营业务id") @RequestParam Long categoryId,
-                                         @ApiParam(required = false, value = "店铺名称或编号") @RequestParam String keyWord) {
+    public R getAllStoreInfosByCondition(@ApiParam(required = false, value = "主营业务id") @RequestParam(required = false) Long categoryId,
+                                         @ApiParam(required = false, value = "店铺名称或编号") @RequestParam(required = false) String keyWord) {
         log.debug("REST request to get a page of StoreInfos");
-        List<StoreInfoDTO> page = storeInfoService.findAllByOperatingStatus(1,categoryId,keyWord);
+        List<StoreInfoDTO> page = storeInfoService.findAllByOperatingStatus(1, categoryId, keyWord);
         return R.ok(page);
     }
+
+    @GetMapping("/store-infos-page")
+    @ApiOperation("大后台---通过条件获取商户店铺列表")
+    public R<List<StoreInfoDTO>> getAllStoreInfosByCondition(Pageable pageable,
+                                                             @ApiParam("营业状态  1 正常 0 休息中") @RequestParam(required = false) Integer operatingStatus,
+                                                             @ApiParam("主营类目") @RequestParam(required = false) Long categoryId,
+                                                             @ApiParam("仓库类型 1 自有仓库 2 三方代发") @RequestParam(required = false) Integer warehouseType,
+                                                             @ApiParam("创建开始时间 eg 2017-11-27T03:16:03Z") @RequestParam(required = false) Instant startTime,
+                                                             @ApiParam("创建结束时间 eg 2017-11-27T03:16:03Z ") @RequestParam(required = false) Instant endTime,
+                                                             @ApiParam("关键字查询") @RequestParam(required = false) String keyWord) {
+        log.debug("REST request to get a page of StoreInfos");
+        Page<StoreInfoDTO> page = storeInfoService.getAllStoreInfosByCondition(pageable, operatingStatus, categoryId, warehouseType, keyWord, startTime, endTime);
+        List<StoreInfoDTO> content = page.getContent();
+        if (!CollectionUtils.isEmpty(content)) {
+            List<Long> categoryIds = content.stream().filter(e -> e.getCategoryId() != null).map(StoreInfoDTO::getCategoryId).distinct().collect(Collectors.toList());
+            List<MerchantsCategoryDTO> merchantsCategoryDTOS = merchantsCategoryService.findAllByIdIn(categoryIds);
+            Map<Long, MerchantsCategoryDTO> merchantsCategoryDTOMap = merchantsCategoryDTOS.stream().collect(Collectors.toMap(MerchantsCategoryDTO::getId, e -> e));
+            content.stream().filter(e -> e.getCategoryId() != null).forEach(e -> {
+                e.setMerchantsCategoryDTO(merchantsCategoryDTOMap.get(e.getCategoryId()));
+            });
+            List<Long> merchantIds = content.stream().filter(e -> e.getMerchantsCheckInInfoId() != null).map(StoreInfoDTO::getMerchantsCheckInInfoId).distinct().collect(Collectors.toList());
+
+            Map<Long, MerchantsCheckInInfoDTO> merchantsCheckInInfoDTOMap = new HashMap<>(16);
+            //获取企业信息
+            if (!CollectionUtils.isEmpty(merchantIds)) {
+                List<MerchantsCheckInInfoDTO> merchantsCheckInInfoDTOS = merchantsCheckInInfoService.findAllByIdIn(merchantIds);
+                List<EnterpriseInfoDTO> enterpriseInfoDTOS = enterpriseInfoService.findAllByMerchantIdIn(merchantIds);
+                Map<Long, EnterpriseInfoDTO> enterpriseInfoDTOMap = enterpriseInfoDTOS.stream().collect(Collectors.toMap(EnterpriseInfoDTO::getMerchantId, e -> e));
+                List<WarehouseInfoDTO> warehouseInfoDTOS = warehouseInfoService.findAllByMerchantIdIn(merchantIds);
+                Map<Long, WarehouseInfoDTO> warehouseInfoDTOMap = warehouseInfoDTOS.stream().collect(Collectors.toMap(WarehouseInfoDTO::getMerchantId, e -> e));
+
+                merchantsCheckInInfoDTOS.stream().forEach(e -> {
+                    e.setEnterpriseInfoDTO(enterpriseInfoDTOMap.get(e.getId()));
+                    e.setWarehouseInfoDTO(warehouseInfoDTOMap.get(e.getId()));
+                });
+                merchantsCheckInInfoDTOMap = merchantsCheckInInfoDTOS.stream().collect(Collectors.toMap(MerchantsCheckInInfoDTO::getId, e -> e));
+            }
+            Map<Long, MerchantsCheckInInfoDTO> finalMerchantsCheckInInfoDTOMap = merchantsCheckInInfoDTOMap;
+            content.stream().forEach(e->{
+                e.setMerchantsCheckInInfoDTO(finalMerchantsCheckInInfoDTOMap.get(e.getMerchantsCheckInInfoId()));
+            });
+        }
+        return R.ok(content, page.getTotalElements());
+    }
+
+
+    @GetMapping("/store-infos-c/{id}")
+    @ApiOperation("C端------根据id获取店铺详细信息")
+    public R<StoreInfoDTO> getStoreInfoShowC(@PathVariable Long id, Pageable pageable) {
+        log.debug("REST request to get StoreInfo : {}", id);
+        Optional<StoreInfoDTO> storeInfoDTO = storeInfoService.findOne(id);
+        if (!storeInfoDTO.isPresent()) {
+            return R.error(null);
+        }
+        if (storeInfoDTO.get().getOperatingStatus() == null || storeInfoDTO.get().getOperatingStatus() != 1) {
+            return R.error("门店休息中...");
+        }
+        StoreInfoDTO infoDTO = storeInfoDTO.get();
+        Page<GoodsDTO> page = goodsService.findAllByStoreId(pageable, infoDTO.getId());
+        infoDTO.setGoodsDTOList(page.getContent());
+        return R.ok(infoDTO, page.getTotalElements());
+    }
+
 }

@@ -2,12 +2,10 @@ package com.cross.merchants.web.rest;
 
 import com.cross.merchants.service.GlobalRegionService;
 import com.cross.merchants.service.MerchantsCheckInInfoService;
+import com.cross.merchants.service.StoreInfoService;
 import com.cross.merchants.service.WarehouseInfoService;
-import com.cross.merchants.service.dto.EnterpriseInfoDTO;
-import com.cross.merchants.service.dto.GlobalRegionDTO;
-import com.cross.merchants.service.dto.MerchantsCheckInInfoDTO;
+import com.cross.merchants.service.dto.*;
 import com.cross.merchants.web.rest.errors.BadRequestAlertException;
-import com.cross.merchants.service.dto.WarehouseInfoDTO;
 
 import com.cross.utils.CommonUtil;
 import com.cross.utils.R;
@@ -18,6 +16,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -58,6 +57,9 @@ public class WarehouseInfoResource {
 
     private final GlobalRegionService globalRegionService;
 
+    @Autowired
+    private StoreInfoService storeInfoService;
+
     public WarehouseInfoResource(WarehouseInfoService warehouseInfoService, MerchantsCheckInInfoService merchantsCheckInInfoService, GlobalRegionService globalRegionService) {
         this.warehouseInfoService = warehouseInfoService;
         this.merchantsCheckInInfoService = merchantsCheckInInfoService;
@@ -73,7 +75,7 @@ public class WarehouseInfoResource {
      */
     @PostMapping("/warehouse-infos")
     @ApiOperation("商户端--添加仓库信息")
-    public R createWarehouseInfo(@RequestBody WarehouseInfoDTO warehouseInfoDTO) throws URISyntaxException {
+    public R<WarehouseInfoDTO> createWarehouseInfo(@RequestBody WarehouseInfoDTO warehouseInfoDTO) throws URISyntaxException {
         log.debug("REST request to save WarehouseInfo : {}", warehouseInfoDTO);
         if (warehouseInfoDTO.getId() != null) {
             return R.error("idexists");
@@ -111,7 +113,7 @@ public class WarehouseInfoResource {
      */
     @PutMapping("/warehouse-infos")
     @ApiOperation("商户端--修改企业仓库信息")
-    public R updateWarehouseInfo(@RequestBody WarehouseInfoDTO warehouseInfoDTO) throws URISyntaxException {
+    public R<WarehouseInfoDTO> updateWarehouseInfo(@RequestBody WarehouseInfoDTO warehouseInfoDTO) throws URISyntaxException {
         log.debug("REST request to update WarehouseInfo : {}", warehouseInfoDTO);
         if (warehouseInfoDTO.getId() == null) {
             return R.error("idnull");
@@ -135,11 +137,10 @@ public class WarehouseInfoResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of warehouseInfos in body.
      */
     @GetMapping("/warehouse-infos")
-    public ResponseEntity<List<WarehouseInfoDTO>> getAllWarehouseInfos(Pageable pageable) {
+    public R<List<WarehouseInfoDTO>> getAllWarehouseInfos(Pageable pageable) {
         log.debug("REST request to get a page of WarehouseInfos");
         Page<WarehouseInfoDTO> page = warehouseInfoService.findAll(pageable);
-        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
-        return ResponseEntity.ok().headers(headers).body(page.getContent());
+        return R.ok(page.getContent(),page.getTotalElements());
     }
 
     /**
@@ -150,7 +151,7 @@ public class WarehouseInfoResource {
      */
     @GetMapping("/warehouse-infos/{id}")
     @ApiOperation("根据记录id获取企业仓库信息")
-    public R getWarehouseInfo(@PathVariable Long id) {
+    public R<WarehouseInfoDTO> getWarehouseInfo(@PathVariable Long id) {
         log.debug("REST request to get WarehouseInfo : {}", id);
         Optional<WarehouseInfoDTO> warehouseInfoDTO = warehouseInfoService.findOne(id);
         return R.ok(warehouseInfoDTO.get());
@@ -158,13 +159,25 @@ public class WarehouseInfoResource {
 
     @GetMapping("/warehouse-infos-by-user")
     @ApiOperation("根据登录者获取企业仓库信息")
-    public R getEnterpriseInfoByUser() {
+    public R<WarehouseInfoDTO> getEnterpriseInfoByUser() {
         Long id = CommonUtil.getCurrentLoginUser().getId();
         MerchantsCheckInInfoDTO oneWithSelfByCheckState = merchantsCheckInInfoService.findOneWithSelfByCheckState(id, 1);
         if (oneWithSelfByCheckState == null) {
             return R.error("您还未入驻");
         }
         WarehouseInfoDTO warehouseInfoDTO = warehouseInfoService.findFristByMerchantId(oneWithSelfByCheckState.getId());
+        warehouseInfoDTO = getAddressInfo(warehouseInfoDTO);
+        return R.ok(warehouseInfoDTO);
+    }
+
+    @GetMapping("/warehouse-infos-by-store-id/{storeId}")
+    @ApiOperation("根据商户id获取企业仓库信息")
+    public R<WarehouseInfoDTO> getEnterpriseInfoByStoreId(@PathVariable Long storeId) {
+        Optional<StoreInfoDTO> infoDTO = storeInfoService.findOne(storeId);
+        if(!infoDTO.isPresent()){
+            return R.error();
+        }
+        WarehouseInfoDTO warehouseInfoDTO = warehouseInfoService.findFristByMerchantId(infoDTO.get().getMerchantsCheckInInfoId());
         warehouseInfoDTO = getAddressInfo(warehouseInfoDTO);
         return R.ok(warehouseInfoDTO);
     }
@@ -177,10 +190,10 @@ public class WarehouseInfoResource {
      * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
      */
     @DeleteMapping("/warehouse-infos/{id}")
-    public ResponseEntity<Void> deleteWarehouseInfo(@PathVariable Long id) {
+    public R deleteWarehouseInfo(@PathVariable Long id) {
         log.debug("REST request to delete WarehouseInfo : {}", id);
         warehouseInfoService.delete(id);
-        return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString())).build();
+        return R.ok();
     }
 
 

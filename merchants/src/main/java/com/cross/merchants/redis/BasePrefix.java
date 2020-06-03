@@ -1,10 +1,6 @@
 package com.cross.merchants.redis;
 
-/**
- * @Auther: le
- * @Date: 2018/8/9 16:16
- * @Description:
- */
+
 public abstract class BasePrefix implements KeyPrefix {
     private int expireSeconds;
 

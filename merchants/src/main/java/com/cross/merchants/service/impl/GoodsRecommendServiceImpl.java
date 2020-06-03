@@ -1,6 +1,7 @@
 package com.cross.merchants.service.impl;
 
 import com.cross.merchants.domain.Goods;
+import com.cross.merchants.domain.GoodsRecommendBanner;
 import com.cross.merchants.exception.MerchantsException;
 import com.cross.merchants.repository.GoodsRepository;
 import com.cross.merchants.service.GoodsRecommendService;
@@ -16,6 +17,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.Instant;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -51,6 +53,14 @@ public class GoodsRecommendServiceImpl implements GoodsRecommendService {
     public GoodsRecommendDTO save(GoodsRecommendDTO goodsRecommendDTO) {
         log.debug("Request to save GoodsRecommend : {}", goodsRecommendDTO);
         checkParam(goodsRecommendDTO);
+        if (goodsRecommendDTO.getId() != null) {
+            GoodsRecommend one = goodsRecommendRepository.getOne(goodsRecommendDTO.getId());
+            goodsRecommendDTO.setTop(one.getTop());
+            goodsRecommendDTO.setUpdateTime(Instant.now());
+            goodsRecommendDTO.setCreateTime(one.getCreateTime());
+        }else {
+            goodsRecommendDTO.setCreateTime(Instant.now());
+        }
         GoodsRecommend goodsRecommend = goodsRecommendMapper.toEntity(goodsRecommendDTO);
         goodsRecommend = goodsRecommendRepository.save(goodsRecommend);
         return goodsRecommendMapper.toDto(goodsRecommend);
@@ -141,6 +151,8 @@ public class GoodsRecommendServiceImpl implements GoodsRecommendService {
     public Page<GoodsRecommendDTO> findAllByType(Pageable pageable, Integer type) {
         return goodsRecommendRepository.findAllByGoodsRecommendTypeOrderByTopDescIdDesc(pageable, type).map(goodsRecommendMapper::toDto);
     }
+
+
 
 
 }

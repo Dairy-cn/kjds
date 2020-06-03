@@ -11,7 +11,7 @@ import java.util.List;
  * Description:
  * Author: Dair
  * CreateTime: 2020/5/14
- * Copyright © 成都通吃岛信息技术有限公司 All right reserved
+
  ************************************************************/
 @ApiModel(description = "授权书信息")
 public class OwerOfAttorneyDTO  implements Serializable {

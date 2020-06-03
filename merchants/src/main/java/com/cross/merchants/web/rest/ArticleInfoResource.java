@@ -16,6 +16,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -58,7 +59,7 @@ public class ArticleInfoResource {
      */
     @PostMapping("/article-infos")
     @ApiOperation("创建文章")
-    public R createArticleInfo(@Valid @RequestBody ArticleInfoDTO articleInfoDTO) throws URISyntaxException {
+    public R<ArticleInfoDTO> createArticleInfo(@Valid @RequestBody ArticleInfoDTO articleInfoDTO) throws URISyntaxException {
         log.debug("REST request to save ArticleInfo : {}", articleInfoDTO);
         if (articleInfoDTO.getId() != null) {
             return R.error("idexists");
@@ -78,7 +79,7 @@ public class ArticleInfoResource {
      */
     @PutMapping("/article-infos")
     @ApiOperation("更新文章")
-    public R updateArticleInfo(@Valid @RequestBody ArticleInfoDTO articleInfoDTO) throws URISyntaxException {
+    public R<ArticleInfoDTO> updateArticleInfo(@Valid @RequestBody ArticleInfoDTO articleInfoDTO) throws URISyntaxException {
         log.debug("REST request to update ArticleInfo : {}", articleInfoDTO);
         if (articleInfoDTO.getId() == null) {
             return R.error("idnull");
@@ -95,15 +96,16 @@ public class ArticleInfoResource {
      */
     @GetMapping("/article-infos")
     @ApiOperation("根据条件获取文件分页列表")
-    public R getAllArticleInfos(Pageable pageable, @ApiParam("关键字查询 文章编号") @RequestParam String keyWord,
-                                @ApiParam("上架状态  不传为全部") @RequestParam Boolean showState) {
+    public R<List<ArticleInfoDTO>> getAllArticleInfos(Pageable pageable, @ApiParam("关键字查询 文章编号") @RequestParam(required = false) String keyWord,
+                                @ApiParam("上架状态  不传为全部") @RequestParam(required = false) Boolean showState) {
         log.debug("REST request to get a page of ArticleInfos");
+
         Page<ArticleInfoDTO> page = articleInfoService.findAllByCondition(pageable, keyWord, showState);
         return R.ok(page.getContent(), page.getTotalElements());
     }
     @GetMapping("/article-infos-c")
-    @ApiOperation("C端-----根据条件获取文件分页列表")
-    public R getAllArticleInfos(Pageable pageable, @ApiParam("关键字查询 文章标题  编号") @RequestParam String keyWord) {
+    @ApiOperation("C端-----根据条件获取文件分页列表,需要添加排序 sort=top,desc")
+    public R<List<ArticleInfoDTO>> getAllArticleInfos(Pageable pageable, @ApiParam(value = "关键字查询 文章标题  编号",required = false) @RequestParam(required = false) String keyWord) {
         log.debug("REST request to get a page of ArticleInfos");
         Page<ArticleInfoDTO> page = articleInfoService.findAllByCondition(pageable, keyWord, true);
         return R.ok(page.getContent(), page.getTotalElements());
@@ -117,7 +119,7 @@ public class ArticleInfoResource {
      */
     @GetMapping("/article-infos/{id}")
     @ApiOperation("根据id获取文章详情")
-    public R getArticleInfo(@PathVariable Long id) {
+    public R<ArticleInfoDTO> getArticleInfo(@PathVariable Long id) {
         log.debug("REST request to get ArticleInfo : {}", id);
         Optional<ArticleInfoDTO> articleInfoDTO = articleInfoService.findOne(id);
         if (!articleInfoDTO.isPresent()) {
@@ -149,12 +151,20 @@ public class ArticleInfoResource {
         return R.ok();
     }
 
-    @DeleteMapping("/show-state-article-infos/{id}")
+    @PutMapping("/show-state-article-infos/{id}")
     @ApiOperation("根据id修改文章上架状态")
     public R updateShowStateArticleInfo(@ApiParam("文章id") @PathVariable Long id,
                                         @ApiParam("上下架状态 true 上架 false 下架") @RequestParam Boolean showState) {
         log.debug("REST request to delete ArticleInfo : {}", id);
         articleInfoService.updateShowState(id,showState);
+        return R.ok();
+    }
+
+    @PutMapping("/update-pageview-article-infos/{id}")
+    @ApiOperation("根据id修改文章增加文字阅读数")
+    public R updateReaderCountArticleInfo(@ApiParam("文章id") @PathVariable Long id) {
+        log.debug("REST request to delete ArticleInfo : {}", id);
+        articleInfoService.updateReaderCountArticleInfo(id);
         return R.ok();
     }
 }

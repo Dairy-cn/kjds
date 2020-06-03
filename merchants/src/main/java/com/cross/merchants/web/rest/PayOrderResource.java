@@ -74,11 +74,15 @@ public class PayOrderResource {
         return R.ok(result);
     }
 
-    @ApiOperation("用户支付成功的回调")
-    @RequestMapping(value = "/paySuccess", method = RequestMethod.POST)
+    @ApiOperation("用户支付成功的回调(测试)")
+//    @RequestMapping(value = "/paySuccess", method = RequestMethod.POST)
     @ResponseBody
+    @Deprecated
     public R paySuccess(@RequestParam Long orderId, @RequestParam Integer payType) {
-        Integer count = payOrderService.paySuccess(orderId, payType);
+        Optional<PayOrderDTO> one = payOrderService.findOne(orderId);
+        PayOrderDTO payOrderDTO = one.get();
+        payOrderDTO.setPayType(payType);
+        Integer count = payOrderService.paySuccess(payOrderDTO);
         return R.ok("支付成功");
     }
 
@@ -103,7 +107,7 @@ public class PayOrderResource {
         defaultValue = "-1", allowableValues = "-1,0,1,2,3,4", paramType = "query", dataType = "int")
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     @ResponseBody
-    public R list(@RequestParam Integer status, @RequestParam(required = false, defaultValue = "1") Integer pageNum,
+    public R<List<OrderDetail>> list(@RequestParam Integer status, @RequestParam(required = false, defaultValue = "1") Integer pageNum,
                   @RequestParam(required = false, defaultValue = "5") Integer pageSize) {
         Page<OrderDetail> orderPage = payOrderService.list(status, pageNum, pageSize);
         return R.ok(orderPage.getContent(),orderPage.getTotalElements());
@@ -112,7 +116,7 @@ public class PayOrderResource {
     @ApiOperation("根据ID获取订单详情")
     @RequestMapping(value = "/detail/{orderId}", method = RequestMethod.GET)
     @ResponseBody
-    public R detail(@PathVariable Long orderId) {
+    public R<OrderDetail> detail(@PathVariable Long orderId) {
         OrderDetail orderDetail = payOrderService.detail(orderId);
         return R.ok(orderDetail);
     }
@@ -125,13 +129,7 @@ public class PayOrderResource {
         return R.ok(null);
     }
 
-    @ApiOperation("用户确认收货")
-    @RequestMapping(value = "/confirmReceiveOrder", method = RequestMethod.POST)
-    @ResponseBody
-    public R confirmReceiveOrder(Long orderId) {
-        payOrderService.confirmReceiveOrder(orderId);
-        return R.ok(null);
-    }
+
 
     @ApiOperation("用户删除订单")
     @RequestMapping(value = "/deleteOrder", method = RequestMethod.POST)

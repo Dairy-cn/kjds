@@ -14,7 +14,7 @@ import java.util.List;
  */
 @SuppressWarnings("unused")
 @Repository
-public interface StoreInfoRepository extends JpaRepository<StoreInfo, Long> , JpaSpecificationExecutor<StoreInfo>{
+public interface StoreInfoRepository extends JpaRepository<StoreInfo, Long>, JpaSpecificationExecutor<StoreInfo> {
 
     @Query(value = "SELECT category_id,COUNT(category_id) AS COUNT FROM store_info    WHERE `category_id` IN :ids GROUP BY category_id ", nativeQuery = true)
     List<Object[]> countMerchantsWithCategoryIds(@Param("ids") List<Long> ids);
@@ -28,6 +28,12 @@ public interface StoreInfoRepository extends JpaRepository<StoreInfo, Long> , Jp
 
 
     StoreInfo findFirstByMerchantsCheckInInfoId(Long merchantId);
+
+    List<StoreInfo> findAllByCategoryIdIn(List<Long> categoryIds);
+
+    int countAllByCategoryId(Long categoryId);
+
+    List<StoreInfo> findAllByMerchantsCheckInInfoIdIn(List<Long> ids);
 
 
 }

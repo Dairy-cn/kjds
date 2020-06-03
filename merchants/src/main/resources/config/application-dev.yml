@@ -158,3 +158,8 @@ oauth2:
 # ===================================================================
 
 # application:
+pay:
+  weixin:
+    notifyUrl: http://pay.qqsx.com/services/merchants/api/notify/weixin/pay
+  alipay:
+    notifyUrl: http://pay.qqsx.com/services/merchants/api/notify/alipay/pay

@@ -41,6 +41,14 @@ public class BrandDTO implements Serializable {
     @ApiModelProperty(value = "logo")
     private String brandLogo;
 
+
+    /**
+     * 品牌编号
+     */
+    @ApiModelProperty(value = "品牌编号")
+    private String brandNo;
+
+
     /**
      * 商标注册证
      */
@@ -116,6 +124,12 @@ public class BrandDTO implements Serializable {
     private Long proposer;
 
     /**
+     * 申请人账号
+     */
+    @ApiModelProperty(value = "申请人账号")
+    private String  proposerUserName;
+
+    /**
      * 申请时间
      */
     @ApiModelProperty(value = "申请时间")
@@ -127,6 +141,70 @@ public class BrandDTO implements Serializable {
     @ApiModelProperty(value = "品牌国家地区")
     private String brandCountry;
 
+    @ApiModelProperty(value = "品牌商品信息",hidden = true)
+    private List<GoodsDTO> goodsDTOS;
+
+    @ApiModelProperty(value = "企业信息",hidden = true)
+    private EnterpriseInfoDTO enterpriseInfoDTO;
+
+
+    /**
+     * 创建时间
+     */
+    @ApiModelProperty(value = "创建时间")
+    private Instant creatTime;
+
+
+    @ApiModelProperty(value = "商户信息",hidden = true)
+    private MerchantsCheckInInfoDTO merchantsCheckInInfoDTO;
+
+
+    public Instant getCreatTime() {
+        return creatTime;
+    }
+
+    public void setCreatTime(Instant creatTime) {
+        this.creatTime = creatTime;
+    }
+    public MerchantsCheckInInfoDTO getMerchantsCheckInInfoDTO() {
+        return merchantsCheckInInfoDTO;
+    }
+
+    public void setMerchantsCheckInInfoDTO(MerchantsCheckInInfoDTO merchantsCheckInInfoDTO) {
+        this.merchantsCheckInInfoDTO = merchantsCheckInInfoDTO;
+    }
+
+    public EnterpriseInfoDTO getEnterpriseInfoDTO() {
+        return enterpriseInfoDTO;
+    }
+
+    public void setEnterpriseInfoDTO(EnterpriseInfoDTO enterpriseInfoDTO) {
+        this.enterpriseInfoDTO = enterpriseInfoDTO;
+    }
+
+    public String getProposerUserName() {
+        return proposerUserName;
+    }
+
+    public void setProposerUserName(String proposerUserName) {
+        this.proposerUserName = proposerUserName;
+    }
+
+    public String getBrandNo() {
+        return brandNo;
+    }
+
+    public void setBrandNo(String brandNo) {
+        this.brandNo = brandNo;
+    }
+
+    public List<GoodsDTO> getGoodsDTOS() {
+        return goodsDTOS;
+    }
+
+    public void setGoodsDTOS(List<GoodsDTO> goodsDTOS) {
+        this.goodsDTOS = goodsDTOS;
+    }
 
     public String getBrandCountry() {
         return brandCountry;

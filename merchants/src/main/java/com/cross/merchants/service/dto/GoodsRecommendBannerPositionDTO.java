@@ -9,7 +9,7 @@ import javax.validation.constraints.NotNull;
  * Description:
  * Author: Dairy
  * CreateTime: 2020/5/23
- * Copyright © 成都通吃岛信息技术有限公司 All right reserved
+
  ************************************************************/
 @ApiModel("上传位置详情")
 public class GoodsRecommendBannerPositionDTO {

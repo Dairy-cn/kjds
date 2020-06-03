@@ -14,6 +14,7 @@ import org.slf4j.LoggerFactory;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -61,10 +62,11 @@ public class ArticleInfoServiceImpl implements ArticleInfoService {
             log.info("todayStart" + todayStart);
             log.info("todayStart instant" + todayStart.toInstant(ZoneOffset.UTC));
             ArticleInfo articleInfo = articleInfoRepository.findFirstByCreateTimeGreaterThanEqualAndCreateTimeLessThanOrderByIdDesc(todayStart.toInstant(ZoneOffset.UTC), todayEnd.toInstant(ZoneOffset.UTC));
-            String titleNo = articleInfo.getTitleNo();
-            if (articleInfo == null || titleNo == null) {
+
+            if (articleInfo == null || articleInfo.getTitleNo() == null) {
                 articleNo = articleNo + "001";
             } else {
+                String titleNo = articleInfo.getTitleNo();
                 String substring = titleNo.substring(titleNo.length() - 3, titleNo.length());
                 Long no = Long.valueOf(substring);
                 ++no;
@@ -74,6 +76,12 @@ public class ArticleInfoServiceImpl implements ArticleInfoService {
             articleInfoDTO.setTitleNo(articleNo);
         } else {
             articleInfoDTO.setUpdateTime(Instant.now());
+            ArticleInfo one = articleInfoRepository.getOne(articleInfoDTO.getId());
+            articleInfoDTO.setPageview(one.getPageview());
+            articleInfoDTO.setShowState(one.getShowState());
+            articleInfoDTO.setTop(one.getTop());
+            articleInfoDTO.setCreateTime(one.getCreateTime());
+            articleInfoDTO.setTitleNo(one.getTitleNo());
         }
         ArticleInfo articleInfo = articleInfoMapper.toEntity(articleInfoDTO);
         articleInfo = articleInfoRepository.save(articleInfo);
@@ -96,6 +104,7 @@ public class ArticleInfoServiceImpl implements ArticleInfoService {
 
     @Override
     public Page<ArticleInfoDTO> findAllByCondition(Pageable pageable, String keyWord, Boolean showState) {
+
         Page<ArticleInfo> page = articleInfoRepository.findAll((r, q, b) -> {
             List<Predicate> listPredicates = new ArrayList<>();
             if (showState != null) {
@@ -154,5 +163,10 @@ public class ArticleInfoServiceImpl implements ArticleInfoService {
             return;
         }
         articleInfoRepository.updateShowState(id, state);
+    }
+
+    @Override
+    public int updateReaderCountArticleInfo(Long id) {
+        return articleInfoRepository.updateReaderCountArticleInfo(id);
     }
 }

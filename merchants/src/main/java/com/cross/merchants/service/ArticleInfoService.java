@@ -49,4 +49,6 @@ public interface ArticleInfoService {
     void topArticleInfo(Long id);
 
     void updateShowState(Long id, Boolean state);
+
+    int updateReaderCountArticleInfo(Long id);
 }

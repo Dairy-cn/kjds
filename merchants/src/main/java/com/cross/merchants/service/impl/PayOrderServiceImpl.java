@@ -20,6 +20,7 @@ import com.cross.merchants.service.mapper.PayOrderMapper;
 import com.cross.merchants.web.rest.DTO.ConfirmOrderResult;
 import com.cross.merchants.web.rest.DTO.OrderDetail;
 import com.cross.merchants.web.rest.DTO.OrderParam;
+import com.cross.merchants.web.rest.DTO.StoreNoteDTO;
 import com.cross.merchants.web.rest.GoodsSkuResource;
 import com.cross.model.LoginUserModel;
 import com.cross.utils.CommonUtil;
@@ -39,9 +40,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.text.SimpleDateFormat;
 import java.time.Duration;
 import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.time.temporal.TemporalUnit;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
@@ -179,7 +183,7 @@ public class PayOrderServiceImpl implements PayOrderService {
         List<Long> goodsSkuIds = cartItemDTOS.stream().map(CartItemDTO::getProductSkuId).collect(Collectors.toList());
 
         List<GoodsDTO> goodsList = goodsMapper.toDto(goodsRepository.findAllByIdIn(goodsIds));
-        List<GoodsSkuDTO> goodsSkuList = goodsSkuMapper.toDto(goodsSkuRepository.findAllByGoodsIdInAndDeleteFlag(goodsSkuIds, false));
+        List<GoodsSkuDTO> goodsSkuList = goodsSkuMapper.toDto(goodsSkuRepository.findAllByGoodsIdInAndDeleteFlag(goodsIds, false));
         List<Long> storeIds = goodsList.stream().map(GoodsDTO::getStoreId).distinct().collect(Collectors.toList());
         List<StoreInfoDTO> storeList = storeInfoService.findAllByIdIn(storeIds);
         List<StoreOrderResult> orderResults = new ArrayList<>();
@@ -191,7 +195,8 @@ public class PayOrderServiceImpl implements PayOrderService {
 
         });
         Map<Long, List<GoodsDTO>> storeMap = goodsList.stream().collect(Collectors.groupingBy(GoodsDTO::getStoreId));
-        Map<Long, List<GoodsSkuDTO>> gookdsSkuMap = goodsSkuList.stream().collect(Collectors.groupingBy(GoodsSkuDTO::getGoodsId));
+//        Map<Long, List<GoodsSkuDTO>> gookdsSkuMap = goodsSkuList.stream().collect(Collectors.groupingBy(GoodsSkuDTO::getGoodsId));
+        Map<Long, GoodsSkuDTO> gookdsSkuMap = goodsSkuList.stream().collect(Collectors.toMap(GoodsSkuDTO::getId,e->e));
 
         Map<Long, List<CartItemDTO>> cartMap = cartItemDTOS.stream().collect(Collectors.groupingBy(CartItemDTO::getProductId));
         orderResults.stream().forEach(e -> {
@@ -202,10 +207,16 @@ public class PayOrderServiceImpl implements PayOrderService {
             }
             goods.stream().forEach(goods1 -> {
                 List<CartItemDTO> cartItemDTOList = cartMap.get(goods1.getId());
+                cartItemDTOList.stream().forEach(e2->{
+                    GoodsSkuDTO goodsSkuDTO = gookdsSkuMap.get(e2.getProductSkuId());
+                    e2.setGoodsSkuDTO(goodsSkuDTO);
+                });
                 goods1.setCartItemDTOS(cartItemDTOList);
             });
             e.setFreight(maxFreight);
             e.setGoodsDTOList(goods);
+            //TODO 税费  看怎么收取
+            e.setTaxesFees(BigDecimal.ZERO);
         });
         ConfirmOrderResult.CalcAmount calcAmount = calcCartAmount(cartItemDTOS);
         result.setCalcAmount(calcAmount);
@@ -223,7 +234,11 @@ public class PayOrderServiceImpl implements PayOrderService {
         ConfirmOrderResult orderResult = this.generateConfirmOrder(orderParam.getCartIds());
         List<CartItemDTO> cartPromotionItemList = cartItemService.listPromotion(currentLoginUser.getId(), orderParam.getCartIds());
         List<StoreOrderResult> orderResults = orderResult.getOrderResults();
-        if (!CollectionUtils.isEmpty(orderResults)) {
+        Map<Long, StoreNoteDTO> storeNoteDTOMap = new HashMap<>();
+        if (!CollectionUtils.isEmpty(orderParam.getStoreNoteDTOS())) {
+            storeNoteDTOMap = orderParam.getStoreNoteDTOS().stream().collect(Collectors.toMap(StoreNoteDTO::getStoreId, e -> e));
+        }
+        if (CollectionUtils.isEmpty(orderResults)) {
             throw new MerchantsException(400, "找不到购物信息");
         }
         for (StoreOrderResult result : orderResults) {
@@ -234,6 +249,22 @@ public class PayOrderServiceImpl implements PayOrderService {
             orderItem.setStoreName(result.getStoreName());
             orderItem.setCreateTime(Instant.now());
             orderItem.setProductInfo(JsonUtil.objectToJson(goodsDTOList));
+            StoreNoteDTO storeNoteDTO = storeNoteDTOMap.get(result.getId());
+            if (storeNoteDTO != null) {
+                orderItem.setNote(storeNoteDTO.getNote());
+            }
+            orderItem.setMemberId(currentLoginUser.getId());
+            orderItem.setMemberUsername(currentLoginUser.getUser_name());
+            orderItem.setMemberName(currentLoginUser.getUser_name());
+            orderItem.setMemberPhone(currentLoginUser.getUser_name());
+            orderItem.setFreightAmount(result.getFreight());
+            orderItem.setTotalAmount(result.getFreight());
+            orderItem.setTaxesFees(result.getTaxesFees());
+            orderItem.setPromotionAmount(BigDecimal.ZERO);
+            orderItem.setConfirmStatus(0);
+            orderItem.setStatus(0);
+            orderItem.setDeleteStatus(0);
+            orderItem.setDeliveryState(0);
             orderItemList.add(orderItem);
         }
         //DOTO 缓存redis锁
@@ -242,7 +273,6 @@ public class PayOrderServiceImpl implements PayOrderService {
             if (!hasStock(cartPromotionItemList)) {
                 throw new MerchantsException(400, "库存不足,无法下单");
             }
-
             //计算order_item的实付金额
             handleRealAmount(orderItemList);
             //进行库存锁定
@@ -290,6 +320,14 @@ public class PayOrderServiceImpl implements PayOrderService {
         for (OrderItem orderItem : orderItemList) {
             orderItem.setPayOrderId(order.getId());
             orderItem.setOrderSn(order.getOrderSn());
+
+            orderItem.setReceiverName(address.getUserName());
+            orderItem.setReceiverPhone(address.getPhone());
+            orderItem.setReceiverProvince(address.getProvince());
+            orderItem.setReceiverCity(address.getCity());
+            orderItem.setReceiverRegion(address.getCounty());
+            orderItem.setReceiverDetailAddress(address.getAddress());
+
         }
         orderItemList = orderItemRepository.saveAll(orderItemList);
 
@@ -304,35 +342,44 @@ public class PayOrderServiceImpl implements PayOrderService {
     }
 
     @Override
-    public Integer paySuccess(Long orderId, Integer payType) {
+    public Integer paySuccess(PayOrderDTO orderDTO) {
         //修改订单支付状态
-        PayOrder order = new PayOrder();
-        order.setId(orderId);
-        order.setStatus(1);
-        order.setPaymentTime(Instant.now());
-        order.setPayType(payType);
-        payOrderRepository.save(order);
+
+
+        orderDTO.setStatus(1);
+        orderDTO.setPaymentTime(Instant.now());
+        PayOrder payOrder = payOrderRepository.save(payOrderMapper.toEntity(orderDTO));
         //恢复所有下单商品的锁定库存，扣减真实库存
-        List<OrderItem> orderItemList = orderItemRepository.findAllByPayOrderId(orderId);
+        List<OrderItem> orderItemList = orderItemRepository.findAllByPayOrderId(payOrder.getId());
         if (!CollectionUtils.isEmpty(orderItemList)) {
             orderItemList.stream().forEach(e -> {
                 String productInfo = e.getProductInfo();
+                StringBuilder stringBuilder=new StringBuilder();
                 if (!StringUtils.isBlank(productInfo)) {
                     List<GoodsDTO> goodsDTOS = CommonUtil.jsonStringConvertToList(productInfo, GoodsDTO[].class);
                     if (!CollectionUtils.isEmpty(goodsDTOS)) {
+
                         goodsDTOS.stream().forEach(goodsDTO -> {
+
                             List<CartItemDTO> cartItemDTOS = goodsDTO.getCartItemDTOS();
                             if (!CollectionUtils.isEmpty(cartItemDTOS)) {
                                 cartItemDTOS.stream().forEach(cartItemDTO -> {
                                     int count = goodsSkuRepository.updateSkuStock(cartItemDTO.getProductSkuId(), cartItemDTO.getQuantity());
                                 });
+                                BigInteger totalSaleVolume=cartItemDTOS.stream().map(CartItemDTO::getQuantity).map(BigInteger::valueOf).reduce(BigInteger.ZERO,BigInteger::add);
+                                goodsRepository.updateGoodsSaleVolume(payOrder.getId(),totalSaleVolume);
                             }
+                            stringBuilder.append(goodsDTO.getGoodsName()).append(",");
                         });
                     }
-
                 }
-
+                e.setGoodsName(stringBuilder.substring(0,stringBuilder.lastIndexOf(",")));
+                e.setPayOrderPaymentCode(payOrder.getTransactionId());
+                e.setPayType(orderDTO.getPayType());
+                e.setPaymentTime(Instant.now());
+                e.setStatus(1);
             });
+            orderItemRepository.saveAll(orderItemList);
         }
         return orderItemList.size();
     }
@@ -342,7 +389,9 @@ public class PayOrderServiceImpl implements PayOrderService {
     public Integer cancelTimeOutOrder() {
         Integer count = 0;
         //查询超时、未支付的订单及订单详情
-        List<PayOrder> payOrders = payOrderRepository.findAllByStatusAndCreateTimeLessThan(0, Instant.now().plusMillis(TimeUnit.HOURS.toHours(-2)));
+        Instant instant = ZonedDateTime.ofInstant(Instant.now(),TimeZone.getDefault().toZoneId()).plusHours(-2).toInstant();
+        log.info("Instant.now().plusMillis(TimeUnit.HOURS.toHours(-2)" + instant);
+        List<PayOrder> payOrders = payOrderRepository.findAllByStatusAndCreateTimeLessThan(0, instant);
         if (CollectionUtils.isEmpty(payOrders)) {
             return count;
         }
@@ -426,21 +475,7 @@ public class PayOrderServiceImpl implements PayOrderService {
 //        cancelOrderSender.sendMessage(orderId, delayTimes);
     }
 
-    @Override
-    public void confirmReceiveOrder(Long orderId) {
-        LoginUserModel loginUser = CommonUtil.getCurrentLoginUser();
-        PayOrder order = payOrderRepository.getOne(orderId);
-        if (!loginUser.getId().equals(order.getMemberId())) {
-            throw new MerchantsException(400, "不能确认他人订单");
-        }
-        if (order.getStatus() != 2) {
-            throw new MerchantsException(400, "该订单还未发货");
-        }
-        order.setStatus(3);
-        order.setConfirmStatus(1);
-        order.setReceiveTime(Instant.now());
-        payOrderRepository.save(order);
-    }
+
 
     @Override
     public Page<OrderDetail> list(Integer status, Integer pageNum, Integer pageSize) {
@@ -479,6 +514,30 @@ public class PayOrderServiceImpl implements PayOrderService {
         }
     }
 
+    @Override
+    public PayOrderDTO findByOrderSn(String orderSn) {
+        return payOrderMapper.toDto(payOrderRepository.findFirstByOrderSn(orderSn));
+    }
+
+    @Override
+    @Transactional
+    public void paid(PayOrderDTO orderDTO) {
+
+        //判断订单状态
+//        if (orderDTO.getPayType() != 0) {
+//            log.error("【订单支付完成】订单状态不正确, orderId={}, payType={}", orderDTO.getOrderSn(), orderDTO.getPayType());
+//            throw new MerchantsException(400, "订单状态不正确");
+//        }
+        //判断支付状态
+        if (orderDTO.getStatus() != 0) {
+            log.error("【订单支付完成】订单支付状态不正确, orderDTO={}", orderDTO);
+            throw new MerchantsException(400, "订单支付状态不正确");
+        }
+        //修改支付状态
+        paySuccess(orderDTO);
+
+    }
+
     /**
      * 生成20位订单编号:12位日期+2位支付方式+6位以上自增id
      */
@@ -503,7 +562,7 @@ public class PayOrderServiceImpl implements PayOrderService {
      */
     private String generateOrderSn(OrderItem order) {
         StringBuilder sb = new StringBuilder();
-        String date = new SimpleDateFormat("yyyyMMddmm").format(new Date());
+        String date = new SimpleDateFormat("yyyyMMddHHmm").format(new Date());
         String key = REDIS_DATABASE + ":" + REDIS_KEY_SUB_ORDER_ID + date;
         Long increment = redisService.incrByString(key, 1 + "");
         sb.append(date);
@@ -622,7 +681,7 @@ public class PayOrderServiceImpl implements PayOrderService {
     private ConfirmOrderResult.CalcAmount calcCartAmount(List<CartItemDTO> cartItemDTOS) {
         ConfirmOrderResult.CalcAmount calcAmount = new ConfirmOrderResult.CalcAmount();
         if (!CollectionUtils.isEmpty(cartItemDTOS)) {
-            if (cartItemDTOS.stream().filter(e -> e.getGoodsState() != null && e.getGoodsState()).collect(Collectors.toList()).size() > 0) {
+            if (cartItemDTOS.stream().filter(e -> e.getGoodsDeleteState() != null && e.getGoodsDeleteState()).collect(Collectors.toList()).size() > 0) {
                 throw new MerchantsException(400, "购物车存在过期商品");
             }
             List<Long> skuIds = cartItemDTOS.stream().map(CartItemDTO::getProductSkuId).collect(Collectors.toList());

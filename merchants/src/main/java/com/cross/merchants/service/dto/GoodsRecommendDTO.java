@@ -57,8 +57,9 @@ public class GoodsRecommendDTO implements Serializable {
     @ApiModelProperty(value = "更新时间")
     private Instant updateTime;
 
-    @ApiModelProperty(value = "商品信息",hidden = true)
+    @ApiModelProperty(value = "单品商品信息",hidden = true)
     private GoodsDTO goodsDTO;
+
 
 
     /**

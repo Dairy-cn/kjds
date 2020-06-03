@@ -1,0 +1,34 @@
+{
+    "name": "StoreCommonShippingList",
+    "fields": [
+        {
+            "fieldName": "name",
+            "javadoc": "快寄公司名称",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "storeId",
+            "javadoc": "商户id",
+            "fieldType": "Long"
+        },
+        {
+            "fieldName": "shippingId",
+            "javadoc": "快递公司记录id",
+            "fieldType": "Long"
+        }
+    ],
+    "relationships": [],
+    "changelogDate": "20200528144000",
+    "javadoc": "商户常用快寄公司",
+    "entityTableName": "store_common_shipping_list",
+    "dto": "mapstruct",
+    "pagination": "pagination",
+    "service": "serviceImpl",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "readOnly": false,
+    "embedded": false,
+    "clientRootFolder": "merchants",
+    "applications": "*",
+    "microserviceName": "merchants"
+}

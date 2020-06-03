@@ -3,6 +3,7 @@ package com.cross.merchants.web.rest.DTO;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
+import java.io.Serializable;
 import java.util.List;
 
 /*************************************************************
@@ -11,7 +12,7 @@ import java.util.List;
  * CreateTime: 2020/5/24
  ************************************************************/
 @ApiModel("生成订单时传入的参数")
-public class OrderParam {
+public class OrderParam implements Serializable {
 
     @ApiModelProperty("收货地址ID")
     private Long memberReceiveAddressId;
@@ -22,6 +23,19 @@ public class OrderParam {
 
     @ApiModelProperty("被选中的购物车商品ID")
     private List<String> cartIds;
+
+
+    @ApiModelProperty("被选中的购物车商品ID")
+    private List<StoreNoteDTO> storeNoteDTOS;
+
+
+    public List<StoreNoteDTO> getStoreNoteDTOS() {
+        return storeNoteDTOS;
+    }
+
+    public void setStoreNoteDTOS(List<StoreNoteDTO> storeNoteDTOS) {
+        this.storeNoteDTOS = storeNoteDTOS;
+    }
 
     public Long getMemberReceiveAddressId() {
         return memberReceiveAddressId;

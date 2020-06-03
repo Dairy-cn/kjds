@@ -1,0 +1,30 @@
+       /** 快寄公司编码表 **/
+ entity  ShippingList{
+          /** id **/
+        id Long,
+         /** 快寄公司名称 **/
+        name String,
+         /** 编码 **/
+         code String
+}
+       /** 商户常用快寄公司 **/
+ entity  StoreCommonShippingList{
+          /** id **/
+        id Long,
+         /** 快寄公司名称 **/
+        name String,
+          /** 商户id **/
+         storeId Long,
+           /** 快递公司记录id **/
+        shippingId Long
+}
+// Set pagination options
+// paginate ActivityMain with infinite-scroll
+paginate * with pagination
+
+dto * with mapstruct
+
+// Set service options to all except few
+service all with serviceImpl
+// Set an angular suffix
+// angularSuffix * with mySuffix

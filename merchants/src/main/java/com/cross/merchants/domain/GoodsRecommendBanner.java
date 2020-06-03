@@ -52,6 +52,11 @@ public class GoodsRecommendBanner implements Serializable {
     private Boolean top;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
+
+    public Boolean getTop() {
+        return top;
+    }
+
     public Long getId() {
         return id;
     }

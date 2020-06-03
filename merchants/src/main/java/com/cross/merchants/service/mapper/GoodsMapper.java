@@ -50,7 +50,7 @@ public class GoodsMapper {
             goods.setSaleState(dto.getSaleState());
             goods.setCreateTime(dto.getCreateTime());
             goods.setGoodsNo(dto.getGoodsNo());
-
+            goods.setSaleVolume(dto.getSaleVolume());
             return goods;
         }
     }
@@ -82,6 +82,8 @@ public class GoodsMapper {
             goodsDTO.setSaleState(entity.getSaleState());
             goodsDTO.setCreateTime(entity.getCreateTime());
             goodsDTO.setGoodsNo(entity.getGoodsNo());
+            goodsDTO.setSaleVolume(entity.getSaleVolume());
+
             return goodsDTO;
         }
     }

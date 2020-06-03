@@ -5,6 +5,7 @@ import com.cross.merchants.service.dto.WarehouseInfoDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -44,4 +45,6 @@ public interface WarehouseInfoService {
     void delete(Long id);
 
     WarehouseInfoDTO findFristByMerchantId(Long merchantId);
+
+    List<WarehouseInfoDTO> findAllByMerchantIdIn(List<Long> merchantIds);
 }

@@ -30,6 +30,9 @@ public interface GoodsRecommendBannerService {
      */
     Page<GoodsRecommendBannerDTO> findAll(Pageable pageable);
 
+    Page<GoodsRecommendBannerDTO> findAllByC(Pageable pageable);
+
+
     List<GoodsRecommendBannerDTO> findAll();
 
     /**
@@ -54,4 +57,7 @@ public interface GoodsRecommendBannerService {
 
 
     Map<Long, GoodsRecommendBannerDTO> finAllMapInfo(List<Long> ids);
+
+    List<GoodsRecommendBannerDTO> finAllListInfo(List<Long> ids);
+
 }

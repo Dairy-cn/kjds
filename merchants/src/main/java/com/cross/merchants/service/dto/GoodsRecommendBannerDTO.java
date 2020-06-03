@@ -7,6 +7,7 @@ import io.swagger.annotations.ApiModelProperty;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * 推荐商品广告
@@ -50,8 +51,19 @@ public class GoodsRecommendBannerDTO implements Serializable {
     @ApiModelProperty(value = "是否置顶")
     private Boolean top;
 
+    @ApiModelProperty(value = "推荐商品信息")
+    private List<GoodsRecommendDTO> goodsRecommendDTOS;
+
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
 
+
+    public List<GoodsRecommendDTO> getGoodsRecommendDTOS() {
+        return goodsRecommendDTOS;
+    }
+
+    public void setGoodsRecommendDTOS(List<GoodsRecommendDTO> goodsRecommendDTOS) {
+        this.goodsRecommendDTOS = goodsRecommendDTOS;
+    }
 
     public Long getId() {
         return id;

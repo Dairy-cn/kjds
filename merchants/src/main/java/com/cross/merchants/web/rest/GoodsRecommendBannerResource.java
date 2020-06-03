@@ -60,7 +60,7 @@ public class GoodsRecommendBannerResource {
      */
     @PostMapping("/goods-recommend-banners")
     @ApiOperation("大后台---商品推荐--广告管理--添加专区广告")
-    public R createGoodsRecommendBanner(@Valid @RequestBody GoodsRecommendBannerDTO goodsRecommendBannerDTO) throws URISyntaxException {
+    public R<GoodsRecommendBannerDTO> createGoodsRecommendBanner(@Valid @RequestBody GoodsRecommendBannerDTO goodsRecommendBannerDTO) throws URISyntaxException {
         log.debug("REST request to save GoodsRecommendBanner : {}", goodsRecommendBannerDTO);
         if (goodsRecommendBannerDTO.getId() != null) {
             return R.error("idexists");
@@ -80,7 +80,7 @@ public class GoodsRecommendBannerResource {
      */
     @PutMapping("/goods-recommend-banners")
     @ApiOperation("大后台---商品推荐--广告管理--修改专区广告")
-    public R updateGoodsRecommendBanner(@Valid @RequestBody GoodsRecommendBannerDTO goodsRecommendBannerDTO) throws URISyntaxException {
+    public R<GoodsRecommendBannerDTO> updateGoodsRecommendBanner(@Valid @RequestBody GoodsRecommendBannerDTO goodsRecommendBannerDTO) throws URISyntaxException {
         log.debug("REST request to update GoodsRecommendBanner : {}", goodsRecommendBannerDTO);
         if (goodsRecommendBannerDTO.getId() == null) {
             return R.error("idnull");
@@ -97,7 +97,7 @@ public class GoodsRecommendBannerResource {
      */
     @GetMapping("/goods-recommend-banners")
     @ApiOperation("大后台---商品推荐--广告管理--获取专区广告列表")
-    public R getAllGoodsRecommendBanners(Pageable pageable) {
+    public R<List<GoodsRecommendBannerDTO>> getAllGoodsRecommendBanners(Pageable pageable) {
         log.debug("REST request to get a page of GoodsRecommendBanners");
         Page<GoodsRecommendBannerDTO> page = goodsRecommendBannerService.findAll(pageable);
         return R.ok(page.getContent(), page.getTotalElements());
@@ -105,7 +105,7 @@ public class GoodsRecommendBannerResource {
 
     @GetMapping("/goods-recommend-banners-list")
     @ApiOperation("大后台---商品推荐--广告管理--获取所有的专区列表(没有装载数据接口)")
-    public R getAllGoodsRecommendBannersList() {
+    public R<List<GoodsRecommendBannerDTO>> getAllGoodsRecommendBannersList() {
         log.debug("REST request to get a page of GoodsRecommendBanners");
         List<GoodsRecommendBannerDTO> list = goodsRecommendBannerService.findAll();
         return R.ok(list);
@@ -119,7 +119,7 @@ public class GoodsRecommendBannerResource {
      */
     @GetMapping("/goods-recommend-banners/{id}")
     @ApiOperation("根据id获取广告信息")
-    public R getGoodsRecommendBanner(@PathVariable Long id) {
+    public R<GoodsRecommendBannerDTO> getGoodsRecommendBanner(@PathVariable Long id) {
         log.debug("REST request to get GoodsRecommendBanner : {}", id);
         Optional<GoodsRecommendBannerDTO> goodsRecommendBannerDTO = goodsRecommendBannerService.findOne(id);
         return R.ok(goodsRecommendBannerDTO.get());
@@ -142,7 +142,7 @@ public class GoodsRecommendBannerResource {
 
     @PutMapping("/goods-recommend-banners-infos-show-state/{id}")
     @ApiOperation("大后台--修改商品广告显示状态")
-    public R updateGoodsBannerInfoShowState(@PathVariable Long id,
+    public R<GoodsRecommendBannerDTO> updateGoodsBannerInfoShowState(@PathVariable Long id,
                                             @ApiParam("上传位置 1 第一块 2 第二块  3 第三块 ") @RequestParam Integer position,
                                             @ApiParam("显示状态 true 显示 false 隐藏 ") @RequestParam Boolean showState) throws URISyntaxException {
 
@@ -191,5 +191,13 @@ public class GoodsRecommendBannerResource {
         } else {
             return R.error();
         }
+    }
+
+    @GetMapping("/c-goods-recommend-banners")
+    @ApiOperation("c端--获取商品推荐专区广告列表")
+    public R<List<GoodsRecommendBannerDTO>> getAllGoodsRecommendBannersByC(Pageable pageable) {
+        log.debug("REST request to get a page of GoodsRecommendBanners");
+        Page<GoodsRecommendBannerDTO> page = goodsRecommendBannerService.findAllByC(pageable);
+        return R.ok(page.getContent(), page.getTotalElements());
     }
 }

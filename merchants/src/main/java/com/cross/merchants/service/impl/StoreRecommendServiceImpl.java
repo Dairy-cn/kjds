@@ -14,6 +14,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 
@@ -45,6 +46,14 @@ public class StoreRecommendServiceImpl implements StoreRecommendService {
     public StoreRecommendDTO save(StoreRecommendDTO storeRecommendDTO) {
         log.debug("Request to save StoreRecommend : {}", storeRecommendDTO);
         checkParam(storeRecommendDTO);
+        if(storeRecommendDTO.getId()!=null){
+            StoreRecommend one = storeRecommendRepository.getOne(storeRecommendDTO.getId());
+            storeRecommendDTO.setTop(one.getTop());
+            storeRecommendDTO.setCreateTime(one.getCreateTime());
+            storeRecommendDTO.setUpdateTime(Instant.now());
+        }else {
+            storeRecommendDTO.setCreateTime(Instant.now());
+        }
         StoreRecommend storeRecommend = storeRecommendMapper.toEntity(storeRecommendDTO);
         storeRecommend = storeRecommendRepository.save(storeRecommend);
         return storeRecommendMapper.toDto(storeRecommend);

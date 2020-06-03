@@ -111,7 +111,7 @@ public class GlobalRegionResource {
      */
     @GetMapping("/global-regions/{id}")
     @ApiOperation("根据记录id获取数据")
-    public R getGlobalRegion(@PathVariable Long id) {
+    public R<GlobalRegionDTO> getGlobalRegion(@PathVariable Long id) {
         log.debug("REST request to get GlobalRegion : {}", id);
         GlobalRegionDTO globalRegionDTO = globalRegionService.findOne(id).get();
         return R.ok(globalRegionDTO);

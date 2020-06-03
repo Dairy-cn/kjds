@@ -6,7 +6,7 @@ import java.math.BigInteger;
  * Description:  分销通吃卡订单统计
  * Author: Dair
  * CreateTime: 2019/12/31
- * Copyright © 成都通吃岛信息技术有限公司 All right reserved
+
  ************************************************************/
 public class DistributorPayOrderVM {
     

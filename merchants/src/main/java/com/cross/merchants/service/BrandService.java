@@ -5,6 +5,7 @@ import com.cross.merchants.service.dto.BrandDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 
@@ -50,8 +51,16 @@ public interface BrandService {
     Page<BrandDTO> findAllWithWaitCheckIn(Pageable pageable);
 
 
-    Page<BrandDTO> findAllByStatusAndStoreId(Pageable pageable,Integer status,Long storeId);
+    Page<BrandDTO> findAllByStatusAndStoreId(Pageable pageable, Integer status, Long storeId);
 
     List<BrandDTO> findAllByStatusAndStoreId(Integer status, Long storeId);
+
+    Page<BrandDTO> getAllBrandsByCondition(Pageable pageable, Integer brandAuthType, Integer checkState, Instant startTime, Instant endTime, Instant startCheckTime, Instant endCheckTime, String keyWord);
+
+
+    List<BrandDTO> findAllByIdInAndCheckState(List<Long> ids, Integer checkState);
+
+
+    Page<BrandDTO> getAllBrandListByConditionByC(Pageable pageable, Long oneCategoryId, Long twoCategoryId, Long thirdCategoryId);
 
 }

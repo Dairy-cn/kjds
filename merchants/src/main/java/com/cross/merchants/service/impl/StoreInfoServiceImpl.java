@@ -2,7 +2,9 @@ package com.cross.merchants.service.impl;
 
 import com.cross.merchants.domain.Goods;
 import com.cross.merchants.domain.StoreOperatingRecord;
+import com.cross.merchants.domain.WarehouseInfo;
 import com.cross.merchants.repository.StoreOperatingRecordRepository;
+import com.cross.merchants.repository.WarehouseInfoRepository;
 import com.cross.merchants.service.MerchantsCategoryService;
 import com.cross.merchants.service.StoreInfoService;
 import com.cross.merchants.domain.StoreInfo;
@@ -21,6 +23,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
+import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.Predicate;
 import java.time.Instant;
 import java.util.*;
@@ -43,11 +46,14 @@ public class StoreInfoServiceImpl implements StoreInfoService {
 
     private final MerchantsCategoryService merchantsCategoryService;
 
-    public StoreInfoServiceImpl(StoreInfoRepository storeInfoRepository, StoreInfoMapper storeInfoMapper, StoreOperatingRecordRepository storeOperatingRecordRepository, MerchantsCategoryService merchantsCategoryService) {
+    private final WarehouseInfoRepository warehouseInfoRepository;
+
+    public StoreInfoServiceImpl(StoreInfoRepository storeInfoRepository, StoreInfoMapper storeInfoMapper, StoreOperatingRecordRepository storeOperatingRecordRepository, MerchantsCategoryService merchantsCategoryService, WarehouseInfoRepository warehouseInfoRepository) {
         this.storeInfoRepository = storeInfoRepository;
         this.storeInfoMapper = storeInfoMapper;
         this.storeOperatingRecordRepository = storeOperatingRecordRepository;
         this.merchantsCategoryService = merchantsCategoryService;
+        this.warehouseInfoRepository = warehouseInfoRepository;
     }
 
     /**
@@ -59,6 +65,15 @@ public class StoreInfoServiceImpl implements StoreInfoService {
     @Override
     public StoreInfoDTO save(StoreInfoDTO storeInfoDTO) {
         log.debug("Request to save StoreInfo : {}", storeInfoDTO);
+        if(storeInfoDTO.getId()!=null){
+            StoreInfo one = storeInfoRepository.getOne(storeInfoDTO.getId());
+            storeInfoDTO.setStoreNo(one.getStoreNo());
+            storeInfoDTO.setCreatTime(one.getCreatTime());
+            storeInfoDTO.setCloseTime(one.getCloseTime());
+            storeInfoDTO.setOperatingStatus(one.getOperatingStatus());
+            storeInfoDTO.setRegisterUserName(one.getRegisterUserName());
+            storeInfoDTO.setCreateUserId(one.getCreateUserId());
+        }
         StoreInfo storeInfo = storeInfoMapper.toEntity(storeInfoDTO);
         storeInfo = storeInfoRepository.save(storeInfo);
         return storeInfoMapper.toDto(storeInfo);
@@ -195,7 +210,7 @@ public class StoreInfoServiceImpl implements StoreInfoService {
         StoreInfoDTO storeInfoDTO = storeInfoMapper.toDto(storeInfoRepository.getOne(id));
         if (null != storeInfoDTO && storeInfoDTO.getCategoryId() != null) {
             Optional<MerchantsCategoryDTO> one = merchantsCategoryService.findOne(storeInfoDTO.getCategoryId());
-            if(one.isPresent()){
+            if (one.isPresent()) {
                 storeInfoDTO.setMerchantsCategoryDTO(one.get());
             }
         }
@@ -212,8 +227,6 @@ public class StoreInfoServiceImpl implements StoreInfoService {
             if (state != null) {
                 listPredicates.add(b.equal(r.get("operatingStatus").as(Integer.class), state));
             }
-
-
             if (!StringUtils.isBlank(keyWord)) {
                 List<Predicate> listPermission = new ArrayList<>();
 //                listPermission.add(b.like(r.get("id").as(String.class), keyWord));
@@ -225,5 +238,58 @@ public class StoreInfoServiceImpl implements StoreInfoService {
             return b.and(listPredicates.toArray(arrayPredicates));
         });
         return storeInfoMapper.toDto(list);
+    }
+
+    @Override
+    public Page<StoreInfoDTO> getAllStoreInfosByCondition(Pageable pageable, Integer operatingStatus, Long categoryId, Integer warehouseType, String keyWord, Instant startTime,Instant endTime) {
+        List<Long> merchantIds=new ArrayList<>();
+
+        if (warehouseType != null) {
+            List<WarehouseInfo> allByWarehouseType = warehouseInfoRepository.findAllByWarehouseType(warehouseType);
+            if(!CollectionUtils.isEmpty(allByWarehouseType)){
+                merchantIds = allByWarehouseType.stream().map(WarehouseInfo::getMerchantId).distinct().collect(Collectors.toList());
+            }
+        }
+        List<Long> finalMerchantIds = merchantIds;
+        Page<StoreInfo> list = storeInfoRepository.findAll((r, q, b) -> {
+            List<Predicate> listPredicates = new ArrayList<>();
+            if (categoryId != null) {
+                listPredicates.add(b.equal(r.get("categoryId").as(Long.class), categoryId));
+            }
+            if (operatingStatus != null) {
+                listPredicates.add(b.equal(r.get("operatingStatus").as(Integer.class), operatingStatus));
+            }
+
+            if(!CollectionUtils.isEmpty(finalMerchantIds)){
+                if (!CollectionUtils.isEmpty(finalMerchantIds)) {
+                    CriteriaBuilder.In<Long> in = b.in(r.get("merchantsCheckInInfoId"));
+                    for (Long id : finalMerchantIds) {
+                        in.value(id);
+                    }
+                    listPredicates.add(in);
+                }
+            }
+            if (startTime != null) {
+                listPredicates.add(b.greaterThanOrEqualTo(r.get("creatTime").as(Instant.class), startTime));
+            }
+            if (endTime != null) {
+                listPredicates.add(b.lessThanOrEqualTo(r.get("creatTime").as(Instant.class), endTime));
+            }
+            if (!StringUtils.isBlank(keyWord)) {
+                List<Predicate> listPermission = new ArrayList<>();
+                listPermission.add(b.like(r.get("storeName").as(String.class), keyWord));
+                listPermission.add(b.like(r.get("companyName").as(String.class), "%" + keyWord.trim() + "%"));
+                Predicate[] predicatesPermissionArr = new Predicate[listPermission.size()];
+                listPredicates.add(b.or(listPermission.toArray(predicatesPermissionArr)));
+            }
+            Predicate[] arrayPredicates = new Predicate[listPredicates.size()];
+            return b.and(listPredicates.toArray(arrayPredicates));
+        },pageable);
+        return list.map(storeInfoMapper::toDto);
+    }
+
+    @Override
+    public List<StoreInfoDTO> findAllByMerchantIds(List<Long> merchantIds) {
+        return storeInfoMapper.toDto(storeInfoRepository.findAllByMerchantsCheckInInfoIdIn(merchantIds));
     }
 }

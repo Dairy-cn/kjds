@@ -1,7 +1,10 @@
 package com.cross.merchants.service.impl;
 
+import com.cross.enumtype.PlatformSystemBannerPopSettingVM;
 import com.cross.merchants.domain.*;
 import com.cross.merchants.exception.MerchantsException;
+import com.cross.merchants.redis.CartPrefix;
+import com.cross.merchants.redis.RedisService;
 import com.cross.merchants.repository.*;
 import com.cross.merchants.service.BannerInfoService;
 import com.cross.merchants.service.dto.BannerInfoDTO;
@@ -10,6 +13,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -40,6 +44,9 @@ public class BannerInfoServiceImpl implements BannerInfoService {
 
     private final GoodsRepository goodsRepository;
 
+    @Autowired
+    private RedisService redisService;
+
     public BannerInfoServiceImpl(BannerInfoRepository bannerInfoRepository, BannerInfoMapper bannerInfoMapper, StoreInfoRepository storeInfoRepository, MerchantsCategoryRepository merchantsCategoryRepository, GoodsCategoryRepository goodsCategoryRepository, GoodsRepository goodsRepository) {
         this.bannerInfoRepository = bannerInfoRepository;
         this.bannerInfoMapper = bannerInfoMapper;
@@ -59,6 +66,11 @@ public class BannerInfoServiceImpl implements BannerInfoService {
     public BannerInfoDTO save(BannerInfoDTO bannerInfoDTO) {
         log.debug("Request to save BannerInfo : {}", bannerInfoDTO);
         this.checkParam(bannerInfoDTO);
+        if(bannerInfoDTO.getId()!=null){
+            BannerInfo one = bannerInfoRepository.getOne(bannerInfoDTO.getId());
+            bannerInfoDTO.setShowState(one.getShowState());
+            bannerInfoDTO.setTop(one.getTop());
+        }
         BannerInfo bannerInfo = bannerInfoMapper.toEntity(bannerInfoDTO);
         bannerInfo = bannerInfoRepository.save(bannerInfo);
         return bannerInfoMapper.toDto(bannerInfo);
@@ -91,7 +103,7 @@ public class BannerInfoServiceImpl implements BannerInfoService {
                         if (count >= 3) {
                             throw new MerchantsException(400, "A区最多可添加3条广告");
                         } else {
-                            int countByCode = bannerInfoRepository.countAllByBannerTypeAndPositionTypeAndPositionCode(bannerInfoDTO.getBannerType(), bannerInfoDTO.getPositionType(),bannerInfoDTO.getPositionCode());
+                            int countByCode = bannerInfoRepository.countAllByBannerTypeAndPositionTypeAndPositionCode(bannerInfoDTO.getBannerType(), bannerInfoDTO.getPositionType(), bannerInfoDTO.getPositionCode());
                             if (countByCode >= 1) {
                                 throw new MerchantsException(400, "A区各区域最多可分别添加1条广告");
                             }
@@ -105,7 +117,7 @@ public class BannerInfoServiceImpl implements BannerInfoService {
 
                 }
             } else if (4 == bannerInfoDTO.getBannerType()) {
-                int count = bannerInfoRepository.countAllByBannerTypeAndPositionType(bannerInfoDTO.getBannerType(),bannerInfoDTO.getPositionType());
+                int count = bannerInfoRepository.countAllByBannerTypeAndPositionType(bannerInfoDTO.getBannerType(), bannerInfoDTO.getPositionType());
                 if (count > 16) {
                     throw new MerchantsException(400, "商品推荐广告只能添加16条");
                 }
@@ -171,12 +183,18 @@ public class BannerInfoServiceImpl implements BannerInfoService {
     }
 
     @Override
+    public List<BannerInfoDTO> findAllByConditionByC(Integer positionType) {
+
+        List<BannerInfoDTO> list = bannerInfoMapper.toDto(bannerInfoRepository.findAllByBannerTypeAndPositionTypeAndShowStateOrderByTopDescIdDesc(2, positionType,true));
+        list = this.setParam(list);
+        return list;
+    }
+    @Override
     public List<BannerInfoDTO> findAllByBannerType(Integer bannerType) {
         List<BannerInfoDTO> list = bannerInfoMapper.toDto(bannerInfoRepository.findAllByBannerTypeOrderByTopDescIdDesc(bannerType));
         list = this.setParam(list);
         return list;
     }
-
 
 
     @Override
@@ -220,6 +238,55 @@ public class BannerInfoServiceImpl implements BannerInfoService {
             bannerInfoRepository.updateTopStateById(id);
         }
         return true;
+    }
+
+    @Override
+    public Map<String, Object> getPopInfo(Long userId) {
+        Map<String, Object> map = new HashMap<>();
+        boolean exists = redisService.exists(CartPrefix.getPopAdList, userId + "");
+        BannerInfo bannerInfo = bannerInfoRepository.findFirstByBannerTypeAndPositionTypeAndPositionCode(2, 2, 2);
+        if (bannerInfo == null) {
+            map.put("showState", false);
+        } else {
+            BannerInfoDTO bannerInfoDTO = bannerInfoMapper.toDto(bannerInfo);
+
+            if (exists) {
+                int popCount = redisService.get(CartPrefix.getPopAdList, userId + "", Integer.class);
+                List<PlatformSystemBannerPopSettingVM> popSetting = bannerInfoDTO.getBannerPopSetting();
+                if (!CollectionUtils.isEmpty(popSetting)) {
+                    for (PlatformSystemBannerPopSettingVM e : popSetting) {
+
+                        switch (e.getCycleType()) {
+                            case DAY:
+                                int popNumber = e.getPopNumber();
+                                if (popCount >= popNumber) {
+                                    map.put("showState", false);
+                                    map.put("popInfo", "已经弹出限制次数了");
+                                    return map;
+                                }
+                                break;
+                            //TODO  之后要兼容星期等需要改
+                            default:
+                                break;
+                        }
+                    }
+                }
+            }
+            map.put("showState", true);
+            map.put("popInfo", bannerInfoDTO);
+        }
+        return map;
+    }
+
+    @Override
+    public void updatePopRecord(Long userId) {
+        boolean exists = redisService.exists(CartPrefix.getPopAdList, userId + "");
+        if(exists){
+            redisService.incr(CartPrefix.getPopAdList, userId + "");
+        }else {
+            redisService.incr(CartPrefix.getPopAdList, userId + "");
+            redisService.expire(CartPrefix.getPopAdList, userId + "");
+        }
     }
 
 
