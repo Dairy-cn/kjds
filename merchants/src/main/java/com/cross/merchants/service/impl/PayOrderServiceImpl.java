@@ -1,6 +1,5 @@
 package com.cross.merchants.service.impl;
 
-import ch.qos.logback.core.joran.util.beans.BeanUtil;
 import com.cross.merchants.domain.*;
 import com.cross.merchants.exception.MerchantsException;
 import com.cross.merchants.redis.RedisService;
@@ -17,15 +16,13 @@ import com.cross.merchants.service.mapper.GoodsMapper;
 import com.cross.merchants.service.mapper.GoodsSkuMapper;
 import com.cross.merchants.service.mapper.OrderItemMapper;
 import com.cross.merchants.service.mapper.PayOrderMapper;
-import com.cross.merchants.web.rest.DTO.ConfirmOrderResult;
-import com.cross.merchants.web.rest.DTO.OrderDetail;
-import com.cross.merchants.web.rest.DTO.OrderParam;
-import com.cross.merchants.web.rest.DTO.StoreNoteDTO;
-import com.cross.merchants.web.rest.GoodsSkuResource;
+import com.cross.merchants.web.rest.DTO.*;
+import com.cross.DTO.UserOrderCountAndAmountDTO;
+import com.cross.merchants.web.rest.vm.UserOrderCountAndAmountVM;
 import com.cross.model.LoginUserModel;
 import com.cross.utils.CommonUtil;
+import com.cross.utils.JpaSelectCastEntity;
 import com.cross.utils.JsonUtil;
-import com.cross.utils.TimeUtil;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -42,15 +39,10 @@ import org.springframework.transaction.annotation.Transactional;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.text.SimpleDateFormat;
-import java.time.Duration;
 import java.time.Instant;
-import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
-import java.time.temporal.TemporalUnit;
 import java.util.*;
-import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 /**
  * Service Implementation for managing {@link PayOrder}.
@@ -196,7 +188,7 @@ public class PayOrderServiceImpl implements PayOrderService {
         });
         Map<Long, List<GoodsDTO>> storeMap = goodsList.stream().collect(Collectors.groupingBy(GoodsDTO::getStoreId));
 //        Map<Long, List<GoodsSkuDTO>> gookdsSkuMap = goodsSkuList.stream().collect(Collectors.groupingBy(GoodsSkuDTO::getGoodsId));
-        Map<Long, GoodsSkuDTO> gookdsSkuMap = goodsSkuList.stream().collect(Collectors.toMap(GoodsSkuDTO::getId,e->e));
+        Map<Long, GoodsSkuDTO> gookdsSkuMap = goodsSkuList.stream().collect(Collectors.toMap(GoodsSkuDTO::getId, e -> e));
 
         Map<Long, List<CartItemDTO>> cartMap = cartItemDTOS.stream().collect(Collectors.groupingBy(CartItemDTO::getProductId));
         orderResults.stream().forEach(e -> {
@@ -205,20 +197,25 @@ public class PayOrderServiceImpl implements PayOrderService {
             if (maxFreight == null) {
                 maxFreight = BigDecimal.ZERO;
             }
+            e.setTaxesFees(BigDecimal.ZERO);
             goods.stream().forEach(goods1 -> {
                 List<CartItemDTO> cartItemDTOList = cartMap.get(goods1.getId());
-                cartItemDTOList.stream().forEach(e2->{
+                cartItemDTOList.stream().forEach(e2 -> {
                     GoodsSkuDTO goodsSkuDTO = gookdsSkuMap.get(e2.getProductSkuId());
                     e2.setGoodsSkuDTO(goodsSkuDTO);
+                    if (goodsSkuDTO.getTaxexAndDues() != null) {
+                        e.setTaxesFees(e.getTaxesFees().add(goodsSkuDTO.getTaxexAndDues()));
+                    }
                 });
                 goods1.setCartItemDTOS(cartItemDTOList);
             });
             e.setFreight(maxFreight);
             e.setGoodsDTOList(goods);
-            //TODO 税费  看怎么收取
-            e.setTaxesFees(BigDecimal.ZERO);
+
         });
         ConfirmOrderResult.CalcAmount calcAmount = calcCartAmount(cartItemDTOS);
+        BigDecimal taxesFee = orderResults.stream().filter(e -> e.getTaxesFees() != null).map(StoreOrderResult::getTaxesFees).reduce(BigDecimal.ZERO, BigDecimal::add);
+        calcAmount.setTaxesFees(taxesFee);
         result.setCalcAmount(calcAmount);
         result.setOrderResults(orderResults);
 
@@ -283,6 +280,7 @@ public class PayOrderServiceImpl implements PayOrderService {
         order.setTotalAmount(calcTotalAmount(orderItemList));
         order.setFreightAmount(orderResult.getCalcAmount().getFreightAmount());
         order.setPromotionAmount(orderResult.getCalcAmount().getPromotionAmount());
+        order.setTaxesFeesAmount(orderResult.getCalcAmount().getTaxesFees());
         order.setPayAmount(calcPayAmount(order));
         //转化为订单信息并插入数据库
         order.setMemberId(currentLoginUser.getId());
@@ -354,7 +352,7 @@ public class PayOrderServiceImpl implements PayOrderService {
         if (!CollectionUtils.isEmpty(orderItemList)) {
             orderItemList.stream().forEach(e -> {
                 String productInfo = e.getProductInfo();
-                StringBuilder stringBuilder=new StringBuilder();
+                StringBuilder stringBuilder = new StringBuilder();
                 if (!StringUtils.isBlank(productInfo)) {
                     List<GoodsDTO> goodsDTOS = CommonUtil.jsonStringConvertToList(productInfo, GoodsDTO[].class);
                     if (!CollectionUtils.isEmpty(goodsDTOS)) {
@@ -366,14 +364,14 @@ public class PayOrderServiceImpl implements PayOrderService {
                                 cartItemDTOS.stream().forEach(cartItemDTO -> {
                                     int count = goodsSkuRepository.updateSkuStock(cartItemDTO.getProductSkuId(), cartItemDTO.getQuantity());
                                 });
-                                BigInteger totalSaleVolume=cartItemDTOS.stream().map(CartItemDTO::getQuantity).map(BigInteger::valueOf).reduce(BigInteger.ZERO,BigInteger::add);
-                                goodsRepository.updateGoodsSaleVolume(payOrder.getId(),totalSaleVolume);
+                                BigInteger totalSaleVolume = cartItemDTOS.stream().map(CartItemDTO::getQuantity).map(BigInteger::valueOf).reduce(BigInteger.ZERO, BigInteger::add);
+                                goodsRepository.updateGoodsSaleVolume(payOrder.getId(), totalSaleVolume);
                             }
                             stringBuilder.append(goodsDTO.getGoodsName()).append(",");
                         });
                     }
                 }
-                e.setGoodsName(stringBuilder.substring(0,stringBuilder.lastIndexOf(",")));
+                e.setGoodsName(stringBuilder.substring(0, stringBuilder.lastIndexOf(",")));
                 e.setPayOrderPaymentCode(payOrder.getTransactionId());
                 e.setPayType(orderDTO.getPayType());
                 e.setPaymentTime(Instant.now());
@@ -389,7 +387,7 @@ public class PayOrderServiceImpl implements PayOrderService {
     public Integer cancelTimeOutOrder() {
         Integer count = 0;
         //查询超时、未支付的订单及订单详情
-        Instant instant = ZonedDateTime.ofInstant(Instant.now(),TimeZone.getDefault().toZoneId()).plusHours(-2).toInstant();
+        Instant instant = ZonedDateTime.ofInstant(Instant.now(), TimeZone.getDefault().toZoneId()).plusHours(-2).toInstant();
         log.info("Instant.now().plusMillis(TimeUnit.HOURS.toHours(-2)" + instant);
         List<PayOrder> payOrders = payOrderRepository.findAllByStatusAndCreateTimeLessThan(0, instant);
         if (CollectionUtils.isEmpty(payOrders)) {
@@ -422,8 +420,9 @@ public class PayOrderServiceImpl implements PayOrderService {
                             });
                         }
                     }
-
+                    orderItem.setStatus(4);
                 }
+                orderItemRepository.saveAll(orderItems);
             }
 
         }
@@ -474,7 +473,6 @@ public class PayOrderServiceImpl implements PayOrderService {
 //        //发送延迟消息
 //        cancelOrderSender.sendMessage(orderId, delayTimes);
     }
-
 
 
     @Override
@@ -536,6 +534,30 @@ public class PayOrderServiceImpl implements PayOrderService {
         //修改支付状态
         paySuccess(orderDTO);
 
+    }
+
+    @Override
+    public Map<Long, UserOrderCountAndAmountDTO> getOrderCountAndAmountByUserIds(List<Long> userIds) {
+        Map<Long, UserOrderCountAndAmountDTO> map = new HashMap<>(16);
+        List<Object[]> objects = payOrderRepository.countAndTotalPayAmountByUserIdIn(userIds);
+        List<UserOrderCountAndAmountVM> userOrderCountAndAmountVMS = new ArrayList<>();
+        try {
+            userOrderCountAndAmountVMS = JpaSelectCastEntity.castEntity(objects, UserOrderCountAndAmountVM.class);
+        } catch (Exception e1) {
+            log.error("类转化失败" + e1.getMessage());
+            e1.printStackTrace();
+        }
+        if (!CollectionUtils.isEmpty(userOrderCountAndAmountVMS)) {
+            userOrderCountAndAmountVMS.stream().forEach(e -> {
+                UserOrderCountAndAmountDTO userOrderCountAndAmountDTO = new UserOrderCountAndAmountDTO();
+                userOrderCountAndAmountDTO.setMemberId(e.getMemberId().longValue());
+                userOrderCountAndAmountDTO.setTotalOrderCount(e.getTotalOrderCount().longValue());
+                userOrderCountAndAmountDTO.setTotalPayAmount(e.getTotalPayAmount());
+                map.put(userOrderCountAndAmountDTO.getMemberId(), userOrderCountAndAmountDTO);
+            });
+        }
+
+        return map;
     }
 
     /**
@@ -614,7 +636,7 @@ public class PayOrderServiceImpl implements PayOrderService {
     private BigDecimal calcPayAmount(PayOrder order) {
         //总金额+运费-促销优惠-优惠券优惠-积分抵扣
         BigDecimal payAmount = order.getTotalAmount()
-            .add(order.getFreightAmount())
+            .add(order.getFreightAmount()).add(order.getTaxesFeesAmount())
             .subtract(order.getPromotionAmount());
         return payAmount;
     }
@@ -686,13 +708,14 @@ public class PayOrderServiceImpl implements PayOrderService {
             }
             List<Long> skuIds = cartItemDTOS.stream().map(CartItemDTO::getProductSkuId).collect(Collectors.toList());
             List<Long> goodsIds = cartItemDTOS.stream().map(CartItemDTO::getProductId).collect(Collectors.toList());
-            List<GoodsSku> goodsSkus = goodsSkuRepository.findAllByIdInAndDeleteFlag(skuIds, false);
+//            List<GoodsSku> goodsSkus = goodsSkuRepository.findAllByIdInAndDeleteFlag(skuIds, false);
             List<Goods> goodsList = goodsRepository.findAllByIdIn(goodsIds);
             Map<Long, List<Goods>> goodsStroeMap = goodsList.stream().collect(Collectors.groupingBy(Goods::getStoreId));
             Map<Long, Goods> goodsMap = goodsList.stream().collect(Collectors.toMap(Goods::getId, e -> e));
 //            Map<Long, List<GoodsSku>> goodsSkuMap = goodsSkus.stream().collect(Collectors.groupingBy(GoodsSku::getGoodsId));
 
             calcAmount.setFreightAmount(BigDecimal.ZERO);
+            calcAmount.setTaxesFees(BigDecimal.ZERO);
             goodsStroeMap.entrySet().stream().forEach(e -> {
                 List<Goods> goods = e.getValue();
                 BigDecimal maxFreight = BigDecimal.ZERO;
@@ -713,7 +736,6 @@ public class PayOrderServiceImpl implements PayOrderService {
             }
             calcAmount.setTotalAmount(totalAmount);
             calcAmount.setPromotionAmount(BigDecimal.ZERO);
-            calcAmount.setTaxesFees(BigDecimal.ZERO);
             calcAmount.setPayAmount(totalAmount.add(calcAmount.getFreightAmount()).add(calcAmount.getTaxesFees()).subtract(calcAmount.getPromotionAmount()));
             return calcAmount;
         }

@@ -1,13 +1,16 @@
 package com.cross.merchants.service.impl;
 
+import com.cross.merchants.domain.StoreInfo;
 import com.cross.merchants.exception.MerchantsException;
 import com.cross.merchants.redis.CartPrefix;
 import com.cross.merchants.redis.RedisService;
 import com.cross.merchants.service.BrandService;
 import com.cross.merchants.service.GoodsService;
+import com.cross.merchants.service.StoreInfoService;
 import com.cross.merchants.service.UserFollowService;
 import com.cross.merchants.service.dto.BrandDTO;
 import com.cross.merchants.service.dto.GoodsDTO;
+import com.cross.merchants.service.dto.StoreInfoDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -37,56 +40,54 @@ public class UserFollowServiceImpl implements UserFollowService {
     private GoodsService goodsService;
 
     @Autowired
-    private BrandService brandService;
+    private StoreInfoService storeInfoService;
 
 
     @Override
-    public int addBrandFollow(Long userId, Long brandId) {
-        BrandDTO one = brandService.findOne(brandId);
+    public int addBrandFollow(Long userId, Long storeId) {
+        StoreInfoDTO one = storeInfoService.getOne(storeId);
         if (one == null) {
-            throw new MerchantsException(400, "品牌信息不存在");
+            throw new MerchantsException(400, "店铺信息不存在");
         }
-        if (one.getCheckStatus() == null || one.getCheckStatus() != 1) {
-            throw new MerchantsException(400, "品牌未审核");
-        }
-        redisService.zAdd(CartPrefix.getFollowList, userId + "", brandId + "");
+
+        redisService.zAdd(CartPrefix.getFollowList, userId + "", storeId + "");
         return 1;
     }
 
     @Override
-    public int deleteBrandFollow(Long userId, Long brandId) {
-        redisService.zDelet(CartPrefix.getFollowList, userId + "", brandId + "");
+    public int deleteBrandFollow(Long userId, Long storeId) {
+        redisService.zDelet(CartPrefix.getFollowList, userId + "", storeId + "");
         return 1;
     }
 
     @Override
-    public List<BrandDTO> getList(Long userId, Pageable pageable) {
+    public List<StoreInfoDTO> getList(Long userId, Pageable pageable) {
         int pageNumber = pageable.getPageNumber();
         int pageSize = pageable.getPageSize();
         Set<String> strings = redisService.zGetList(CartPrefix.getFollowList, userId + "", pageNumber * pageSize, pageSize);
 
         if (!CollectionUtils.isEmpty(strings)) {
-            List<Long> brandIds = strings.stream().map(Long::valueOf).collect(Collectors.toList());
-            List<BrandDTO> brandDTOS = brandService.findAllByIdInAndCheckState(brandIds, 1);
-            if (!CollectionUtils.isEmpty(brandDTOS)) {
-                List<Long> dbBrandIds = brandDTOS.stream().map(BrandDTO::getId).collect(Collectors.toList());
-                brandIds = brandIds.stream().filter(e -> !dbBrandIds.contains(e)).collect(Collectors.toList());
-                if (!CollectionUtils.isEmpty(brandIds)) {
-                    brandIds.stream().forEach(e -> {
+            List<Long> storeIds = strings.stream().map(Long::valueOf).collect(Collectors.toList());
+            List<StoreInfoDTO> storeDTOS = storeInfoService.findAllByIdIn(storeIds);
+            if (!CollectionUtils.isEmpty(storeDTOS)) {
+                List<Long> dbStoreIds = storeDTOS.stream().map(StoreInfoDTO::getId).collect(Collectors.toList());
+                storeIds = storeIds.stream().filter(e -> !dbStoreIds.contains(e)).collect(Collectors.toList());
+                if (!CollectionUtils.isEmpty(storeIds)) {
+                    storeIds.stream().forEach(e -> {
                         deleteBrandFollow(userId, e);
                     });
                 }
-                List<GoodsDTO> goodsDTO = goodsService.findAllByBrandIdIn(dbBrandIds);
-                Map<Long, List<GoodsDTO>> brandGoodsMap = new HashMap<>();
+                List<GoodsDTO> goodsDTO = goodsService.findAllByStoreIdIn(dbStoreIds);
+                Map<Long, List<GoodsDTO>> storeGoodsMap = new HashMap<>();
                 if (!CollectionUtils.isEmpty(goodsDTO)) {
-                    brandGoodsMap = goodsDTO.stream().collect(Collectors.groupingBy(GoodsDTO::getBrandId));
+                    storeGoodsMap = goodsDTO.stream().collect(Collectors.groupingBy(GoodsDTO::getStoreId));
                 }
-                Map<Long, List<GoodsDTO>> finalBrandGoodsMap = brandGoodsMap;
-                brandDTOS.stream().forEach(e -> {
-                    e.setGoodsDTOS(finalBrandGoodsMap.get(e.getId()));
+                Map<Long, List<GoodsDTO>> finalBrandGoodsMap = storeGoodsMap;
+                storeDTOS.stream().forEach(e -> {
+                    e.setGoodsDTOList(finalBrandGoodsMap.get(e.getId()));
                 });
             }
-            return brandDTOS;
+            return storeDTOS;
         }
         return null;
     }
@@ -98,8 +99,8 @@ public class UserFollowServiceImpl implements UserFollowService {
 
 
     @Override
-    public boolean isFollowBrand(Long userId, Long brandId) {
-        Long indexHset = redisService.getIndexHset(CartPrefix.getFollowList, userId + "", brandId+"");
+    public boolean isFollowBrand(Long userId, Long storeId) {
+        Long indexHset = redisService.getIndexHset(CartPrefix.getFollowList, userId + "", storeId+"");
         if (indexHset == null || indexHset == 0) {
             return false;
         } else {

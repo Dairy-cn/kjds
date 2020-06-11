@@ -197,9 +197,9 @@ public class GoodsResource {
     @GetMapping("/goods-sale-list-by-store")
     @ApiOperation("商户端(数据添加查询接口)--获取所有的已上架的商品列表")
     public R<List<GoodsDTO>> getAllGoodsSaleListByStore(@ApiParam("商户di") @RequestParam(required = true) Long storeId, @ApiParam("商品分类id") @RequestParam(required = false) Long categoryId,
-                                 @ApiParam("商品名称或编号查询") @RequestParam(required = false) String keyWord) {
+                                                        @ApiParam("商品名称或编号查询") @RequestParam(required = false) String keyWord) {
         log.debug("REST request to get a page of Goods");
-        List<GoodsDTO> list = goodsService.findAllByCategoryIdAndKeywordAndCheckStateAndSaleState(storeId,categoryId, keyWord, true, 1);
+        List<GoodsDTO> list = goodsService.findAllByCategoryIdAndKeywordAndCheckStateAndSaleState(storeId, categoryId, keyWord, true, 1);
         if (!CollectionUtils.isEmpty(list)) {
             List<Long> categoryIds = list.stream().filter(e -> e.getCategoryId() != null).map(GoodsDTO::getCategoryId).collect(Collectors.toList());
             List<Long> storeIds = list.stream().filter(e -> e.getStoreId() != null).map(GoodsDTO::getStoreId).collect(Collectors.toList());
@@ -223,9 +223,9 @@ public class GoodsResource {
     @GetMapping("/goods-sale-list")
     @ApiOperation("(数据添加查询接口)--获取所有的已上架的商品列表")
     public R<List<GoodsDTO>> getAllGoodsSaleList(@ApiParam("商品分类id") @RequestParam(required = false) Long categoryId,
-                                 @ApiParam("商品名称或编号查询") @RequestParam(required = false) String keyWord) {
+                                                 @ApiParam("商品名称或编号查询") @RequestParam(required = false) String keyWord) {
         log.debug("REST request to get a page of Goods");
-        List<GoodsDTO> list = goodsService.findAllByCategoryIdAndKeywordAndCheckStateAndSaleState(null,categoryId, keyWord, true, 1);
+        List<GoodsDTO> list = goodsService.findAllByCategoryIdAndKeywordAndCheckStateAndSaleState(null, categoryId, keyWord, true, 1);
         if (!CollectionUtils.isEmpty(list)) {
             List<Long> categoryIds = list.stream().filter(e -> e.getCategoryId() != null).map(GoodsDTO::getCategoryId).collect(Collectors.toList());
             List<Long> storeIds = list.stream().filter(e -> e.getStoreId() != null).map(GoodsDTO::getStoreId).collect(Collectors.toList());
@@ -249,14 +249,14 @@ public class GoodsResource {
     @GetMapping("/goods-by-condition")
     @ApiOperation("商户端--店铺商品列表")
     public R<List<GoodsDTO>> getAllGoodsByCondition(@ApiParam("分页信息") Pageable pageable,
-                                    @ApiParam(value = "店铺id", required = true) @RequestParam Long storeId,
-                                    @ApiParam("品牌id") @RequestParam(required = false) Long brandId,
-                                    @ApiParam("上下架状态") @RequestParam(required = false) Boolean saleState,
-                                    @ApiParam("审核状态 null 为全部 1 通过 -1 未审核 0 审核失败") @RequestParam(required = false) Integer checkState,
-                                    @ApiParam("提交开始时间 eg 2017-11-27T03:16:03Z") @RequestParam(required = false) Instant startTime,
-                                    @ApiParam("提交结束时间 eg 2017-11-27T03:16:03Z ") @RequestParam(required = false) Instant endTime,
-                                    @ApiParam("关键字查询") @RequestParam(required = false) String keyWord,
-                                    @ApiParam(value = "商品类型 1 售卖商品 2 审核商品", required = true) @RequestParam(required = true) Integer goodsType
+                                                    @ApiParam(value = "店铺id", required = true) @RequestParam Long storeId,
+                                                    @ApiParam("品牌id") @RequestParam(required = false) Long brandId,
+                                                    @ApiParam("上下架状态") @RequestParam(required = false) Boolean saleState,
+                                                    @ApiParam("审核状态 null 为全部 1 通过 -1 未审核 0 审核失败") @RequestParam(required = false) Integer checkState,
+                                                    @ApiParam("提交开始时间 eg 2017-11-27T03:16:03Z") @RequestParam(required = false) Instant startTime,
+                                                    @ApiParam("提交结束时间 eg 2017-11-27T03:16:03Z ") @RequestParam(required = false) Instant endTime,
+                                                    @ApiParam("关键字查询") @RequestParam(required = false) String keyWord,
+                                                    @ApiParam(value = "商品类型 1 售卖商品 2 审核商品", required = true) @RequestParam(required = true) Integer goodsType
     ) {
         log.debug("REST request to get a page of Goods");
         Page<GoodsDTO> page = goodsService.getAllGoodsByCondition(pageable, storeId, brandId, saleState, checkState, startTime, endTime, keyWord, goodsType);
@@ -289,9 +289,9 @@ public class GoodsResource {
     @GetMapping("/goods-by-condition-by-c")
     @ApiOperation("C端--店铺商品列表")
     public R<List<GoodsDTO>> getAllGoodsByConditionByC(Pageable pageable,
-                                       @ApiParam(value = "店铺id", required = true) @RequestParam(required = false) Long storeId,
-                                       @ApiParam("品牌id") @RequestParam(required = false) Long brandId,
-                                       @ApiParam("关键字查询 请输入商品名称/SPU编码") @RequestParam(required = false) String keyWord
+                                                       @ApiParam(value = "店铺id", required = true) @RequestParam(required = false) Long storeId,
+                                                       @ApiParam("品牌id") @RequestParam(required = false) Long brandId,
+                                                       @ApiParam("关键字查询 请输入商品名称/SPU编码") @RequestParam(required = false) String keyWord
     ) {
         log.debug("REST request to get a page of Goods");
         Page<GoodsDTO> page = goodsService.getAllGoodsByCondition(pageable, storeId, brandId, 1, null, null, keyWord, null, null, null, null, null);
@@ -323,17 +323,17 @@ public class GoodsResource {
     @GetMapping("/goods-by-condition-by-platform")
     @ApiOperation("大后台--店铺商品列表/商户商品列表")
     public R<List<GoodsDTO>> getAllGoodsByConditionByPlatform(@ApiParam("分页信息") Pageable pageable,
-                                              @ApiParam(value = "店铺id", required = false) @RequestParam(required = false) Long storeId,
-                                              @ApiParam("品牌id") @RequestParam(required = false) Long brandId,
-                                              @ApiParam("一级商品品类id") @RequestParam(required = false) Long oneCategoryId,
-                                              @ApiParam("二级商品品类id") @RequestParam(required = false) Long twoCategoryId,
-                                              @ApiParam("三商品品类id") @RequestParam(required = false) Long thirdCategoryId,
-                                              @ApiParam("审核状态 null 为全部 1 通过 -1 未审核 0 审核失败") @RequestParam(required = false) Integer checkState,
-                                              @ApiParam("提交开始时间 eg 2017-11-27T03:16:03Z") @RequestParam(required = false) Instant startTime,
-                                              @ApiParam("提交结束时间 eg 2017-11-27T03:16:03Z ") @RequestParam(required = false) Instant endTime,
-                                              @ApiParam("审核开始时间 eg 2017-11-27T03:16:03Z") @RequestParam(required = false) Instant startCheckTime,
-                                              @ApiParam("审核结束时间 eg 2017-11-27T03:16:03Z ") @RequestParam(required = false) Instant endCheckTime,
-                                              @ApiParam("关键字查询 请输入商品名称/SPU编码") @RequestParam(required = false) String keyWord
+                                                              @ApiParam(value = "店铺id", required = false) @RequestParam(required = false) Long storeId,
+                                                              @ApiParam("品牌id") @RequestParam(required = false) Long brandId,
+                                                              @ApiParam("一级商品品类id") @RequestParam(required = false) Long oneCategoryId,
+                                                              @ApiParam("二级商品品类id") @RequestParam(required = false) Long twoCategoryId,
+                                                              @ApiParam("三商品品类id") @RequestParam(required = false) Long thirdCategoryId,
+                                                              @ApiParam("审核状态 null 为全部 1 通过 -1 未审核 0 审核失败") @RequestParam(required = false) Integer checkState,
+                                                              @ApiParam("提交开始时间 eg 2017-11-27T03:16:03Z") @RequestParam(required = false) Instant startTime,
+                                                              @ApiParam("提交结束时间 eg 2017-11-27T03:16:03Z ") @RequestParam(required = false) Instant endTime,
+                                                              @ApiParam("审核开始时间 eg 2017-11-27T03:16:03Z") @RequestParam(required = false) Instant startCheckTime,
+                                                              @ApiParam("审核结束时间 eg 2017-11-27T03:16:03Z ") @RequestParam(required = false) Instant endCheckTime,
+                                                              @ApiParam("关键字查询 请输入商品名称/SPU编码") @RequestParam(required = false) String keyWord
     ) {
         log.debug("REST request to get a page of Goods");
         Page<GoodsDTO> page = goodsService.getAllGoodsByCondition(pageable, storeId, brandId, checkState, startTime, endTime, keyWord, startCheckTime, endCheckTime, oneCategoryId, twoCategoryId, thirdCategoryId);
@@ -359,13 +359,13 @@ public class GoodsResource {
                 });
             }
             List<Long> storeIds = page.getContent().stream().map(GoodsDTO::getStoreId).distinct().collect(Collectors.toList());
-            Map<Long, StoreInfoDTO> storeMap=new HashMap<>();
-            if(!CollectionUtils.isEmpty(storeIds)){
+            Map<Long, StoreInfoDTO> storeMap = new HashMap<>();
+            if (!CollectionUtils.isEmpty(storeIds)) {
                 List<StoreInfoDTO> storeList = storeInfoService.findAllByIdIn(storeIds);
-                storeMap= storeList.stream().collect(Collectors.toMap(StoreInfoDTO::getId, e -> e));
+                storeMap = storeList.stream().collect(Collectors.toMap(StoreInfoDTO::getId, e -> e));
             }
             Map<Long, StoreInfoDTO> finalStoreMap = storeMap;
-            page.getContent().stream().forEach(e->{
+            page.getContent().stream().forEach(e -> {
                 e.setStoreInfoDTO(finalStoreMap.get(e.getStoreId()));
             });
         }
@@ -427,8 +427,8 @@ public class GoodsResource {
     @PutMapping("/goods-check/{id}")
     @ApiOperation("商品审核")
     public R<GoodsDTO> checkGoods(@ApiParam("记录id") @PathVariable Long id,
-                        @ApiParam("审核状态 true 通过 false 失败") @RequestParam Boolean status,
-                        @ApiParam("失败原因") @RequestParam String checkFailureReasons) throws URISyntaxException {
+                                  @ApiParam("审核状态 true 通过 false 失败") @RequestParam Boolean status,
+                                  @ApiParam(value = "失败原因", required = false) @RequestParam(required = false) String checkFailureReasons) throws URISyntaxException {
 
         if (status == null) {
             return R.error("审核状态不能为空");
@@ -457,36 +457,57 @@ public class GoodsResource {
 
     @GetMapping("/goods/keyword-query")
     @ApiOperation("c端-----根据关键字查询商品信息")
-    public R<List<GoodsDTO>> queryGoodsList(@RequestParam String keyword,@RequestParam(required = false) Long storeId) {
+    public R<List<GoodsDTO>> queryGoodsList(@RequestParam String keyword, @RequestParam(required = false) Long storeId) {
 
-        List<GoodsDTO> result = goodsService.queryGoodsList(keyword,storeId);
-        if(!CollectionUtils.isEmpty(result)){
+        List<GoodsDTO> result = goodsService.queryGoodsList(keyword, storeId);
+        if (!CollectionUtils.isEmpty(result)) {
             List<Long> storeIds = result.stream().map(GoodsDTO::getStoreId).distinct().collect(Collectors.toList());
             List<StoreInfoDTO> storeInfoDTOS = storeInfoService.findAllByIdIn(storeIds);
             Map<Long, StoreInfoDTO> storeMap = storeInfoDTOS.stream().collect(Collectors.toMap(StoreInfoDTO::getId, e -> e));
-            result.stream().forEach(e->{
+            result.stream().forEach(e -> {
                 e.setStoreInfoDTO(storeMap.get(e.getStoreId()));
             });
         }
         return R.ok(result);
     }
 
+    @GetMapping("/goods/guess-you-like")
+    @ApiOperation("c端-----猜你喜欢,随机获取十五条,并获取价格最低的规格")
+    public R<List<GoodsDTO>> guessYouWillLike() {
 
-    @GetMapping("/find-list-goods-by-condition-by-c-")
+        List<GoodsDTO> result = goodsService.guessYouWillLike();
+        if (!CollectionUtils.isEmpty(result)) {
+            List<Long> storeIds = result.stream().map(GoodsDTO::getStoreId).distinct().collect(Collectors.toList());
+            List<StoreInfoDTO> storeInfoDTOS = storeInfoService.findAllByIdIn(storeIds);
+            Map<Long, StoreInfoDTO> storeMap = storeInfoDTOS.stream().collect(Collectors.toMap(StoreInfoDTO::getId, e -> e));
+            result.stream().forEach(e -> {
+                e.setStoreInfoDTO(storeMap.get(e.getStoreId()));
+            });
+        }
+        return R.ok(result);
+    }
+
+    @GetMapping("/find-list-goods-by-condition-by-c")
     @ApiOperation("C端--根据分类获取商品信息,(特殊说明，由于该接口相对特殊，所有排序方式需要单独传，见参数说明)")
     public R<List<GoodsDTO>> getAllGoodsListByConditionByC(Pageable pageable,
-                                                              @ApiParam("一级商品品类id") @RequestParam(required = false) Long oneCategoryId,
-                                                              @ApiParam("二级商品品类id") @RequestParam(required = false) Long twoCategoryId,
-                                                              @ApiParam("三商品品类id") @RequestParam(required = false) Long thirdCategoryId,
-                                                               @ApiParam("排序字段 1 综合 2 销量 3 新品 4 价格") @RequestParam(required = false) Integer sortType,
-                                                               @ApiParam("排序方式 1 正序 2 倒序") @RequestParam(required = false) Integer order,
-                                                               @ApiParam("最小价格") @RequestParam(required = false) BigDecimal minPrice,
-                                                               @ApiParam("最大价格") @RequestParam(required = false) BigDecimal maxPrice
+                                                           @ApiParam("一级商品品类id") @RequestParam(required = false) Long oneCategoryId,
+                                                           @ApiParam("二级商品品类id") @RequestParam(required = false) Long twoCategoryId,
+                                                           @ApiParam("三商品品类id") @RequestParam(required = false) Long thirdCategoryId,
+                                                           @ApiParam("排序字段 1 综合 2 销量 3 新品 4 价格") @RequestParam(required = false) Integer sortType,
+                                                           @ApiParam("排序方式 1 正序 2 倒序") @RequestParam(required = false) Integer order,
+                                                           @ApiParam("最小价格") @RequestParam(required = false) BigDecimal minPrice,
+                                                           @ApiParam("最大价格") @RequestParam(required = false) BigDecimal maxPrice
 
 
     ) {
         log.debug("REST request to get a page of Goods");
-        Page<GoodsDTO> page = goodsService.getAllGoodsByConditionByC(pageable, oneCategoryId, twoCategoryId, thirdCategoryId,minPrice,maxPrice,sortType,order);
+        if (oneCategoryId == null && thirdCategoryId != null) {
+            oneCategoryId = thirdCategoryId;
+        }
+        if (twoCategoryId == null && thirdCategoryId != null) {
+            twoCategoryId = thirdCategoryId;
+        }
+        Page<GoodsDTO> page = goodsService.getAllGoodsByConditionByC(pageable, oneCategoryId, twoCategoryId, thirdCategoryId, minPrice, maxPrice, sortType, order);
         if (!CollectionUtils.isEmpty(page.getContent())) {
             List<Long> categoryIds = page.getContent().stream().filter(e -> e.getCategoryId() != null).map(GoodsDTO::getCategoryId).collect(Collectors.toList());
             if (!CollectionUtils.isEmpty(categoryIds)) {
@@ -509,13 +530,13 @@ public class GoodsResource {
                 });
             }
             List<Long> storeIds = page.getContent().stream().map(GoodsDTO::getStoreId).distinct().collect(Collectors.toList());
-            Map<Long, StoreInfoDTO> storeMap=new HashMap<>();
-            if(!CollectionUtils.isEmpty(storeIds)){
+            Map<Long, StoreInfoDTO> storeMap = new HashMap<>();
+            if (!CollectionUtils.isEmpty(storeIds)) {
                 List<StoreInfoDTO> storeList = storeInfoService.findAllByIdIn(storeIds);
-                storeMap= storeList.stream().collect(Collectors.toMap(StoreInfoDTO::getId, e -> e));
+                storeMap = storeList.stream().collect(Collectors.toMap(StoreInfoDTO::getId, e -> e));
             }
             Map<Long, StoreInfoDTO> finalStoreMap = storeMap;
-            page.getContent().stream().forEach(e->{
+            page.getContent().stream().forEach(e -> {
                 e.setStoreInfoDTO(finalStoreMap.get(e.getStoreId()));
             });
         }

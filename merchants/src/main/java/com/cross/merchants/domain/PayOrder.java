@@ -65,6 +65,13 @@ public class PayOrder implements Serializable {
     @Column(name = "freight_amount", precision = 21, scale = 2)
     private BigDecimal freightAmount;
 
+
+    /**
+     * 税费金额
+     */
+    @Column(name = "taxes_fees_amount", precision = 21, scale = 2)
+    private BigDecimal taxesFeesAmount;
+
     /**
      * 支付方式：0->未支付；1->支付宝；2->微信
      */
@@ -199,6 +206,14 @@ public class PayOrder implements Serializable {
     @ApiModelProperty("微信或支付宝方支付编号")
     @Column(name = "transaction_id")
     private String transactionId;
+
+    public BigDecimal getTaxesFeesAmount() {
+        return taxesFeesAmount;
+    }
+
+    public void setTaxesFeesAmount(BigDecimal taxesFeesAmount) {
+        this.taxesFeesAmount = taxesFeesAmount;
+    }
 
     public String getTransactionId() {
         return transactionId;

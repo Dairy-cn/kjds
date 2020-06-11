@@ -3,6 +3,7 @@ package com.cross.merchants.web.rest;
 import com.cross.merchants.service.UserFollowService;
 import com.cross.merchants.service.dto.BrandDTO;
 import com.cross.merchants.service.dto.GoodsDTO;
+import com.cross.merchants.service.dto.StoreInfoDTO;
 import com.cross.utils.CommonUtil;
 import com.cross.utils.R;
 import io.swagger.annotations.Api;
@@ -22,7 +23,7 @@ import java.util.List;
  ************************************************************/
 @RestController
 @RequestMapping("/api/follow")
-@Api(tags = "用戶品牌关注品牌接口")
+@Api(tags = "用戶店铺关注店铺接口")
 public class UserFollowResource {
     private final Logger log = LoggerFactory.getLogger(UserFollowResource.class);
 
@@ -31,34 +32,34 @@ public class UserFollowResource {
     private UserFollowService userFollowService;
 
 
-    @PostMapping("/add/{brandId}")
-    @ApiOperation("C端---添加收藏品牌")
-    public R addBrandFollow(@PathVariable Long brandId) {
+    @PostMapping("/add/{storeId}")
+    @ApiOperation("C端---添加关注店铺")
+    public R addBrandFollow(@PathVariable Long storeId) {
         Long id = CommonUtil.getCurrentLoginUser().getId();
-        userFollowService.addBrandFollow(id, brandId);
+        userFollowService.addBrandFollow(id, storeId);
         return R.ok();
     }
 
-    @DeleteMapping("/delete/{brandId}")
-    @ApiOperation("C端---刪除收藏品牌")
-    public R deleteBrandFollow(@PathVariable Long brandId) {
+    @DeleteMapping("/delete/{storeId}")
+    @ApiOperation("C端---刪除关注店铺")
+    public R deleteBrandFollow(@PathVariable Long storeId) {
         Long id = CommonUtil.getCurrentLoginUser().getId();
-        userFollowService.deleteBrandFollow(id, brandId);
+        userFollowService.deleteBrandFollow(id, storeId);
         return R.ok();
     }
 
     @GetMapping("/get")
-    @ApiOperation("C端---获取收藏品牌")
-    public R<List<BrandDTO>> getList(Pageable pageable) {
+    @ApiOperation("C端---获取关注店铺")
+    public R<List<StoreInfoDTO>> getList(Pageable pageable) {
         Long id = CommonUtil.getCurrentLoginUser().getId();
 
-        List<BrandDTO> list = userFollowService.getList(id, pageable);
+        List<StoreInfoDTO> list = userFollowService.getList(id, pageable);
         long count= userFollowService.countByUserId(id);
         return R.ok(list,count);
     }
 
-    @GetMapping("/is-follow-brand/{id}")
-    @ApiOperation("C端---获取当前用户是否关注该品牌")
+    @GetMapping("/is-follow-store/{id}")
+    @ApiOperation("C端---获取当前用户是否关注该店铺")
     public R<Boolean> isFollowBrand(@PathVariable Long id) {
         Long userId = CommonUtil.getCurrentLoginUser().getId();
         boolean flag = userFollowService.isFollowBrand(userId, id);

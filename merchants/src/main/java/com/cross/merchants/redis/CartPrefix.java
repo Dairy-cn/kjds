@@ -22,7 +22,7 @@ public class CartPrefix extends BasePrefix{
     /**
      * 设置关注緩存
      */
-    public static CartPrefix getFollowList= new CartPrefix(0,"follow:brand");
+    public static CartPrefix getFollowList= new CartPrefix(0,"follow:store");
 
 
     /**

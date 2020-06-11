@@ -113,11 +113,12 @@ public class GoodsCategoryResource {
                     List<Long> childIds = categoryDTOList.stream().map(GoodsCategoryDTO::getId).collect(Collectors.toList());
                     List<GoodsCategoryDTO> grandCildcategory = goodsCategoryService.findAllByPidIn(childIds);
                     grandChildMap = grandCildcategory.stream().collect(Collectors.groupingBy(GoodsCategoryDTO::getPid));
+                    Map<Long, List<GoodsCategoryDTO>> finalGrandChildMap = grandChildMap;
+                    categoryDTOList.stream().forEach(e2 -> {
+                        e2.setChildNode(finalGrandChildMap.get(e2.getId()));
+                    });
                 }
-                Map<Long, List<GoodsCategoryDTO>> finalGrandChildMap = grandChildMap;
-                categoryDTOList.stream().forEach(e2 -> {
-                    e2.setChildNode(finalGrandChildMap.get(e2.getId()));
-                });
+
                 e.setChildNode(categoryDTOList);
             });
         }
@@ -150,7 +151,7 @@ public class GoodsCategoryResource {
     }
 
     @GetMapping("/goods-categories-by-pid/{pid}")
-    @ApiOperation("根据分id获取商品分类信息")
+    @ApiOperation("根据父id获取商品分类信息")
     public R<List<GoodsCategoryDTO>> getGoodsCategoryByPid(@PathVariable Long pid) {
         log.debug("REST request to get GoodsCategory : {}", pid);
         List<GoodsCategoryDTO> goodsCategoryDTO = goodsCategoryService.findAllByPid(pid);
@@ -177,5 +178,34 @@ public class GoodsCategoryResource {
         log.debug("REST request to stickGoodsCategory GoodsCategory : {}", id);
         goodsCategoryService.stickGoodsCategory(id);
         return R.ok();
+    }
+
+
+    @GetMapping("/c-goods-categories")
+    @ApiOperation("C端--获取商品分类列表")
+    public R<List<GoodsCategoryDTO>> getAllGoodsCategoriesByC() {
+        List<GoodsCategoryDTO> list = goodsCategoryService.findAllByLevel(1);
+        if (!CollectionUtils.isEmpty(list)) {
+            Map<Long, List<GoodsCategoryDTO>> childMap = new HashMap<>();
+            List<Long> ids = list.stream().map(GoodsCategoryDTO::getId).collect(Collectors.toList());
+            List<GoodsCategoryDTO> listChild = goodsCategoryService.findAllByPidIn(ids);
+            childMap = listChild.stream().collect(Collectors.groupingBy(GoodsCategoryDTO::getPid));
+            Map<Long, List<GoodsCategoryDTO>> finalChildMap = childMap;
+            list.stream().forEach(e -> {
+                List<GoodsCategoryDTO> categoryDTOList = finalChildMap.get(e.getId());
+                Map<Long, List<GoodsCategoryDTO>> grandChildMap = new HashMap<>();
+                if (!CollectionUtils.isEmpty(categoryDTOList)) {
+                    List<Long> childIds = categoryDTOList.stream().map(GoodsCategoryDTO::getId).collect(Collectors.toList());
+                    List<GoodsCategoryDTO> grandCildcategory = goodsCategoryService.findAllByPidIn(childIds);
+                    grandChildMap = grandCildcategory.stream().collect(Collectors.groupingBy(GoodsCategoryDTO::getPid));
+                    Map<Long, List<GoodsCategoryDTO>> finalGrandChildMap = grandChildMap;
+                    categoryDTOList.stream().forEach(e2 -> {
+                        e2.setChildNode(finalChildMap.get(e2.getId()));
+                    });
+                }
+                e.setChildNode(categoryDTOList);
+            });
+        }
+        return R.ok(list);
     }
 }

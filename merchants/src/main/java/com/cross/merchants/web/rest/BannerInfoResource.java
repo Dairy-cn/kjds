@@ -1,5 +1,6 @@
 package com.cross.merchants.web.rest;
 
+import com.cross.merchants.exception.MerchantsException;
 import com.cross.merchants.service.BannerInfoService;
 import com.cross.merchants.web.rest.errors.BadRequestAlertException;
 import com.cross.merchants.service.dto.BannerInfoDTO;
@@ -117,7 +118,7 @@ public class BannerInfoResource {
             return R.error("显示状态不能为空");
         }
         one.setShowState(showState);
-        BannerInfoDTO result = bannerInfoService.save(one);
+        BannerInfoDTO result = bannerInfoService.updateBannerInfoShowState(one);
         return R.ok(result);
     }
 
@@ -146,7 +147,7 @@ public class BannerInfoResource {
     /**
      * {@code GET  /banner-infos} : get all the bannerInfos.
      *
-     * @param pageable the pagination information.
+     * @param the pagination information.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of bannerInfos in body.
      */
     @GetMapping("/banner-infos")
@@ -160,10 +161,18 @@ public class BannerInfoResource {
 
     @GetMapping("/c-banner-infos")
     @ApiOperation("c端--根据位置获取广告信息")
-    public R<List<BannerInfoDTO>> getAllBannerInfosByPositionType(@ApiParam("位置类型 1 顶部轮播 2 弹窗 3 A区广告位 4 b区广告") @RequestParam Integer positionType) {
+    public R<List<BannerInfoDTO>> getBannerInfosByPositionType(@ApiParam("位置类型 1 顶部轮播 2 弹窗 3 A区广告位 4 b区广告") @RequestParam Integer positionType) {
         log.debug("REST request to get a page of BannerInfos");
-        List<BannerInfoDTO> list = bannerInfoService.findAllByConditionByC(positionType);
+        List<BannerInfoDTO> list = bannerInfoService.findByConditionByC(positionType);
         return R.ok(list);
+    }
+
+    @GetMapping("/c-banner-infos-all")
+    @ApiOperation("c端--根据位置获取广告信息 map top 顶部轮播 popUps 弹窗 aAd A区广告位 bAd b区广告")
+    public R<Map<String, List<BannerInfoDTO>>> getAllBannerInfosByPositionType() {
+        log.debug("REST request to get a page of BannerInfos");
+        Map<String, List<BannerInfoDTO>> map = bannerInfoService.findAllByConditionByC();
+        return R.ok(map);
     }
 
     @GetMapping("/banner-infos-type")

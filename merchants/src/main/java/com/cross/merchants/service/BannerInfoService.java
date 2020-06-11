@@ -23,6 +23,11 @@ public interface BannerInfoService {
      */
     BannerInfoDTO save(BannerInfoDTO bannerInfoDTO);
 
+    BannerInfoDTO updateBannerInfoShowState(BannerInfoDTO bannerInfoDTO);
+
+
+
+
     /**
      * Get all the bannerInfos.
      *
@@ -49,8 +54,9 @@ public interface BannerInfoService {
 
     List<BannerInfoDTO> findAllByCondition(Integer positionType);
 
-    List<BannerInfoDTO> findAllByConditionByC(Integer positionType);
+    List<BannerInfoDTO> findByConditionByC(Integer positionType);
 
+    Map<String, List<BannerInfoDTO>> findAllByConditionByC();
 
     List<BannerInfoDTO> findAllByBannerType(Integer bannerType);
 
@@ -69,4 +75,5 @@ public interface BannerInfoService {
     Map<String, Object> getPopInfo(Long userId);
 
     void updatePopRecord(Long userId);
+
 }

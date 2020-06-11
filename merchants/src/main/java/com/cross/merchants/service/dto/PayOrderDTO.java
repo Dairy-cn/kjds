@@ -197,6 +197,20 @@ public class PayOrderDTO implements Serializable {
     @ApiModelProperty("微信或支付宝方支付编号")
     private String transactionId;
 
+    /**
+     * 税费总额
+     */
+    @ApiModelProperty("税费总额")
+    private BigDecimal taxesFeesAmount;
+
+    public BigDecimal getTaxesFeesAmount() {
+        return taxesFeesAmount;
+    }
+
+    public void setTaxesFeesAmount(BigDecimal taxesFeesAmount) {
+        this.taxesFeesAmount = taxesFeesAmount;
+    }
+
     public String getTransactionId() {
         return transactionId;
     }

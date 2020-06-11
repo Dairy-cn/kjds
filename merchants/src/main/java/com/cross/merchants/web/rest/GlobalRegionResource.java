@@ -19,6 +19,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -26,7 +27,9 @@ import org.springframework.web.bind.annotation.*;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * REST controller for managing {@link com.cross.merchants.domain.GlobalRegion}.
@@ -138,7 +141,7 @@ public class GlobalRegionResource {
      */
     @GetMapping("/global-regions-parent-id/{parentId}")
     @ApiOperation("根据父级ID获取全部地区")
-    public R getGlobalRegionsByParentId(@PathVariable Long parentId){
+    public R getGlobalRegionsByParentId(@PathVariable Long parentId) {
         log.debug("REST request to get regionsByParentId : {}", parentId);
         List<GlobalRegionDTO> regions = globalRegionService.getAllByParentId(parentId);
         return R.ok(regions);
@@ -146,9 +149,32 @@ public class GlobalRegionResource {
 
     @GetMapping("/global-regions-with-level")
     @ApiOperation("根据区域等级list")
-    public R getGlobalRegionsByLevel(@ApiParam("区域等级 1 大洲 2 国家 3  省  4  市") @RequestParam Integer level){
+    public R getGlobalRegionsByLevel(@ApiParam("区域等级 1 大洲 2 国家 3  省  4  市") @RequestParam Integer level) {
         log.debug("REST request to get regionsByParentId : {}", level);
         List<GlobalRegionDTO> regions = globalRegionService.getAllByLevel(level);
+        return R.ok(regions);
+    }
+
+    @GetMapping("/global-regions-all")
+    @ApiOperation("c-获取所有list")
+    public R getGlobalRegionsByLevel() {
+        log.debug("REST request to get regionsByParentId : {}");
+        List<GlobalRegionDTO> all = globalRegionService.findAll();
+        List<GlobalRegionDTO> regions = all.stream().filter(e -> (e.getLevel() != null && e.getLevel() == 2)).collect(Collectors.toList());
+        if (!CollectionUtils.isEmpty(regions)) {
+            Map<Long, List<GlobalRegionDTO>> listMap = all.stream().collect(Collectors.groupingBy(e -> e.getPid()));
+            regions.stream().forEach(e -> {
+                List<GlobalRegionDTO> childRegions = listMap.get(e.getId());
+                if (!CollectionUtils.isEmpty(childRegions)) {
+                    childRegions.stream().forEach(e1 -> {
+                        List<GlobalRegionDTO> grandChildRegions = listMap.get(e1.getId());
+                        e1.setChildNodes(grandChildRegions);
+                    });
+                }
+                e.setChildNodes(childRegions);
+            });
+
+        }
         return R.ok(regions);
     }
 }

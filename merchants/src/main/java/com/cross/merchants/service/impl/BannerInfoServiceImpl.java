@@ -66,7 +66,7 @@ public class BannerInfoServiceImpl implements BannerInfoService {
     public BannerInfoDTO save(BannerInfoDTO bannerInfoDTO) {
         log.debug("Request to save BannerInfo : {}", bannerInfoDTO);
         this.checkParam(bannerInfoDTO);
-        if(bannerInfoDTO.getId()!=null){
+        if (bannerInfoDTO.getId() != null) {
             BannerInfo one = bannerInfoRepository.getOne(bannerInfoDTO.getId());
             bannerInfoDTO.setShowState(one.getShowState());
             bannerInfoDTO.setTop(one.getTop());
@@ -74,6 +74,11 @@ public class BannerInfoServiceImpl implements BannerInfoService {
         BannerInfo bannerInfo = bannerInfoMapper.toEntity(bannerInfoDTO);
         bannerInfo = bannerInfoRepository.save(bannerInfo);
         return bannerInfoMapper.toDto(bannerInfo);
+    }
+
+    @Override
+    public BannerInfoDTO updateBannerInfoShowState(BannerInfoDTO bannerInfoDTO) {
+        return bannerInfoMapper.toDto(bannerInfoRepository.save(bannerInfoMapper.toEntity(bannerInfoDTO)));
     }
 
     private boolean checkParam(BannerInfoDTO bannerInfoDTO) {
@@ -176,19 +181,38 @@ public class BannerInfoServiceImpl implements BannerInfoService {
 
     @Override
     public List<BannerInfoDTO> findAllByCondition(Integer positionType) {
-
         List<BannerInfoDTO> list = bannerInfoMapper.toDto(bannerInfoRepository.findAllByBannerTypeAndPositionTypeOrderByTopDescIdDesc(2, positionType));
         list = this.setParam(list);
         return list;
     }
 
     @Override
-    public List<BannerInfoDTO> findAllByConditionByC(Integer positionType) {
-
-        List<BannerInfoDTO> list = bannerInfoMapper.toDto(bannerInfoRepository.findAllByBannerTypeAndPositionTypeAndShowStateOrderByTopDescIdDesc(2, positionType,true));
+    public List<BannerInfoDTO> findByConditionByC(Integer positionType) {
+        List<BannerInfoDTO> list =new ArrayList<>();
+        if(4==positionType){
+            list= bannerInfoMapper.toDto(bannerInfoRepository.findAllByBannerTypeAndPositionTypeAndShowStateOrderByTopDescIdDesc(3, positionType,true));
+        }else {
+            list= bannerInfoMapper.toDto(bannerInfoRepository.findAllByBannerTypeAndPositionTypeAndShowStateOrderByTopDescIdDesc(2, positionType,true));
+        }
         list = this.setParam(list);
         return list;
     }
+
+    @Override
+    public Map<String, List<BannerInfoDTO>> findAllByConditionByC() {
+        Map<String, List<BannerInfoDTO>> map = new HashMap<>(4);
+//        位置类型 1 顶部轮播 2 弹窗 3 A区广告位 4 b区广告
+        List<BannerInfoDTO> top = bannerInfoMapper.toDto(bannerInfoRepository.findAllByBannerTypeAndPositionTypeAndShowStateOrderByTopDescIdDesc(2, 1, true));
+        map.put("top", top);
+        List<BannerInfoDTO> popUps = bannerInfoMapper.toDto(bannerInfoRepository.findAllByBannerTypeAndPositionTypeAndShowStateOrderByTopDescIdDesc(2, 2, true));
+        map.put("popUps", popUps);
+        List<BannerInfoDTO> aAd = bannerInfoMapper.toDto(bannerInfoRepository.findAllByBannerTypeAndPositionTypeAndShowStateOrderByTopDescIdDesc(2, 3, true));
+        map.put("aAd", aAd);
+        List<BannerInfoDTO> bAd = bannerInfoMapper.toDto(bannerInfoRepository.findAllByBannerTypeAndPositionTypeAndShowStateOrderByTopDescIdDesc(3, 4, true));
+        map.put("bAd", bAd);
+        return map;
+    }
+
     @Override
     public List<BannerInfoDTO> findAllByBannerType(Integer bannerType) {
         List<BannerInfoDTO> list = bannerInfoMapper.toDto(bannerInfoRepository.findAllByBannerTypeOrderByTopDescIdDesc(bannerType));
@@ -281,9 +305,9 @@ public class BannerInfoServiceImpl implements BannerInfoService {
     @Override
     public void updatePopRecord(Long userId) {
         boolean exists = redisService.exists(CartPrefix.getPopAdList, userId + "");
-        if(exists){
+        if (exists) {
             redisService.incr(CartPrefix.getPopAdList, userId + "");
-        }else {
+        } else {
             redisService.incr(CartPrefix.getPopAdList, userId + "");
             redisService.expire(CartPrefix.getPopAdList, userId + "");
         }

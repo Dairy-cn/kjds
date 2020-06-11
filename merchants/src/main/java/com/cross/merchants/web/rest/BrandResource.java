@@ -190,7 +190,7 @@ public class BrandResource {
     @ApiOperation("大后台--品牌审核")
     public R<BrandDTO> brandCheckInInfo(@ApiParam("记录id") @PathVariable Long id,
                                         @ApiParam(value = "审核状态 true 通过 false 失败", required = true) @RequestParam(required = true) Boolean status,
-                                        @ApiParam("失败原因") @RequestParam String checkFailureReasons) {
+                                        @ApiParam(value = "失败原因",required = false) @RequestParam(required = false) String checkFailureReasons) {
         log.debug("REST request to delete brandDTO : {}", id);
         BrandDTO brandDTO = brandService.findOne(id);
         if (brandDTO == null) {
@@ -334,13 +334,19 @@ public class BrandResource {
     }
 
 
-    @GetMapping("/find-list-brand-by-condition-by-c-")
+    @GetMapping("/find-list-brand-by-condition-by-c")
     @ApiOperation("C端--根据分类获取品牌列表")
     public R<List<BrandDTO>> getAllBrandListByConditionByC(Pageable pageable,
                                                            @ApiParam("一级商品品类id") @RequestParam(required = false) Long oneCategoryId,
                                                            @ApiParam("二级商品品类id") @RequestParam(required = false) Long twoCategoryId,
                                                            @ApiParam("三商品品类id") @RequestParam(required = false) Long thirdCategoryId) {
 
+        if (oneCategoryId == null && thirdCategoryId != null) {
+            oneCategoryId = thirdCategoryId;
+        }
+        if (twoCategoryId == null && thirdCategoryId != null) {
+            twoCategoryId = thirdCategoryId;
+        }
         Page<BrandDTO> page = brandService.getAllBrandListByConditionByC(pageable, oneCategoryId, twoCategoryId, thirdCategoryId);
         return R.ok(page.getContent(), page.getTotalElements());
     }

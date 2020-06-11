@@ -19,12 +19,12 @@ public interface StoreRecommendRepository extends JpaRepository<StoreRecommend, 
     List<StoreRecommend> findAllByOrderByTopDescIdDesc();
 
 
-    @Query(value = "update   store_recommend set top =false ", nativeQuery = true)
+    @Query(value = "update   store_recommend set top =false where top=true", nativeQuery = true)
     @Modifying
     int updateTopStateFalse();
 
 
-    @Query(value = "update   store_recommend set top =false  where id = :id", nativeQuery = true)
+    @Query(value = "update   store_recommend set top =true  where id = :id", nativeQuery = true)
     @Modifying
     int updateTopStateTrueById(@Param("id") Long id);
 

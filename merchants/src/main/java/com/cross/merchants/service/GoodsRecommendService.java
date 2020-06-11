@@ -54,4 +54,8 @@ public interface GoodsRecommendService {
 
 
 
+    List<GoodsRecommendDTO>  getAllGoodsRecommendsByC(Integer type);
+
+
+
 }

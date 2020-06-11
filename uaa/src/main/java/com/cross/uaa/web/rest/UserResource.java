@@ -1,5 +1,7 @@
 package com.cross.uaa.web.rest;
 
+import com.cross.DTO.UserOrderCountAndAmountDTO;
+import com.cross.client.MerchantsService;
 import com.cross.interfaces.phone.Phone;
 import com.cross.uaa.config.Constants;
 import com.cross.uaa.domain.Authority;
@@ -26,6 +28,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import liquibase.pro.packaged.A;
+import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,6 +54,7 @@ import java.time.Instant;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 /**
  * REST controller for managing users.
@@ -100,6 +104,9 @@ public class UserResource {
 
     @Autowired
     private AliYunUtil aliYunUtil;
+
+    @Autowired
+    private MerchantsService merchantsService;
 
 
     private final Integer cacheTime = 15;
@@ -413,7 +420,24 @@ public class UserResource {
                          @ApiParam("用户Id/手机号码") @RequestParam(required = false) String keyWord
     ) {
         Page<UserDTO> page = userService.getAllUsersByCondition(pageable, registerStartTime, registerEndTime, keyWord);
-        return R.ok(page.getContent(), page.getTotalElements());
+        List<UserDTO> content = page.getContent();
+        if (!CollectionUtils.isEmpty(content)) {
+            List<Long> ids = content.stream().map(UserDTO::getId).collect(Collectors.toList());
+            R<Map<Long, UserOrderCountAndAmountDTO>> result = merchantsService.getOrderCountAndAmountByUserIds(ids);
+            Map<Long, UserOrderCountAndAmountDTO> resultData = result.getData();
+            if (resultData != null) {
+                content.stream().forEach(e -> {
+                    UserOrderCountAndAmountDTO userOrderCountAndAmountDTO = resultData.get(e.getId());
+                    if (userOrderCountAndAmountDTO != null) {
+                        e.setOrderTotalTimes(userOrderCountAndAmountDTO.getTotalOrderCount());
+                        e.setOrderTotalAmount(userOrderCountAndAmountDTO.getTotalPayAmount());
+                    }
+                });
+            }
+
+        }
+
+        return R.ok(content, page.getTotalElements());
     }
 
 }

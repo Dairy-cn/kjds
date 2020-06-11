@@ -36,6 +36,7 @@ public class OAuth2AuthenticationConfiguration extends ResourceServerConfigurerA
     public void configure(HttpSecurity http) throws Exception {
         http
             .authorizeRequests()
+            .antMatchers("/api/auth/login").permitAll()
             .antMatchers("/auth/login").permitAll()
             .antMatchers("/auth/logout").authenticated()
             .and()

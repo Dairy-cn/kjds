@@ -72,8 +72,14 @@ public class UserAddressDTO implements Serializable {
     /**
      * 县
      */
-    @ApiModelProperty(value = "县")
+    @ApiModelProperty(value = "县,要是没有就不传")
     private String county;
+
+    /**
+     * 国家
+     */
+    @ApiModelProperty(value = "国家")
+    private String country;
 
     /**
      * 是否是默认地址
@@ -81,6 +87,14 @@ public class UserAddressDTO implements Serializable {
     @ApiModelProperty(value = "是否是默认地址")
     private Boolean defaultFlag;
 
+
+    public String getCountry() {
+        return country;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
+    }
 
     public Long getId() {
         return id;

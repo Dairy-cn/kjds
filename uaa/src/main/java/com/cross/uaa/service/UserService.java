@@ -168,7 +168,7 @@ public class UserService {
         user.setActivated(true);
         user.setRealNameAuthStatus(false);
         user.setOrderTotalAmount(BigDecimal.ZERO);
-        user.setOrderTotalTimes(Integer.valueOf(0));
+        user.setOrderTotalTimes(0L);
         if (userDTO.getAuthorities() != null) {
             Set<Authority> authorities = userDTO.getAuthorities().stream()
                 .map(authorityRepository::findById)
@@ -187,7 +187,7 @@ public class UserService {
                            String imageUrl, String langKey, Set<Authority> authorities, Boolean activate, Integer sex, Long code) {
 
         User newUser = new User();
-        Authority authority = authorityRepository.findFirstByName(AuthoritiesConstants.USER);
+//        Authority authority = authorityRepository.findFirstByName(AuthoritiesConstants.USER);
         //Set<Authority> authorities = new HashSet<>();
         String encryptedPassword = passwordEncoder.encode(password);
         newUser.setLogin(login);
@@ -202,11 +202,12 @@ public class UserService {
         newUser.setActivated(activate);
         // new user gets registration key
         newUser.setActivationKey(RandomUtil.generateActivationKey());
-        authorities.add(authority);
+//        authorities.add(authority);
         newUser.setAuthorities(authorities);
         newUser.setRealNameAuthStatus(false);
+        newUser.setMobile(login);
         newUser.setOrderTotalAmount(BigDecimal.ZERO);
-        newUser.setOrderTotalTimes(Integer.valueOf(0));
+        newUser.setOrderTotalTimes(0L);
         String userId = getUserId();
         if (userId == null) {
             throw new UaaException(400, "系统异常，请稍后再试");

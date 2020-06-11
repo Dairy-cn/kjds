@@ -3,6 +3,7 @@ package com.cross.merchants.service.dto;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import java.io.Serializable;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -10,7 +11,7 @@ import java.util.Objects;
  */
 @ApiModel(description = "国内区域")
 public class GlobalRegionDTO implements Serializable {
-    
+
     private Long id;
 
     /**
@@ -49,7 +50,18 @@ public class GlobalRegionDTO implements Serializable {
     @ApiModelProperty(value = "层级")
     private Integer level;
 
-    
+
+    private List<GlobalRegionDTO>  childNodes;
+
+
+    public List<GlobalRegionDTO> getChildNodes() {
+        return childNodes;
+    }
+
+    public void setChildNodes(List<GlobalRegionDTO> childNodes) {
+        this.childNodes = childNodes;
+    }
+
     public Long getId() {
         return id;
     }

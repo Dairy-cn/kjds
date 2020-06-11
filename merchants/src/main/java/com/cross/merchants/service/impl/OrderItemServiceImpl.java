@@ -185,4 +185,20 @@ public class OrderItemServiceImpl implements OrderItemService {
         one.setReceiveTime(Instant.now());
         orderItemRepository.save(one);
     }
+
+
+    @Override
+    public void deleteOrder(Long orderId) {
+        LoginUserModel currentLoginUser = CommonUtil.getCurrentLoginUser();
+        OrderItem repositoryOne = orderItemRepository.getOne(orderId);
+        if (!currentLoginUser.getId().equals(repositoryOne.getMemberId())) {
+            throw new MerchantsException(400, "不能删除他人订单");
+        }
+        if (repositoryOne.getStatus() == 3 || repositoryOne.getStatus() == 4) {
+            repositoryOne.setDeleteStatus(1);
+            orderItemRepository.save(repositoryOne);
+        } else {
+            throw new MerchantsException(400, "只能删除已完成或已关闭的订单");
+        }
+    }
 }

@@ -45,12 +45,13 @@ public interface GoodsService {
     Page<GoodsDTO> getAllGoodsByCondition(Pageable pageable, Long storeId, Long brandId, Integer checkState, Instant startTime, Instant endTime, String keyWord, Instant startCheckTime, Instant endCheckTime, Long oneCategoryId, Long twoCategoryId, Long thirdCategoryId);
 
     List<GoodsDTO> getAllGoodsByConditionNoPage(Long storeId, Long brandId, Integer checkState, Instant startTime, Instant endTime, String keyWord, Instant startCheckTime, Instant endCheckTime, Long oneCategoryId, Long twoCategoryId, Long thirdCategoryId);
-        /**
-         * Get the "id" goods.
-         *
-         * @param id the id of the entity.
-         * @return the entity.
-         */
+
+    /**
+     * Get the "id" goods.
+     *
+     * @param id the id of the entity.
+     * @return the entity.
+     */
     Optional<GoodsDTO> findOne(Long id);
 
     /**
@@ -71,11 +72,15 @@ public interface GoodsService {
 
     List<GoodsDTO> findAllByBrandIdIn(List<Long> ids);
 
+
+    List<GoodsDTO> findAllByStoreIdIn(List<Long> ids);
+
     Page<GoodsDTO> findAllByStoreId(Pageable pageable, Long storeId);
 
 
-    List<GoodsDTO> queryGoodsList(String keyword,Long storeId);
+    List<GoodsDTO> queryGoodsList(String keyword, Long storeId);
 
+    List<GoodsDTO> guessYouWillLike();
 
-   Page<GoodsDTO> getAllGoodsByConditionByC(Pageable pageable, Long oneCategoryId, Long twoCategoryId, Long thirdCategoryId, BigDecimal minPrice, BigDecimal maxPrice, Integer sortType, Integer order);
+    Page<GoodsDTO> getAllGoodsByConditionByC(Pageable pageable, Long oneCategoryId, Long twoCategoryId, Long thirdCategoryId, BigDecimal minPrice, BigDecimal maxPrice, Integer sortType, Integer order);
 }

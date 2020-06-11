@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Instant;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -58,7 +59,7 @@ public class GoodsRecommendServiceImpl implements GoodsRecommendService {
             goodsRecommendDTO.setTop(one.getTop());
             goodsRecommendDTO.setUpdateTime(Instant.now());
             goodsRecommendDTO.setCreateTime(one.getCreateTime());
-        }else {
+        } else {
             goodsRecommendDTO.setCreateTime(Instant.now());
         }
         GoodsRecommend goodsRecommend = goodsRecommendMapper.toEntity(goodsRecommendDTO);
@@ -152,7 +153,12 @@ public class GoodsRecommendServiceImpl implements GoodsRecommendService {
         return goodsRecommendRepository.findAllByGoodsRecommendTypeOrderByTopDescIdDesc(pageable, type).map(goodsRecommendMapper::toDto);
     }
 
-
+    @Override
+    public List<GoodsRecommendDTO>getAllGoodsRecommendsByC(Integer type) {
+        // 商品推荐类型 1 单品推荐 2 专区商品推荐
+        List<GoodsRecommendDTO> recommendDTOS = goodsRecommendMapper.toDto(goodsRecommendRepository.findAllByGoodsRecommendTypeOrderByTopDescIdDesc(type));
+        return recommendDTOS;
+    }
 
 
 }

@@ -288,11 +288,13 @@ public class GoodsServiceImpl implements GoodsService {
                 throw new MerchantsException(400, "该店铺下已存在相同名称的商品");
             }
         }
-        if (goodsDTO.getGoodsSkuDTOS() != null) {
+        if (!CollectionUtils.isEmpty(goodsDTO.getGoodsSkuDTOS())) {
             Set<String> nameSet = goodsDTO.getGoodsSkuDTOS().stream().map(GoodsSkuDTO::getName).collect(Collectors.toSet());
             if (nameSet.size() != goodsDTO.getGoodsSkuDTOS().size()) {
                 throw new MerchantsException(400, "商品规格名称不能重复");
             }
+        } else {
+            throw new MerchantsException(400, "商品规格不能为空");
         }
         if (goodsDTO.getGoodsPropertyDTOS() != null) {
             Set<String> nameSet = goodsDTO.getGoodsPropertyDTOS().stream().map(GoodsPropertyDTO::getName).collect(Collectors.toSet());
@@ -376,11 +378,6 @@ public class GoodsServiceImpl implements GoodsService {
         List<Long> thirdList = new ArrayList<>();
         if (oneCategoryId != null) {
             twoList = goodsCategoryRepository.findAllByPid(oneCategoryId).stream().map(GoodsCategory::getId).collect(Collectors.toList());
-            if (!CollectionUtils.isEmpty(twoList)) {
-                if (twoCategoryId != null) {
-                    twoList = twoList.stream().filter(e -> e == twoCategoryId).collect(Collectors.toList());
-                }
-            }
         }
         if (twoCategoryId != null) {
             twoList.add(twoCategoryId);
@@ -388,11 +385,6 @@ public class GoodsServiceImpl implements GoodsService {
         if (!CollectionUtils.isEmpty(twoList)) {
             twoList = twoList.stream().distinct().collect(Collectors.toList());
             thirdList = goodsCategoryRepository.findAllByPidIn(twoList).stream().map(GoodsCategory::getId).collect(Collectors.toList());
-            if (!CollectionUtils.isEmpty(thirdList)) {
-                if (thirdCategoryId != null) {
-                    thirdList = thirdList.stream().filter(e -> e == thirdCategoryId).collect(Collectors.toList());
-                }
-            }
         }
         if (thirdCategoryId != null) {
             thirdList.add(thirdCategoryId);
@@ -448,18 +440,13 @@ public class GoodsServiceImpl implements GoodsService {
     }
 
 
-
     @Override
     public List<GoodsDTO> getAllGoodsByConditionNoPage(Long storeId, Long brandId, Integer checkState, Instant startTime, Instant endTime, String keyWord, Instant startCheckTime, Instant endCheckTime, Long oneCategoryId, Long twoCategoryId, Long thirdCategoryId) {
         List<Long> twoList = new ArrayList<>();
         List<Long> thirdList = new ArrayList<>();
         if (oneCategoryId != null) {
             twoList = goodsCategoryRepository.findAllByPid(oneCategoryId).stream().map(GoodsCategory::getId).collect(Collectors.toList());
-            if (!CollectionUtils.isEmpty(twoList)) {
-                if (twoCategoryId != null) {
-                    twoList = twoList.stream().filter(e -> e == twoCategoryId).collect(Collectors.toList());
-                }
-            }
+
         }
         if (twoCategoryId != null) {
             twoList.add(twoCategoryId);
@@ -467,11 +454,6 @@ public class GoodsServiceImpl implements GoodsService {
         if (!CollectionUtils.isEmpty(twoList)) {
             twoList = twoList.stream().distinct().collect(Collectors.toList());
             thirdList = goodsCategoryRepository.findAllByPidIn(twoList).stream().map(GoodsCategory::getId).collect(Collectors.toList());
-            if (!CollectionUtils.isEmpty(thirdList)) {
-                if (thirdCategoryId != null) {
-                    thirdList = thirdList.stream().filter(e -> e == thirdCategoryId).collect(Collectors.toList());
-                }
-            }
         }
         if (thirdCategoryId != null) {
             thirdList.add(thirdCategoryId);
@@ -558,7 +540,12 @@ public class GoodsServiceImpl implements GoodsService {
             List<Goods> allByIdIn = goodsRepository.findAllByIdIn(ids);
             List<Long> categoryIds = allByIdIn.stream().filter(e -> e.getCategoryId() != null).map(Goods::getCategoryId).collect(Collectors.toList());
             List<Long> storeIds = allByIdIn.stream().filter(e -> e.getStoreId() != null).map(Goods::getStoreId).collect(Collectors.toList());
-
+            List<Long> skuIds = allByIdIn.stream().map(Goods::getId).collect(Collectors.toList());
+            Map<Long, List<GoodsSkuDTO>> goodsSkuMap = new HashMap<>(16);
+            if (!CollectionUtils.isEmpty(skuIds)) {
+                List<GoodsSkuDTO> goodsSkus = goodsSkuMapper.toDto(goodsSkuRepository.findAllByGoodsIdInAndDeleteFlag(skuIds, false));
+                goodsSkuMap = goodsSkus.stream().collect(Collectors.groupingBy(GoodsSkuDTO::getGoodsId));
+            }
             Map<Long, GoodsCategoryDTO> goodsCategoryDTOMap = new HashMap<>();
             if (!CollectionUtils.isEmpty(categoryIds)) {
                 goodsCategoryDTOMap = goodsCategoryService.findAllByInInWithParentInfo(categoryIds);
@@ -575,8 +562,10 @@ public class GoodsServiceImpl implements GoodsService {
                 storeInfoDTOMap = storeInfoDTOS.stream().collect(Collectors.toMap(StoreInfoDTO::getId, e -> e));
             }
             Map<Long, StoreInfoDTO> finalStoreInfoDTOMap = storeInfoDTOMap;
+            Map<Long, List<GoodsSkuDTO>> finalGoodsSkuMap = goodsSkuMap;
             goodsDTOS.stream().filter(e -> e.getStoreId() != null).forEach(e -> {
                 e.setStoreInfoDTO(finalStoreInfoDTOMap.get(e.getStoreId()));
+                e.setGoodsSkuDTOS(finalGoodsSkuMap.get(e.getId()));
             });
             return goodsDTOS.stream().collect(Collectors.toMap(GoodsDTO::getId, e -> e));
         }
@@ -640,6 +629,34 @@ public class GoodsServiceImpl implements GoodsService {
     public List<GoodsDTO> findAllByBrandIdIn(List<Long> ids) {
 
         List<Object[]> objects = goodsRepository.findAllByBrandIdInAndDeleteFlag(ids);
+        List<GoodEntity> bigIntegers = new ArrayList<>();
+        try {
+            bigIntegers = JpaSelectCastEntity.castEntity(objects, GoodEntity.class);
+        } catch (Exception e1) {
+            log.error("类转化失败" + e1.getMessage());
+            e1.printStackTrace();
+        }
+        List<Long> idList = new ArrayList<>();
+        if (!CollectionUtils.isEmpty(bigIntegers)) {
+            idList = bigIntegers.stream().map(GoodEntity::getId).map(BigInteger::longValue).collect(Collectors.toList());
+        }
+        List<GoodsDTO> goodsDTOS = goodsMapper.toDto(goodsRepository.findAllByIdIn(idList));
+        if (!CollectionUtils.isEmpty(goodsDTOS)) {
+            List<Long> goodsIds = goodsDTOS.stream().map(GoodsDTO::getId).collect(Collectors.toList());
+            List<GoodsSku> goodsSkus = goodsSkuRepository.findAllByGoodsIdInAndDeleteFlag(goodsIds, false);
+            List<GoodsSkuDTO> goodsSkuDTOS = goodsSkuMapper.toDto(goodsSkus);
+            Map<Long, List<GoodsSkuDTO>> goodsSkuMap = goodsSkuDTOS.stream().collect(Collectors.groupingBy(GoodsSkuDTO::getGoodsId));
+            goodsDTOS.stream().forEach(e -> {
+                e.setGoodsSkuDTOS(goodsSkuMap.get(e.getId()));
+            });
+            return goodsDTOS;
+        }
+        return null;
+    }
+
+    @Override
+    public List<GoodsDTO> findAllByStoreIdIn(List<Long> ids) {
+        List<Object[]> objects = goodsRepository.findAllByStroeInAndDeleteFlag(ids);
         List<GoodEntity> bigIntegers = new ArrayList<>();
         try {
             bigIntegers = JpaSelectCastEntity.castEntity(objects, GoodEntity.class);
@@ -739,16 +756,70 @@ public class GoodsServiceImpl implements GoodsService {
     }
 
     @Override
+    public List<GoodsDTO> guessYouWillLike() {
+        List<GoodsDTO> list = new ArrayList<>();
+        List<Object[]> objects = goodsRepository.findGoodsIdListWithRandom();
+        List<GoodEntity> goodIdBigIntegers = new ArrayList<>();
+        try {
+            goodIdBigIntegers = JpaSelectCastEntity.castEntity(objects, GoodEntity.class);
+        } catch (Exception e1) {
+            log.error("类转化失败" + e1.getMessage());
+            e1.printStackTrace();
+        }
+        List<Long> goodsIds = new ArrayList<>();
+        if (!CollectionUtils.isEmpty(goodIdBigIntegers)) {
+            goodsIds = goodIdBigIntegers.stream().map(GoodEntity::getId).map(BigInteger::longValue).collect(Collectors.toList());
+        }
+        if (!CollectionUtils.isEmpty(goodsIds)) {
+            List<Long> randomGoodsIds = new ArrayList<>();
+            if (goodsIds.size() > 15) {
+                Set<Long> integerSet = new HashSet<>();
+                for (int i = 0; i < 15; i++) {
+                    List<Long> filterList = goodsIds.stream().filter(e -> !integerSet.contains(e)).collect(Collectors.toList());
+                    Random r = new Random();
+                    int nextInt = r.nextInt(filterList.size());
+                    Long value = filterList.get(nextInt);
+                    integerSet.add(value);
+                    randomGoodsIds.add(value);
+                }
+            } else {
+                randomGoodsIds = goodsIds;
+            }
+            list = goodsMapper.toDto(goodsRepository.findAllByIdIn(randomGoodsIds));
+            List<Object[]> objectsSku = goodsSkuRepository.findAllByGoodsIdInAndDeleteFlag(randomGoodsIds);
+            List<GoodEntity> bigIntegers = new ArrayList<>();
+            try {
+                bigIntegers = JpaSelectCastEntity.castEntity(objectsSku, GoodEntity.class);
+            } catch (Exception e1) {
+                log.error("类转化失败" + e1.getMessage());
+                e1.printStackTrace();
+            }
+            List<Long> idList = new ArrayList<>();
+            if (!CollectionUtils.isEmpty(bigIntegers)) {
+                idList = bigIntegers.stream().map(GoodEntity::getId).map(BigInteger::longValue).collect(Collectors.toList());
+            }
+            List<GoodsSku> goodsSkus = goodsSkuRepository.findAllByIdInAndDeleteFlag(idList, false);
+            List<GoodsSkuDTO> goodsSkuDTOS = goodsSkuMapper.toDto(goodsSkus);
+            Map<Long, List<GoodsSkuDTO>> listMap = new HashMap<>(16);
+            if (!CollectionUtils.isEmpty(goodsSkus)) {
+                listMap = goodsSkuDTOS.stream().collect(Collectors.groupingBy(e -> e.getGoodsId()));
+            }
+            Map<Long, List<GoodsSkuDTO>> finalListMap = listMap;
+            list.stream().forEach(e -> {
+                e.setGoodsSkuDTOS(finalListMap.get(e.getId()));
+            });
+        }
+        return list;
+
+    }
+
+
+    @Override
     public Page<GoodsDTO> getAllGoodsByConditionByC(Pageable pageable, Long oneCategoryId, Long twoCategoryId, Long thirdCategoryId, BigDecimal minPrice, BigDecimal maxPrice, Integer sortType, Integer order) {
         List<Long> twoList = new ArrayList<>();
         List<Long> thirdList = new ArrayList<>();
         if (oneCategoryId != null) {
             twoList = goodsCategoryRepository.findAllByPid(oneCategoryId).stream().map(GoodsCategory::getId).collect(Collectors.toList());
-            if (!CollectionUtils.isEmpty(twoList)) {
-                if (twoCategoryId != null) {
-                    twoList = twoList.stream().filter(e -> e == twoCategoryId).collect(Collectors.toList());
-                }
-            }
         }
         if (twoCategoryId != null) {
             twoList.add(twoCategoryId);
@@ -756,11 +827,6 @@ public class GoodsServiceImpl implements GoodsService {
         if (!CollectionUtils.isEmpty(twoList)) {
             twoList = twoList.stream().distinct().collect(Collectors.toList());
             thirdList = goodsCategoryRepository.findAllByPidIn(twoList).stream().map(GoodsCategory::getId).collect(Collectors.toList());
-            if (!CollectionUtils.isEmpty(thirdList)) {
-                if (thirdCategoryId != null) {
-                    thirdList = thirdList.stream().filter(e -> e == thirdCategoryId).collect(Collectors.toList());
-                }
-            }
         }
         if (thirdCategoryId != null) {
             thirdList.add(thirdCategoryId);
@@ -792,7 +858,7 @@ public class GoodsServiceImpl implements GoodsService {
             sb.append(" order by a.id ");
         } else if (sortType != null && sortType == 2) {
             sb.append(" order by a.saleVolume ");
-        }else if (sortType != null && sortType == 4) {
+        } else if (sortType != null && sortType == 4) {
             sb.append(" order by b.salePrice ");
         }
         if (order == null || order == 2) {
@@ -812,13 +878,13 @@ public class GoodsServiceImpl implements GoodsService {
         List list = query.getResultList();
         List<GoodsDTO> goodsDTOS = new ArrayList<>();
 
-        list.forEach(e->{
+        list.forEach(e -> {
             Object[] o = (Object[]) e;
             Goods goods = (Goods) o[0];
             GoodsDTO goodsDTO = goodsMapper.toDto(goods);
             goodsDTOS.add(goodsDTO);
         });
-        if(!CollectionUtils.isEmpty(goodsDTOS)){
+        if (!CollectionUtils.isEmpty(goodsDTOS)) {
 
             List<Long> longList = goodsDTOS.stream().map(GoodsDTO::getId).collect(Collectors.toList());
             List<Object[]> objects = goodsSkuRepository.findAllByGoodsIdInAndDeleteFlag(longList);

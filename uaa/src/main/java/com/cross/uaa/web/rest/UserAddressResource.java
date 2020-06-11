@@ -31,9 +31,9 @@ import java.util.Optional;
 /**
  * REST controller for managing {@link com.cross.uaa.domain.UserAddress}.
  */
-@RestController
-@RequestMapping("/api")
-@Api(tags = "用户收货地址相关接口")
+//@RestController
+//@RequestMapping("/api")
+//@Api(tags = "用户收货地址相关接口")
 @Deprecated
 public class UserAddressResource {
 

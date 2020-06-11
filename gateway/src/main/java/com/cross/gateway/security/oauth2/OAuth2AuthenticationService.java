@@ -70,7 +70,8 @@ public class OAuth2AuthenticationService {
 //            boolean rememberMe = Boolean.valueOf(params.get("rememberMe"));
         R r = authorizationClient.sendPasswordGrant(username, password, webType);
 //            OAuth2Cookies cookies = new OAuth2Cookies();
-//            cookieHelper.createCookies(request, accessToken, rememberMe, cookies);
+//        OAuth2AccessToken accessToken r.
+//            cookieHelper.createCookies(request, accessToken, false, cookies);
 //            cookies.addCookiesTo(response);
 //            if (log.isDebugEnabled()) {
 //                log.debug("successfully authenticated user {}", params.get("username"));

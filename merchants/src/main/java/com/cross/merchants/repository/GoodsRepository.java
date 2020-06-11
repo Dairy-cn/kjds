@@ -35,6 +35,9 @@ public interface GoodsRepository extends JpaRepository<Goods, Long>, JpaSpecific
     List<Object[]> findAllByBrandIdInAndDeleteFlag(@Param("brandIds") List<Long> brandIds);
 
 
+    @Query(value = "SELECT id FROM goods a WHERE (SELECT COUNT(1) FROM goods b WHERE a.`store_id`=b.`store_id` AND b.id >=a.`id`) <=4 AND a.`delete_flag` !=TRUE AND a.`store_id` IN :storeIds", nativeQuery = true)
+    List<Object[]> findAllByStroeInAndDeleteFlag(@Param("storeIds") List<Long> storeIds);
+
     Page<Goods> findAllByStoreIdAndDeleteFlag(Pageable pageable, Long id, Boolean flage);
 
 
@@ -49,5 +52,13 @@ public interface GoodsRepository extends JpaRepository<Goods, Long>, JpaSpecific
 
 
     int countAllByCategoryIdInAndDeleteFlag(List<Long> categoryIds,Boolean deleteFlag);
+
+
+//    @Query(value = "SELECT t1.id FROM `goods` AS t1 JOIN  (SELECT ROUND(RAND() * (SELECT   MAX(id)  FROM  `goods`)) AS id) AS t2 WHERE t1.id >= t2.id  AND t1.`delete_flag` != TRUE  AND t1.`sale_state` = 1 LIMIT :limitNum ", nativeQuery = true)
+//    List<Object[]> findGoodsIdListWithRandom(@Param("limitNum") Integer limitNum);
+
+
+    @Query(value = "SELECT id FROM goods WHERE delete_flag !=TRUE AND sale_state =1", nativeQuery = true)
+    List<Object[]> findGoodsIdListWithRandom();
 
 }

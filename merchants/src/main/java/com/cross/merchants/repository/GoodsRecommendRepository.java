@@ -8,6 +8,8 @@ import org.springframework.data.jpa.repository.*;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 /**
  * Spring Data  repository for the GoodsRecommend entity.
  */
@@ -22,15 +24,18 @@ public interface GoodsRecommendRepository extends JpaRepository<GoodsRecommend, 
     int countAllByGoodsId(Long goodsId);
 
 
-    @Query(value = "update   goods_recommend set top =false ", nativeQuery = true)
+    @Query(value = "update   goods_recommend set top =false where top=true", nativeQuery = true)
     @Modifying
     int updateTopStateFalse();
 
 
-    @Query(value = "update   goods_recommend set top =false  where id = :id", nativeQuery = true)
+    @Query(value = "update   goods_recommend set top =true  where id = :id", nativeQuery = true)
     @Modifying
     int updateTopStateTrueById(@Param("id") Long id);
 
 
     Page<GoodsRecommend> findAllByGoodsRecommendTypeOrderByTopDescIdDesc(Pageable pageable, Integer type);
+
+
+    List<GoodsRecommend> findAllByGoodsRecommendTypeOrderByTopDescIdDesc( Integer type);
 }

@@ -1,6 +1,8 @@
 package com.cross.merchants.domain;
 
 
+import io.swagger.annotations.ApiModelProperty;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -81,12 +83,37 @@ public class UserAddress implements Serializable {
     private String county;
 
     /**
+     * 国家
+     */
+    @ApiModelProperty(value = "国家")
+    @Column(name = "country")
+    private String country;
+
+    /**
      * 是否是默认地址
      */
     @Column(name = "default_flag")
     private Boolean defaultFlag;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
+
+
+    public String getCountry() {
+        return country;
+    }
+    public UserAddress country(String country) {
+        this.country = country;
+        return this;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
+    }
+
+    public Boolean getDefaultFlag() {
+        return defaultFlag;
+    }
+
     public Long getId() {
         return id;
     }

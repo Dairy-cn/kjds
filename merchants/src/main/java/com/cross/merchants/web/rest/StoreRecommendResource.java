@@ -1,6 +1,9 @@
 package com.cross.merchants.web.rest;
 
+
+import com.cross.merchants.domain.MerchantsCheckInInfo;
 import com.cross.merchants.domain.StoreInfo;
+import com.cross.merchants.service.MerchantsCheckInInfoService;
 import com.cross.merchants.service.StoreInfoService;
 import com.cross.merchants.service.StoreRecommendService;
 import com.cross.merchants.service.dto.StoreInfoDTO;
@@ -15,6 +18,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -52,6 +56,9 @@ public class StoreRecommendResource {
     private final StoreRecommendService storeRecommendService;
 
     private final StoreInfoService storeInfoService;
+
+    @Autowired
+    private MerchantsCheckInInfoService merchantsCheckInInfoService;
 
     public StoreRecommendResource(StoreRecommendService storeRecommendService, StoreInfoService storeInfoService) {
         this.storeRecommendService = storeRecommendService;
@@ -110,7 +117,7 @@ public class StoreRecommendResource {
     }
 
     @GetMapping("/store-recommends-list")
-    @ApiOperation("获取商户推荐list")
+    @ApiOperation("c端-获取商户推荐list")
     public R<List<StoreRecommendDTO>> getAllStoreRecommendsList() {
         log.debug("REST request to get a page of StoreRecommends");
         List<StoreRecommendDTO> list = storeRecommendService.findAllList();
@@ -118,7 +125,7 @@ public class StoreRecommendResource {
             List<Long> storeIds = list.stream().map(StoreRecommendDTO::getStoreId).collect(Collectors.toList());
             List<StoreInfoDTO> storeInfoDTOS = storeInfoService.findAllByIdIn(storeIds);
             Map<Long, StoreInfoDTO> storeInfoDTOMap = storeInfoDTOS.stream().collect(Collectors.toMap(StoreInfoDTO::getId, e -> e));
-            list.stream().forEach(e->{
+            list.stream().forEach(e -> {
                 e.setStoreInfoDTO(storeInfoDTOMap.get(e.getStoreId()));
             });
         }
@@ -136,11 +143,11 @@ public class StoreRecommendResource {
     public R<StoreRecommendDTO> getStoreRecommend(@PathVariable Long id) {
         log.debug("REST request to get StoreRecommend : {}", id);
         Optional<StoreRecommendDTO> optionalStoreRecommendDTO = storeRecommendService.findOne(id);
-        if(!optionalStoreRecommendDTO.isPresent()){
+        if (!optionalStoreRecommendDTO.isPresent()) {
             return R.errorData();
         }
         StoreRecommendDTO storeRecommendDTO = optionalStoreRecommendDTO.get();
-        if(storeRecommendDTO!=null){
+        if (storeRecommendDTO != null) {
             StoreInfoDTO one = storeInfoService.getOne(storeRecommendDTO.getStoreId());
             storeRecommendDTO.setStoreInfoDTO(one);
         }

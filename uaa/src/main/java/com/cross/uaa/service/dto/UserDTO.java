@@ -93,7 +93,7 @@ public class UserDTO {
     private Boolean realNameAuthStatus;
 
     @ApiModelProperty("累计消费次数")
-    private Integer orderTotalTimes;
+    private Long orderTotalTimes;
 
     @ApiModelProperty("累计消费金额")
     private BigDecimal orderTotalAmount;
@@ -195,11 +195,11 @@ public class UserDTO {
         this.realNameAuthStatus = realNameAuthStatus;
     }
 
-    public Integer getOrderTotalTimes() {
+    public Long getOrderTotalTimes() {
         return orderTotalTimes;
     }
 
-    public void setOrderTotalTimes(Integer orderTotalTimes) {
+    public void setOrderTotalTimes(Long orderTotalTimes) {
         this.orderTotalTimes = orderTotalTimes;
     }
 

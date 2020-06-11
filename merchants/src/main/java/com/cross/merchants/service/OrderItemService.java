@@ -55,4 +55,7 @@ public interface OrderItemService {
      */
     void confirmReceiveOrder(Long orderId);
 
+
+    void deleteOrder(Long orderId);
+
 }

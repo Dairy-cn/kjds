@@ -5,6 +5,7 @@ import com.cross.merchants.service.dto.PayOrderDTO;
 import com.cross.merchants.web.rest.DTO.ConfirmOrderResult;
 import com.cross.merchants.web.rest.DTO.OrderDetail;
 import com.cross.merchants.web.rest.DTO.OrderParam;
+import com.cross.DTO.UserOrderCountAndAmountDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
@@ -110,4 +111,8 @@ public interface PayOrderService {
      * 支付订单.
      */
     void paid(PayOrderDTO orderDTO);
+
+
+
+    Map<Long, UserOrderCountAndAmountDTO> getOrderCountAndAmountByUserIds(List<Long> userIds);
 }

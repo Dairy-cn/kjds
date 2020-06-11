@@ -62,6 +62,11 @@ public class GlobalRegionServiceImpl implements GlobalRegionService {
             .map(globalRegionMapper::toDto);
     }
 
+    @Override
+    public List<GlobalRegionDTO> findAll() {
+        return globalRegionMapper.toDto(globalRegionRepository.findAll());
+    }
+
     /**
      * Get one globalRegion by id.
      *

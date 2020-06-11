@@ -3,6 +3,8 @@ package com.cross.gateway.security.oauth2;
 import com.cross.utils.R;
 import org.springframework.security.oauth2.common.OAuth2AccessToken;
 
+import javax.servlet.http.HttpServletRequest;
+
 /**
  * Client talking to an OAuth2 Authorization server token endpoint.
  *
@@ -30,4 +32,6 @@ public interface OAuth2TokenEndpointClient {
      * if we cannot contact the token endpoint.
      */
     OAuth2AccessToken sendRefreshGrant(String refreshTokenValue);
+
+    R<OAuth2AccessToken> sendRefreshGrant(String refreshTokenValue, HttpServletRequest request);
 }

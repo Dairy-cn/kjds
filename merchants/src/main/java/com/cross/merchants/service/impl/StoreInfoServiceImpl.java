@@ -6,10 +6,12 @@ import com.cross.merchants.domain.WarehouseInfo;
 import com.cross.merchants.repository.StoreOperatingRecordRepository;
 import com.cross.merchants.repository.WarehouseInfoRepository;
 import com.cross.merchants.service.MerchantsCategoryService;
+import com.cross.merchants.service.MerchantsCheckInInfoService;
 import com.cross.merchants.service.StoreInfoService;
 import com.cross.merchants.domain.StoreInfo;
 import com.cross.merchants.repository.StoreInfoRepository;
 import com.cross.merchants.service.dto.MerchantsCategoryDTO;
+import com.cross.merchants.service.dto.MerchantsCheckInInfoDTO;
 import com.cross.merchants.service.dto.StoreInfoDTO;
 import com.cross.merchants.service.mapper.StoreInfoMapper;
 import com.cross.utils.CommonUtil;
@@ -48,12 +50,15 @@ public class StoreInfoServiceImpl implements StoreInfoService {
 
     private final WarehouseInfoRepository warehouseInfoRepository;
 
-    public StoreInfoServiceImpl(StoreInfoRepository storeInfoRepository, StoreInfoMapper storeInfoMapper, StoreOperatingRecordRepository storeOperatingRecordRepository, MerchantsCategoryService merchantsCategoryService, WarehouseInfoRepository warehouseInfoRepository) {
+    private final MerchantsCheckInInfoService merchantsCheckInInfoService;
+
+    public StoreInfoServiceImpl(StoreInfoRepository storeInfoRepository, StoreInfoMapper storeInfoMapper, StoreOperatingRecordRepository storeOperatingRecordRepository, MerchantsCategoryService merchantsCategoryService, WarehouseInfoRepository warehouseInfoRepository, MerchantsCheckInInfoService merchantsCheckInInfoService) {
         this.storeInfoRepository = storeInfoRepository;
         this.storeInfoMapper = storeInfoMapper;
         this.storeOperatingRecordRepository = storeOperatingRecordRepository;
         this.merchantsCategoryService = merchantsCategoryService;
         this.warehouseInfoRepository = warehouseInfoRepository;
+        this.merchantsCheckInInfoService = merchantsCheckInInfoService;
     }
 
     /**
@@ -65,7 +70,7 @@ public class StoreInfoServiceImpl implements StoreInfoService {
     @Override
     public StoreInfoDTO save(StoreInfoDTO storeInfoDTO) {
         log.debug("Request to save StoreInfo : {}", storeInfoDTO);
-        if(storeInfoDTO.getId()!=null){
+        if (storeInfoDTO.getId() != null) {
             StoreInfo one = storeInfoRepository.getOne(storeInfoDTO.getId());
             storeInfoDTO.setStoreNo(one.getStoreNo());
             storeInfoDTO.setCreatTime(one.getCreatTime());
@@ -191,15 +196,24 @@ public class StoreInfoServiceImpl implements StoreInfoService {
     public List<StoreInfoDTO> findAllByIdIn(List<Long> ids) {
         List<StoreInfoDTO> storeInfoDTOS = storeInfoMapper.toDto(storeInfoRepository.findAllByIdIn(ids));
         if (!CollectionUtils.isEmpty(storeInfoDTOS)) {
-            Map<Long, MerchantsCategoryDTO> merchantsCategoryDTOMap = new HashMap<>();
+            Map<Long, MerchantsCategoryDTO> merchantsCategoryDTOMap = new HashMap<>(16);
+            Map<Long, MerchantsCheckInInfoDTO> merchantsCheckInInfoDTOMap = new HashMap<>(16);
+            List<Long> merchantIds = storeInfoDTOS.stream().filter(e -> e.getMerchantsCheckInInfoId() != null).map(StoreInfoDTO::getMerchantsCheckInInfoId).collect(Collectors.toList());
+
             List<Long> storeCategoryIds = storeInfoDTOS.stream().filter(e -> e.getCategoryId() != null).map(StoreInfoDTO::getCategoryId).collect(Collectors.toList());
             if (!CollectionUtils.isEmpty(storeCategoryIds)) {
                 List<MerchantsCategoryDTO> allByIdIn = merchantsCategoryService.findAllByIdIn(storeCategoryIds);
                 merchantsCategoryDTOMap = allByIdIn.stream().collect(Collectors.toMap(MerchantsCategoryDTO::getId, e -> e));
             }
+            if (!CollectionUtils.isEmpty(merchantIds)) {
+                List<MerchantsCheckInInfoDTO> merchantDtos = merchantsCheckInInfoService.findAllByIdIn(merchantIds);
+                merchantsCheckInInfoDTOMap = merchantDtos.stream().collect(Collectors.toMap(MerchantsCheckInInfoDTO::getId, e -> e));
+            }
             Map<Long, MerchantsCategoryDTO> finalMerchantsCategoryDTOMap = merchantsCategoryDTOMap;
+            Map<Long, MerchantsCheckInInfoDTO> finalMerchantsCheckInInfoDTOMap = merchantsCheckInInfoDTOMap;
             storeInfoDTOS.stream().filter(e -> e.getCategoryId() != null).forEach(e -> {
                 e.setMerchantsCategoryDTO(finalMerchantsCategoryDTOMap.get(e.getCategoryId()));
+                e.setMerchantsCheckInInfoDTO(finalMerchantsCheckInInfoDTOMap.get(e.getMerchantsCheckInInfoId()));
             });
         }
         return storeInfoDTOS;
@@ -241,12 +255,12 @@ public class StoreInfoServiceImpl implements StoreInfoService {
     }
 
     @Override
-    public Page<StoreInfoDTO> getAllStoreInfosByCondition(Pageable pageable, Integer operatingStatus, Long categoryId, Integer warehouseType, String keyWord, Instant startTime,Instant endTime) {
-        List<Long> merchantIds=new ArrayList<>();
+    public Page<StoreInfoDTO> getAllStoreInfosByCondition(Pageable pageable, Integer operatingStatus, Long categoryId, Integer warehouseType, String keyWord, Instant startTime, Instant endTime) {
+        List<Long> merchantIds = new ArrayList<>();
 
         if (warehouseType != null) {
             List<WarehouseInfo> allByWarehouseType = warehouseInfoRepository.findAllByWarehouseType(warehouseType);
-            if(!CollectionUtils.isEmpty(allByWarehouseType)){
+            if (!CollectionUtils.isEmpty(allByWarehouseType)) {
                 merchantIds = allByWarehouseType.stream().map(WarehouseInfo::getMerchantId).distinct().collect(Collectors.toList());
             }
         }
@@ -260,7 +274,7 @@ public class StoreInfoServiceImpl implements StoreInfoService {
                 listPredicates.add(b.equal(r.get("operatingStatus").as(Integer.class), operatingStatus));
             }
 
-            if(!CollectionUtils.isEmpty(finalMerchantIds)){
+            if (!CollectionUtils.isEmpty(finalMerchantIds)) {
                 if (!CollectionUtils.isEmpty(finalMerchantIds)) {
                     CriteriaBuilder.In<Long> in = b.in(r.get("merchantsCheckInInfoId"));
                     for (Long id : finalMerchantIds) {
@@ -284,7 +298,7 @@ public class StoreInfoServiceImpl implements StoreInfoService {
             }
             Predicate[] arrayPredicates = new Predicate[listPredicates.size()];
             return b.and(listPredicates.toArray(arrayPredicates));
-        },pageable);
+        }, pageable);
         return list.map(storeInfoMapper::toDto);
     }
 

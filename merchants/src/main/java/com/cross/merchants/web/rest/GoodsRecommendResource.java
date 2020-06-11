@@ -1,6 +1,8 @@
 package com.cross.merchants.web.rest;
 
 import com.cross.merchants.domain.Goods;
+import com.cross.merchants.domain.GoodsRecommend;
+import com.cross.merchants.domain.GoodsRecommendBanner;
 import com.cross.merchants.service.GoodsRecommendBannerService;
 import com.cross.merchants.service.GoodsRecommendService;
 import com.cross.merchants.service.GoodsService;
@@ -110,30 +112,46 @@ public class GoodsRecommendResource {
      */
     @GetMapping("/goods-recommends")
     @ApiOperation("大后台---推荐商品List")
-    public R<List<GoodsRecommendDTO>> getAllGoodsRecommends(Pageable pageable,@ApiParam("推荐商品类型 1 单品推荐 2 专区推荐") @RequestParam(required = true) Integer goodsRecommendType) {
+    public R<List<GoodsRecommendDTO>> getAllGoodsRecommends(Pageable pageable, @ApiParam("推荐商品类型 1 单品推荐 2 专区推荐") @RequestParam(required = true) Integer goodsRecommendType) {
         log.debug("REST request to get a page of GoodsRecommends");
-        Page<GoodsRecommendDTO> page = goodsRecommendService.findAllByType(pageable,goodsRecommendType);
+        Page<GoodsRecommendDTO> page = goodsRecommendService.findAllByType(pageable, goodsRecommendType);
         List<GoodsRecommendDTO> list = setParam(page.getContent());
         return R.ok(list, page.getTotalElements());
     }
 
     @GetMapping("/c-goods-recommends")
     @ApiOperation("c端---根据推荐商品类型获取推荐商品List")
-    public R<List<GoodsRecommendDTO>> getAllGoodsRecommendsByC(Pageable pageable,@ApiParam("推荐商品类型 1 单品推荐 2 专区推荐") @RequestParam(required = true) Integer goodsRecommendType) {
+    public R<List<GoodsRecommendDTO>> getGoodsRecommendsByC(Pageable pageable, @ApiParam("推荐商品类型 1 单品推荐 2 专区推荐") @RequestParam(required = true) Integer goodsRecommendType) {
         log.debug("REST request to get a page of GoodsRecommends");
-        Page<GoodsRecommendDTO> page = goodsRecommendService.findAllByType(pageable,goodsRecommendType);
+        Page<GoodsRecommendDTO> page = goodsRecommendService.findAllByType(pageable, goodsRecommendType);
         List<GoodsRecommendDTO> list = setParam(page.getContent());
         return R.ok(list, page.getTotalElements());
+    }
+
+    @GetMapping("/c-goods-recommends-all")
+    @ApiOperation("c端---获取推荐商品map对象[singleRecommend 单品推荐 prefectureRecommend 专区推荐]")
+    public R<Map<String, Object>> getAllGoodsRecommendsByC() {
+        log.debug("REST request to get a page of GoodsRecommends");
+        List<GoodsRecommendDTO> singleRecommendList = goodsRecommendService.getAllGoodsRecommendsByC(1);
+        List<GoodsRecommendDTO> singleRecommend = setParam(singleRecommendList);
+        List<GoodsRecommendDTO> prefectureRecommendList = goodsRecommendService.getAllGoodsRecommendsByC(2);
+        List<GoodsRecommendBannerDTO> prefectureRecommend = setParamBannerDto(prefectureRecommendList);
+        Map<String, Object> map = new HashMap<>(2);
+
+        map.put("singleRecommend", singleRecommend);
+        map.put("prefectureRecommend", prefectureRecommend);
+        return R.ok(map);
     }
 
     @GetMapping("/goods-recommends-special-area")
     @ApiOperation("大后台---推荐专区商品推荐List")
     public R<List<GoodsRecommendBannerDTO>> getAllGoodsRecommends(Pageable pageable) {
         log.debug("REST request to get a page of GoodsRecommends");
-        Page<GoodsRecommendDTO> page = goodsRecommendService.findAllByType(pageable,2);
+        Page<GoodsRecommendDTO> page = goodsRecommendService.findAllByType(pageable, 2);
         List<GoodsRecommendBannerDTO> recommendBannerDTOS = setParamBannerDto(page.getContent());
         return R.ok(recommendBannerDTOS, page.getTotalElements());
     }
+
     /**
      * {@code GET  /goods-recommends/:id} : get the "id" goodsRecommend.
      *
@@ -181,35 +199,36 @@ public class GoodsRecommendResource {
     private List<GoodsRecommendDTO> setParam(List<GoodsRecommendDTO> goodsRecommendDTOS) {
         if (!CollectionUtils.isEmpty(goodsRecommendDTOS)) {
             List<Long> goodsIds = goodsRecommendDTOS.stream().map(GoodsRecommendDTO::getGoodsId).collect(Collectors.toList());
-            List<Long> goodsBannerIds = goodsRecommendDTOS.stream().filter(e->e.getGoodsRecommendType()==2).map(GoodsRecommendDTO::getGoodsRecommendBannerId).collect(Collectors.toList());
+            List<Long> goodsBannerIds = goodsRecommendDTOS.stream().filter(e -> e.getGoodsRecommendType() == 2).map(GoodsRecommendDTO::getGoodsRecommendBannerId).collect(Collectors.toList());
 
             Map<Long, GoodsDTO> goodsDTOMap = goodsService.finAllMapInfo(goodsIds);
             goodsRecommendDTOS.stream().forEach(e -> {
                 e.setGoodsDTO(goodsDTOMap.get(e.getGoodsId()));
             });
-            if(!CollectionUtils.isEmpty(goodsBannerIds)){
+            if (!CollectionUtils.isEmpty(goodsBannerIds)) {
                 Map<Long, GoodsRecommendBannerDTO> goodsRecommendBannerDTOMap = goodsRecommendBannerService.finAllMapInfo(goodsBannerIds);
-                goodsRecommendDTOS.stream().filter(e->e.getGoodsRecommendType()==2).forEach(e->{
+                goodsRecommendDTOS.stream().filter(e -> e.getGoodsRecommendType() == 2).forEach(e -> {
                     e.setGoodsRecommendBannerDTO(goodsRecommendBannerDTOMap.get(e.getGoodsRecommendBannerId()));
                 });
             }
         }
         return goodsRecommendDTOS;
     }
+
     private List<GoodsRecommendBannerDTO> setParamBannerDto(List<GoodsRecommendDTO> goodsRecommendDTOS) {
-        List<GoodsRecommendBannerDTO> goodsRecommendBannerDTOS=new ArrayList<>();
+        List<GoodsRecommendBannerDTO> goodsRecommendBannerDTOS = new ArrayList<>();
         if (!CollectionUtils.isEmpty(goodsRecommendDTOS)) {
             List<Long> goodsIds = goodsRecommendDTOS.stream().map(GoodsRecommendDTO::getGoodsId).collect(Collectors.toList());
-            List<Long> goodsBannerIds = goodsRecommendDTOS.stream().filter(e->e.getGoodsRecommendType()==2).map(GoodsRecommendDTO::getGoodsRecommendBannerId).collect(Collectors.toList());
+            List<Long> goodsBannerIds = goodsRecommendDTOS.stream().filter(e -> e.getGoodsRecommendType() == 2).map(GoodsRecommendDTO::getGoodsRecommendBannerId).collect(Collectors.toList());
 
             Map<Long, GoodsDTO> goodsDTOMap = goodsService.finAllMapInfo(goodsIds);
             goodsRecommendDTOS.stream().forEach(e -> {
                 e.setGoodsDTO(goodsDTOMap.get(e.getGoodsId()));
             });
-            if(!CollectionUtils.isEmpty(goodsBannerIds)){
+            if (!CollectionUtils.isEmpty(goodsBannerIds)) {
                 goodsRecommendBannerDTOS = goodsRecommendBannerService.finAllListInfo(goodsBannerIds);
                 Map<Long, List<GoodsRecommendDTO>> longListMap = goodsRecommendDTOS.stream().filter(e -> e.getGoodsRecommendType() == 2).collect(Collectors.groupingBy(GoodsRecommendDTO::getGoodsRecommendBannerId));
-                goodsRecommendBannerDTOS.stream().forEach(e->{
+                goodsRecommendBannerDTOS.stream().forEach(e -> {
                     e.setGoodsRecommendDTOS(longListMap.get(e.getId()));
                 });
             }

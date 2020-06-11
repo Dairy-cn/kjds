@@ -71,6 +71,21 @@ public class GoodsRecommendBannerServiceImpl implements GoodsRecommendBannerServ
     }
 
     private boolean checkParam(GoodsRecommendBannerDTO goodsRecommendBannerDTO) {
+        if (goodsRecommendBannerDTO.getPositionOne() != null) {
+            if (goodsRecommendBannerDTO.getPositionOne().getLinkType() == null) {
+                throw new MerchantsException(400, "链接类型不能为空");
+            }
+        }
+        if (goodsRecommendBannerDTO.getPositionTwo() != null) {
+            if (goodsRecommendBannerDTO.getPositionTwo().getLinkType() == null) {
+                throw new MerchantsException(400, "链接类型不能为空");
+            }
+        }
+        if (goodsRecommendBannerDTO.getPositionThree() != null) {
+            if (goodsRecommendBannerDTO.getPositionThree().getLinkType() == null) {
+                throw new MerchantsException(400, "链接类型不能为空");
+            }
+        }
         GoodsRecommendBanner goodsRecommendBanner = goodsRecommendBannerRepository.findFirstByDivisionName(goodsRecommendBannerDTO.getDivisionName());
         if (goodsRecommendBannerDTO.getId() == null) {
             if (goodsRecommendBanner != null) {

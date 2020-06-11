@@ -222,4 +222,13 @@ public class OrderItemResource {
         Page<OrderItemDTO> page = orderItemService.getMyOrder(pageable, orderStatus, id, null, null, keyWord, deliveryState);
         return R.ok(page.getContent(), page.getTotalElements());
     }
+
+
+    @ApiOperation("用户删除订单")
+    @RequestMapping(value = "/deleteOrder", method = RequestMethod.POST)
+    @ResponseBody
+    public R deleteOrder(Long orderId) {
+        orderItemService.deleteOrder(orderId);
+        return R.ok(null);
+    }
 }

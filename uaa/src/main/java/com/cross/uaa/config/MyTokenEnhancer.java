@@ -31,33 +31,35 @@ public class MyTokenEnhancer implements TokenEnhancer {
             stringList = authorities.stream().map(GrantedAuthority::getAuthority).map(String::toString).collect(Collectors.toList());
         }
         Object details = authentication.getUserAuthentication().getDetails();
-        Map<String, String> stringStringMap = JsonUtil.jsonToMap(details.toString());
-        String web_type = stringStringMap.get("web_type");
-        if ("user".equals(web_type)) {
+        if(details!=null){
+            Map<String, String> stringStringMap = JsonUtil.jsonToMap(details.toString());
+            String web_type = stringStringMap.get("web_type");
+            if ("user".equals(web_type)) {
 
-            if (CollectionUtils.isEmpty(stringList) || !stringList.contains("ROLE_USER")) {
-                additionalInfo.put("id", -1L);
+                if (CollectionUtils.isEmpty(stringList) || !stringList.contains("ROLE_USER")) {
+                    additionalInfo.put("id", -1L);
+                    ((DefaultOAuth2AccessToken) accessToken).setAdditionalInformation(additionalInfo);
+                    return accessToken;
+                }
+            } else if ("merchant".equals(web_type)) {
+                if (CollectionUtils.isEmpty(stringList) || !stringList.contains("ROLE_ADMIN")) {
+                    additionalInfo.put("id", -1L);
+                    ((DefaultOAuth2AccessToken) accessToken).setAdditionalInformation(additionalInfo);
+                    return accessToken;
+                }
+            } else if ("admin".equals(web_type)) {
+                if (CollectionUtils.isEmpty(stringList) || !stringList.contains("ROLE_SUPER_ADMIN")) {
+                    additionalInfo.put("id", -1L);
+                    ((DefaultOAuth2AccessToken) accessToken).setAdditionalInformation(additionalInfo);
+                    return accessToken;
+                }
+            } else {
+                additionalInfo.put("id", null);
                 ((DefaultOAuth2AccessToken) accessToken).setAdditionalInformation(additionalInfo);
                 return accessToken;
             }
-        } else if ("merchant".equals(web_type)) {
-            if (CollectionUtils.isEmpty(stringList) || !stringList.contains("ROLE_ADMIN")) {
-                additionalInfo.put("id", -1L);
-                ((DefaultOAuth2AccessToken) accessToken).setAdditionalInformation(additionalInfo);
-                return accessToken;
-            }
-        } else if ("admin".equals(web_type)) {
-            if (CollectionUtils.isEmpty(stringList) || !stringList.contains("ROLE_SUPER_ADMIN")) {
-                additionalInfo.put("id", -1L);
-                ((DefaultOAuth2AccessToken) accessToken).setAdditionalInformation(additionalInfo);
-                return accessToken;
-            }
-        } else {
-            additionalInfo.put("id", null);
-            ((DefaultOAuth2AccessToken) accessToken).setAdditionalInformation(additionalInfo);
-            return accessToken;
+            additionalInfo.put("id", user.getUserId());
         }
-        additionalInfo.put("id", user.getUserId());
         ((DefaultOAuth2AccessToken) accessToken).setAdditionalInformation(additionalInfo);
         return accessToken;
     }

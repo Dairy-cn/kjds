@@ -2,6 +2,7 @@ package com.cross.merchants.service;
 
 import com.cross.merchants.service.dto.BrandDTO;
 import com.cross.merchants.service.dto.GoodsDTO;
+import com.cross.merchants.service.dto.StoreInfoDTO;
 import org.springframework.data.domain.Pageable;
 
 import java.util.List;
@@ -19,7 +20,7 @@ public interface UserFollowService {
     int deleteBrandFollow(Long userId, Long brandId);
 
 
-    List<BrandDTO> getList(Long userId, Pageable pageable);
+    List<StoreInfoDTO> getList(Long userId, Pageable pageable);
 
     long countByUserId(Long userId);
 

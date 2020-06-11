@@ -29,6 +29,9 @@ public interface GlobalRegionService {
      */
     Page<GlobalRegionDTO> findAll(Pageable pageable);
 
+    List<GlobalRegionDTO> findAll();
+
+
     /**
      * Get the "id" globalRegion.
      *

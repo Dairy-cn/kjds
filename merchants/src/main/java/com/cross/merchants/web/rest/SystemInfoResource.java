@@ -127,7 +127,15 @@ public class SystemInfoResource {
         }
         return R.ok(systemInfoDTO.get());
     }
-
+    @GetMapping("/system-infos-background-pic/")
+    @ApiOperation("获取C端背景图")
+    public R<String> getSystemInfoWebBackgroundPic() {
+        Optional<SystemInfoDTO> systemInfoDTO = systemInfoService.findOne(1L);
+        if (!systemInfoDTO.isPresent()) {
+            return R.accessError();
+        }
+        return R.ok(systemInfoDTO.get().getWebBackgroundPic());
+    }
     /**
      * {@code DELETE  /system-infos/:id} : delete the "id" systemInfo.
      *
