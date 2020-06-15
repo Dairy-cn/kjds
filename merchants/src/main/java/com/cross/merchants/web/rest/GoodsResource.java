@@ -202,6 +202,9 @@ public class GoodsResource {
         log.debug("REST request to get a page of Goods");
         List<GoodsDTO> list = goodsService.findAllByCategoryIdAndKeywordAndCheckStateAndSaleState(storeId, categoryId, keyWord, true, 1);
         if (!CollectionUtils.isEmpty(list)) {
+            list.stream().forEach(e->{
+                e.setGoodsDetails(null);
+            });
             List<Long> categoryIds = list.stream().filter(e -> e.getCategoryId() != null).map(GoodsDTO::getCategoryId).collect(Collectors.toList());
             List<Long> storeIds = list.stream().filter(e -> e.getStoreId() != null).map(GoodsDTO::getStoreId).collect(Collectors.toList());
             if (!CollectionUtils.isEmpty(categoryIds)) {
@@ -228,6 +231,9 @@ public class GoodsResource {
         log.debug("REST request to get a page of Goods");
         List<GoodsDTO> list = goodsService.findAllByCategoryIdAndKeywordAndCheckStateAndSaleState(null, categoryId, keyWord, true, 1);
         if (!CollectionUtils.isEmpty(list)) {
+            list.stream().forEach(e->{
+                e.setGoodsDetails(null);
+            });
             List<Long> categoryIds = list.stream().filter(e -> e.getCategoryId() != null).map(GoodsDTO::getCategoryId).collect(Collectors.toList());
             List<Long> storeIds = list.stream().filter(e -> e.getStoreId() != null).map(GoodsDTO::getStoreId).collect(Collectors.toList());
             if (!CollectionUtils.isEmpty(categoryIds)) {
@@ -262,6 +268,9 @@ public class GoodsResource {
         log.debug("REST request to get a page of Goods");
         Page<GoodsDTO> page = goodsService.getAllGoodsByCondition(pageable, storeId, brandId, saleState, checkState, startTime, endTime, keyWord, goodsType);
         if (!CollectionUtils.isEmpty(page.getContent())) {
+            page.getContent().stream().forEach(e->{
+                e.setGoodsDetails(null);
+            });
             List<Long> categoryIds = page.getContent().stream().filter(e -> e.getCategoryId() != null).map(GoodsDTO::getCategoryId).collect(Collectors.toList());
             if (!CollectionUtils.isEmpty(categoryIds)) {
                 Map<Long, GoodsCategoryDTO> parentInfoMap = goodsCategoryService.findAllByInInWithParentInfo(categoryIds);
@@ -339,6 +348,9 @@ public class GoodsResource {
         log.debug("REST request to get a page of Goods");
         Page<GoodsDTO> page = goodsService.getAllGoodsByCondition(pageable, storeId, brandId, checkState, startTime, endTime, keyWord, startCheckTime, endCheckTime, oneCategoryId, twoCategoryId, thirdCategoryId);
         if (!CollectionUtils.isEmpty(page.getContent())) {
+            page.getContent().stream().forEach(e->{
+                e.setGoodsDetails(null);
+            });
             List<Long> categoryIds = page.getContent().stream().filter(e -> e.getCategoryId() != null).map(GoodsDTO::getCategoryId).collect(Collectors.toList());
             if (!CollectionUtils.isEmpty(categoryIds)) {
                 Map<Long, GoodsCategoryDTO> parentInfoMap = goodsCategoryService.findAllByInInWithParentInfo(categoryIds);
