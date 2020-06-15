@@ -684,7 +684,8 @@ public class GoodsServiceImpl implements GoodsService {
 
     @Override
     public Page<GoodsDTO> findAllByStoreId(Pageable pageable, Long storeId) {
-        Page<Goods> goodsList = goodsRepository.findAllByStoreIdAndDeleteFlag(pageable, storeId, false);
+        //ss
+        Page<Goods> goodsList = goodsRepository.findAllByStoreIdAndDeleteFlagAndCheckStatus(pageable, storeId, false,1);
         if (!CollectionUtils.isEmpty(goodsList.getContent())) {
             List<Long> longList = goodsList.getContent().stream().map(Goods::getId).collect(Collectors.toList());
             List<Object[]> objects = goodsSkuRepository.findAllByGoodsIdInAndDeleteFlag(longList);
@@ -722,9 +723,9 @@ public class GoodsServiceImpl implements GoodsService {
         }
         List<Goods> list = new ArrayList<>();
         if (storeId == null) {
-            list = goodsRepository.findAllByGoodsNameLikeAndDeleteFlag("%" + keyword.trim() + "", false);
+            list = goodsRepository.findAllByGoodsNameLikeAndDeleteFlagAndSaleState("%" + keyword.trim() + "", false,true);
         } else {
-            list = goodsRepository.findAllByGoodsNameLikeAndStoreIdAndDeleteFlag("%" + keyword.trim() + "", storeId, false);
+            list = goodsRepository.findAllByGoodsNameLikeAndStoreIdAndDeleteFlagAndSaleState("%" + keyword.trim() + "", storeId, false,true);
         }
         List<GoodsDTO> goodsDTOS = goodsMapper.toDto(list);
 
@@ -837,7 +838,7 @@ public class GoodsServiceImpl implements GoodsService {
         List<Long> finalThirdList = thirdList;
 
         StringBuffer countSb = new StringBuffer(" select count(a.id) ");
-        StringBuffer sb = new StringBuffer("   from Goods a LEFT JOIN GoodsSku gs ON gs.goodsId =a.id  WHERE gs.deleteFlag !=TRUE AND a.deleteFlag !=TRUE AND a.checkStatus=1 AND a.saleState=1 ");
+        StringBuffer sb = new StringBuffer("   from Goods a LEFT JOIN GoodsSku gs ON gs.goodsId =a.id  WHERE gs.deleteFlag !=TRUE  AND a.deleteFlag !=TRUE AND a.checkStatus=1 AND a.saleState=1 ");
         Map<String, Object> paramMap = new HashMap<>();
 
         if (minPrice != null) {
@@ -863,7 +864,7 @@ public class GoodsServiceImpl implements GoodsService {
         } else if (sortType != null && sortType == 2) {
             sb.append(" order by a.saleVolume ");
         } else if (sortType != null && sortType == 4) {
-            sb.append(" order by b.salePrice ");
+            sb.append(" order by gs.salePrice ");
         }
         if (order == null || order == 2) {
             sb.append(" DESC ");
@@ -872,6 +873,7 @@ public class GoodsServiceImpl implements GoodsService {
         }
         countSb.append(sb);
         Query countQuery = entityManager.createQuery(countSb.toString());
+
         paramMap.forEach((key, value) -> countQuery.setParameter(key, value));
         Long count = (Long) countQuery.getSingleResult();
 

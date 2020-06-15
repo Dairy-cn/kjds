@@ -79,7 +79,7 @@ public class GoodsDTO implements Serializable {
     /**
      * 商品详情
      */
-    @Size(max = 2000)
+
     @ApiModelProperty(value = "商品详情")
     private String goodsDetails;
 

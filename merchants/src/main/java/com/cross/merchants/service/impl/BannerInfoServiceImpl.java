@@ -212,6 +212,11 @@ public class BannerInfoServiceImpl implements BannerInfoService {
         map.put("bAd", bAd);
         return map;
     }
+    @Override
+    public List<BannerInfoDTO> findMerchantAllByConditionByC(Long storeId) {
+        List<BannerInfoDTO> top = bannerInfoMapper.toDto(bannerInfoRepository.findAllByBannerTypeAndStoreIdAndPositionTypeAndShowStateOrderByTopDescIdDesc(1, storeId,1, true));
+        return top;
+    }
 
     @Override
     public List<BannerInfoDTO> findAllByBannerType(Integer bannerType) {

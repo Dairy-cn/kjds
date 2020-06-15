@@ -32,6 +32,8 @@ public interface BannerInfoRepository extends JpaRepository<BannerInfo, Long> {
 
     List<BannerInfo> findAllByBannerTypeAndPositionTypeAndShowStateOrderByTopDescIdDesc(Integer type, Integer positionType,Boolean showState);
 
+    List<BannerInfo> findAllByBannerTypeAndStoreIdAndPositionTypeAndShowStateOrderByTopDescIdDesc(Integer type,Long storeId, Integer positionType,Boolean showState);
+
 
     List<BannerInfo> findAllByBannerTypeOrderByTopDescIdDesc(Integer bannerType);
 

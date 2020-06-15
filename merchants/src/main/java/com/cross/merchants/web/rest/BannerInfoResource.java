@@ -175,6 +175,14 @@ public class BannerInfoResource {
         return R.ok(map);
     }
 
+    @GetMapping("/c-banner-merchant-infos-all/{storeId}")
+    @ApiOperation("c端--根据商户Id获取商户轮播广告 ")
+    public R<List<BannerInfoDTO>> getAllBannerMerchantInfosByPositionType(@PathVariable Long storeId) {
+        log.debug("REST request to get a page of BannerInfos");
+        List<BannerInfoDTO> map = bannerInfoService.findMerchantAllByConditionByC(storeId);
+        return R.ok(map);
+    }
+
     @GetMapping("/banner-infos-type")
     @ApiOperation("大后台/商户--根据广告类型获取广告list")
     public R<List<BannerInfoDTO>> getAllBannerInfosByType(@ApiParam("类型 1 商户广告 2 大后台广告 3 商户推荐广告") @RequestParam Integer bannerType) {

@@ -295,7 +295,7 @@ public class GoodsResource {
                                                        @ApiParam("关键字查询 请输入商品名称/SPU编码") @RequestParam(required = false) String keyWord
     ) {
         log.debug("REST request to get a page of Goods");
-        Page<GoodsDTO> page = goodsService.getAllGoodsByCondition(pageable, storeId, brandId, 1, null, null, keyWord, null, null, null, null, null);
+        Page<GoodsDTO> page = goodsService.getAllGoodsByCondition(pageable, storeId, brandId, true,1,null,null,keyWord,null);
         if (!CollectionUtils.isEmpty(page.getContent())) {
             List<Long> categoryIds = page.getContent().stream().filter(e -> e.getCategoryId() != null).map(GoodsDTO::getCategoryId).collect(Collectors.toList());
             if (!CollectionUtils.isEmpty(categoryIds)) {

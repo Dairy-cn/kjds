@@ -77,7 +77,7 @@ public class MicroserviceSecurityConfiguration extends ResourceServerConfigurerA
                 .antMatchers("/api/update-pageview-article-infos/**").permitAll()
                 .antMatchers("/api/store-infos-c/**").permitAll()
                 .antMatchers("/api/c-banner-infos-all").permitAll()
-
+                .antMatchers("/api/c-banner-merchant-infos-all/**").permitAll()
                 .antMatchers("/api/c-goods-recommends").permitAll()
 
                 .antMatchers("/api/c-goods-recommends-all").permitAll()

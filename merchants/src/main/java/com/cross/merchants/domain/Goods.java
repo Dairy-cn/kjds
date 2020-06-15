@@ -84,8 +84,7 @@ public class Goods implements Serializable {
     /**
      * 商品详情
      */
-    @Size(max = 2000)
-    @Column(name = "goods_details", length = 2000)
+    @Column(name = "goods_details")
     private String goodsDetails;
 
     /**

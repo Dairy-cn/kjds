@@ -58,6 +58,9 @@ public interface BannerInfoService {
 
     Map<String, List<BannerInfoDTO>> findAllByConditionByC();
 
+    List<BannerInfoDTO> findMerchantAllByConditionByC(Long storeId);
+
+
     List<BannerInfoDTO> findAllByBannerType(Integer bannerType);
 
 

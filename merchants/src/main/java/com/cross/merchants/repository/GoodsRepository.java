@@ -38,12 +38,12 @@ public interface GoodsRepository extends JpaRepository<Goods, Long>, JpaSpecific
     @Query(value = "SELECT id FROM goods a WHERE (SELECT COUNT(1) FROM goods b WHERE a.`store_id`=b.`store_id` AND b.id >=a.`id`) <=4 AND a.`delete_flag` !=TRUE AND a.`store_id` IN :storeIds", nativeQuery = true)
     List<Object[]> findAllByStroeInAndDeleteFlag(@Param("storeIds") List<Long> storeIds);
 
-    Page<Goods> findAllByStoreIdAndDeleteFlag(Pageable pageable, Long id, Boolean flage);
+    Page<Goods> findAllByStoreIdAndDeleteFlagAndCheckStatus(Pageable pageable, Long id, Boolean flage,Integer checkState);
 
 
-    List<Goods> findAllByGoodsNameLikeAndDeleteFlag(String name,Boolean flag);
+    List<Goods> findAllByGoodsNameLikeAndDeleteFlagAndSaleState(String name,Boolean flag,Boolean saleState);
 
-    List<Goods> findAllByGoodsNameLikeAndStoreIdAndDeleteFlag(String name,Long storeId,Boolean flag);
+    List<Goods> findAllByGoodsNameLikeAndStoreIdAndDeleteFlagAndSaleState(String name,Long storeId,Boolean flag,Boolean saleState);
 
 
     @Query(value = "UPDATE `goods` SET sale_volume=IFNULL(sale_volume,0)+ :saleVolume WHERE id = :id", nativeQuery = true)
@@ -58,7 +58,7 @@ public interface GoodsRepository extends JpaRepository<Goods, Long>, JpaSpecific
 //    List<Object[]> findGoodsIdListWithRandom(@Param("limitNum") Integer limitNum);
 
 
-    @Query(value = "SELECT id FROM goods WHERE delete_flag !=TRUE AND sale_state =1", nativeQuery = true)
+    @Query(value = "SELECT id FROM goods WHERE delete_flag !=TRUE AND sale_state =true", nativeQuery = true)
     List<Object[]> findGoodsIdListWithRandom();
 
 }
