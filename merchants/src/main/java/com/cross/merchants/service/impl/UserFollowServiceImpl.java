@@ -101,7 +101,7 @@ public class UserFollowServiceImpl implements UserFollowService {
     @Override
     public boolean isFollowBrand(Long userId, Long storeId) {
         Long indexHset = redisService.getIndexHset(CartPrefix.getFollowList, userId + "", storeId+"");
-        if (indexHset == null || indexHset == 0) {
+        if (indexHset == null) {
             return false;
         } else {
             return true;

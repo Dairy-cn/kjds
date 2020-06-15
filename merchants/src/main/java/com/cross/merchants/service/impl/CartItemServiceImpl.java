@@ -3,15 +3,21 @@ package com.cross.merchants.service.impl;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.cross.merchants.domain.Goods;
+import com.cross.merchants.domain.GoodsProperty;
+import com.cross.merchants.domain.GoodsPropertyTag;
 import com.cross.merchants.domain.GoodsSku;
+import com.cross.merchants.exception.MerchantsException;
 import com.cross.merchants.redis.CartPrefix;
 import com.cross.merchants.redis.RedisService;
+import com.cross.merchants.repository.GoodsPropertyRepository;
+import com.cross.merchants.repository.GoodsPropertyTagRepository;
 import com.cross.merchants.repository.GoodsRepository;
 import com.cross.merchants.repository.GoodsSkuRepository;
 import com.cross.merchants.service.CartItemService;
 import com.cross.merchants.service.dto.CartItemDTO;
 import com.cross.merchants.service.dto.GoodsSkuDTO;
 import com.cross.merchants.service.mapper.GoodsSkuMapper;
+import com.cross.merchants.web.rest.DTO.GoodsPropertyVO;
 import com.cross.merchants.web.rest.DTO.UserCartItemDTO;
 import com.cross.model.LoginUserModel;
 import com.cross.utils.CommonUtil;
@@ -27,6 +33,7 @@ import org.springframework.util.StringUtils;
 import java.time.Instant;
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /*************************************************************
  * Description:
@@ -50,6 +57,14 @@ public class CartItemServiceImpl implements CartItemService {
     @Autowired
     private GoodsSkuMapper goodsSkuMapper;
 
+
+    @Autowired
+    private GoodsPropertyRepository goodsPropertyRepository;
+
+
+    @Autowired
+    private GoodsPropertyTagRepository goodsPropertyTagRepository;
+
     @Override
     public int add(UserCartItemDTO userCartItemDTO) {
         LoginUserModel currentLoginUser = CommonUtil.getCurrentLoginUser();
@@ -57,13 +72,52 @@ public class CartItemServiceImpl implements CartItemService {
         cartItem.setProductId(userCartItemDTO.getProductId());
         cartItem.setProductSkuId(userCartItemDTO.getProductSkuId());
         cartItem.setQuantity(userCartItemDTO.getQuantity());
-        if (!CollectionUtils.isEmpty(userCartItemDTO.getProductAttr())) {
-            cartItem.setProductAttr(JsonUtil.objectToJson(userCartItemDTO.getProductAttr()));
-        }
-
+        cartItem.setGoodsPropertyTagIds(userCartItemDTO.getGoodsPropertyTagIds());
         cartItem.setUserId(currentLoginUser.getId());
         cartItem.setMemberNickname(currentLoginUser.getUser_name());
-        cartItem.setId(cartItem.getUserId() + "_" + cartItem.getProductId() + "_" + cartItem.getProductSkuId());
+        StringBuilder tagString = new StringBuilder("_");
+        if (!CollectionUtils.isEmpty(userCartItemDTO.getGoodsPropertyTagIds())) {
+            List<Long> goodsPropertyTagIds = userCartItemDTO.getGoodsPropertyTagIds();
+            List<GoodsPropertyTag> goodsPropertyTagList = goodsPropertyTagRepository.findAllByIdInAndDeleteFlag(goodsPropertyTagIds, false);
+            List<Long> propertyIds = goodsPropertyTagList.stream().map(GoodsPropertyTag::getGoodsPropertyId).distinct().collect(Collectors.toList());
+            Map<Long, GoodsPropertyTag> propertyTagMap = goodsPropertyTagList.stream().collect(Collectors.toMap(GoodsPropertyTag::getId, e -> e));
+            Map<Long, GoodsProperty> goodsPropertyMap = new HashMap<>(16);
+            if (!CollectionUtils.isEmpty(propertyIds)) {
+                if (propertyIds.size() != goodsPropertyTagList.size()) {
+                    throw new MerchantsException(400, "同一属性只能选择一个标签");
+                }
+                List<GoodsProperty> goodsPropertyList = goodsPropertyRepository.findAllByIdInAndGoodsIdAndDeleteFlag(propertyIds,userCartItemDTO.getProductId(), false);
+
+                goodsPropertyMap = goodsPropertyList.stream().collect(Collectors.toMap(GoodsProperty::getId, e -> e));
+            }
+            List<GoodsPropertyVO> list = new ArrayList<>();
+            Map<Long, GoodsProperty> finalGoodsPropertyMap = goodsPropertyMap;
+            goodsPropertyTagIds.stream().forEach(e -> {
+                GoodsPropertyVO goodsPropertyVO = new GoodsPropertyVO();
+                GoodsPropertyTag goodsPropertyTag = propertyTagMap.get(e);
+                if (goodsPropertyTag == null) {
+                    throw new MerchantsException(400, "找不到属性标签ID为" + e + "的数据");
+                }
+                GoodsProperty goodsProperty = finalGoodsPropertyMap.get(goodsPropertyTag.getGoodsPropertyId());
+                if (goodsProperty == null) {
+                    throw new MerchantsException(400, "找不到属性标签ID为" + e + "的属性数据");
+                }
+                goodsPropertyVO.setKey(goodsProperty.getName());
+                goodsPropertyVO.setValue(goodsPropertyTag.getName());
+                list.add(goodsPropertyVO);
+
+            });
+            cartItem.setProductAttr(JsonUtil.objectToJson(list));
+            goodsPropertyTagIds=goodsPropertyTagIds.stream().sorted(Comparator.comparing(e -> e)).collect(Collectors.toList());
+            StringBuilder finalTagString = tagString;
+            goodsPropertyTagIds.stream().forEach(e -> {
+                finalTagString.append(e + ",");
+            });
+            tagString = finalTagString.delete(finalTagString.lastIndexOf(","),finalTagString.length());
+        } else {
+            cartItem.setProductAttr(null);
+        }
+        cartItem.setId(cartItem.getUserId() + "_" + cartItem.getProductId() + "_" + cartItem.getProductSkuId() + tagString);
         Boolean exists = redisService.existsValue(CartPrefix.getCartList, cartItem.getUserId().toString(), cartItem.getId());
         if (exists) {
             //获取现有的购物车中的数据
@@ -79,8 +133,8 @@ public class CartItemServiceImpl implements CartItemService {
             }
             return 1;
         } else {
-            Goods goods = goodsRepository.getByIdAndDeleteFlag(cartItem.getProductId(),false);
-            GoodsSku goodsSku = goodsSkuRepository.getByIdAndDeleteFlag(cartItem.getProductSkuId(),false);
+            Goods goods = goodsRepository.getByIdAndDeleteFlag(cartItem.getProductId(), false);
+            GoodsSku goodsSku = goodsSkuRepository.getByIdAndDeleteFlag(cartItem.getProductSkuId(), false);
             if (goods == null || goodsSku == null || !goodsSku.getGoodsId().equals(goods.getId())) {
                 return 0;
             } else {
@@ -115,7 +169,22 @@ public class CartItemServiceImpl implements CartItemService {
         cartItemDTO.stream().forEach(e -> {
             Goods dbGoods = finalGoodsMap.get(e.getProductId());
             GoodsSku dbGoodsSku = finalGoodsSkuMap.get(e.getProductSkuId());
-            if (dbGoods == null || dbGoodsSku == null || (!dbGoods.getId().equals(dbGoodsSku.getGoodsId()))) {
+            List<Long> propertyTagIds = e.getGoodsPropertyTagIds();
+            boolean flag = true;
+            if (!CollectionUtils.isEmpty(propertyTagIds)) {
+                List<GoodsPropertyTag> goodsPropertyTagList = goodsPropertyTagRepository.findAllByIdInAndDeleteFlag(propertyTagIds, false);
+                if (goodsPropertyTagList.size() != propertyTagIds.size()) {
+                    flag = false;
+                }
+                List<Long> goodsPropertyIds = goodsPropertyTagList.stream().map(GoodsPropertyTag::getGoodsPropertyId).distinct().collect(Collectors.toList());
+                if (!CollectionUtils.isEmpty(goodsPropertyIds)) {
+                    List<GoodsProperty> goodsPropertyList = goodsPropertyRepository.findAllByIdInAndGoodsIdAndDeleteFlag(goodsPropertyIds, e.getProductId(),false);
+                    if (goodsPropertyList.size() != goodsPropertyIds.size()) {
+                        flag = false;
+                    }
+                }
+            }
+            if (dbGoods == null || dbGoodsSku == null || (!dbGoods.getId().equals(dbGoodsSku.getGoodsId())) || !flag) {
                 if (!(e.getGoodsDeleteState() != null && e.getGoodsDeleteState())) {
                     e.setGoodsDeleteState(true);
                     redisService.hset(CartPrefix.getCartList, userId + "", e.getId(), JsonUtil.objectToJson(e));

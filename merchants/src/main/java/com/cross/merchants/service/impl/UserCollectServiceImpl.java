@@ -87,7 +87,7 @@ public class UserCollectServiceImpl implements UserCollectService {
     public boolean isCollectGoods(Long userId, Long goodsId) {
         Long indexHset = redisService.getIndexHset(CartPrefix.getCollectList, userId + "", goodsId+"");
 
-        if (indexHset == null || indexHset == 0) {
+        if (indexHset == null ) {
             return false;
         } else {
             return true;

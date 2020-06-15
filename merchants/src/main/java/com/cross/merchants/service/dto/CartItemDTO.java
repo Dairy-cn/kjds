@@ -13,6 +13,7 @@ import io.swagger.annotations.ApiModelProperty;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.Instant;
+import java.util.List;
 
 /*************************************************************
  * Description:
@@ -84,6 +85,17 @@ public class CartItemDTO implements Serializable {
 
     @ApiModelProperty(value = "产品规格信息",hidden = true)
     private GoodsSkuDTO goodsSkuDTO;
+
+    @ApiModelProperty(value = "商品销售属性标签ID")
+    private List<Long> goodsPropertyTagIds;
+
+    public List<Long> getGoodsPropertyTagIds() {
+        return goodsPropertyTagIds;
+    }
+
+    public void setGoodsPropertyTagIds(List<Long> goodsPropertyTagIds) {
+        this.goodsPropertyTagIds = goodsPropertyTagIds;
+    }
 
     public GoodsSkuDTO getGoodsSkuDTO() {
         return goodsSkuDTO;

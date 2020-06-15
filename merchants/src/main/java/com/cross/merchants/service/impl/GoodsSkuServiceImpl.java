@@ -111,7 +111,6 @@ public class GoodsSkuServiceImpl implements GoodsSkuService {
     @Transactional
     public List<GoodsSku> saveAll(List<GoodsSkuDTO> goodsSkuDTOs) {
         if (!CollectionUtils.isEmpty(goodsSkuDTOs)) {
-            List<GoodsSkuDTO> goodsSkuDTOS = goodsSkuDTOs.stream().filter(e -> e.getId() != null).collect(Collectors.toList());
             List<Long> ids = goodsSkuDTOs.stream().filter(e -> e.getId() != null).map(GoodsSkuDTO::getId).collect(Collectors.toList());
             List<GoodsSku> goodsSku = goodsSkuRepository.findAllByIdInAndDeleteFlag(ids, false);
             Map<Long, GoodsSku> goodsSkuMap = new HashMap<>();
@@ -119,13 +118,22 @@ public class GoodsSkuServiceImpl implements GoodsSkuService {
                 goodsSkuMap = goodsSku.stream().collect(Collectors.toMap(GoodsSku::getId, e -> e));
             }
             Map<Long, GoodsSku> finalGoodsSkuMap = goodsSkuMap;
-            goodsSkuDTOS.stream().forEach(e -> {
-                GoodsSku db = finalGoodsSkuMap.get(e.getId());
-                if (db != null) {
-                    e.setLockStock(db.getLockStock());
-                    e.setSaleVolume(db.getSaleVolume());
-                    e.setStock(db.getStock());
+            goodsSkuDTOs.stream().forEach(e -> {
+                if (e.getId() != null) {
+                    GoodsSku db = finalGoodsSkuMap.get(e.getId());
+                    if (db != null) {
+                        e.setLockStock(db.getLockStock());
+                        e.setSaleVolume(db.getSaleVolume());
+                    } else {
+                        e.setId(null);
+                        e.setLockStock(0);
+                        e.setSaleVolume(0);
+                    }
+                } else {
+                    e.setLockStock(0);
+                    e.setSaleVolume(0);
                 }
+
             });
         }
         return goodsSkuRepository.saveAll(goodsSkuMapper.toEntity(goodsSkuDTOs));

@@ -815,7 +815,7 @@ public class GoodsServiceImpl implements GoodsService {
 
 
     @Override
-    public Page<GoodsDTO> getAllGoodsByConditionByC(Pageable pageable, Long oneCategoryId, Long twoCategoryId, Long thirdCategoryId, BigDecimal minPrice, BigDecimal maxPrice, Integer sortType, Integer order) {
+    public Page<GoodsDTO> getAllGoodsByConditionByC(Pageable pageable, Long oneCategoryId, Long twoCategoryId, Long thirdCategoryId, BigDecimal minPrice, BigDecimal maxPrice, Integer sortType, Integer order, Long brandId) {
         List<Long> twoList = new ArrayList<>();
         List<Long> thirdList = new ArrayList<>();
         if (oneCategoryId != null) {
@@ -851,6 +851,10 @@ public class GoodsServiceImpl implements GoodsService {
         if (!CollectionUtils.isEmpty(finalThirdList)) {
             paramMap.put("finalThirdList", finalThirdList);
             sb.append(" and a.categoryId in :finalThirdList ");
+        }
+        if (brandId != null) {
+            paramMap.put("brandId", brandId);
+            sb.append("  and a.brandId = :brandId ");
         }
 
         //1 综合 2 销量 3 新品 4 价格

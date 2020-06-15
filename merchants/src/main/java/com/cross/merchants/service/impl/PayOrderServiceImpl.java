@@ -198,6 +198,7 @@ public class PayOrderServiceImpl implements PayOrderService {
                 maxFreight = BigDecimal.ZERO;
             }
             e.setTaxesFees(BigDecimal.ZERO);
+            e.setTotalAmount(BigDecimal.ZERO);
             goods.stream().forEach(goods1 -> {
                 List<CartItemDTO> cartItemDTOList = cartMap.get(goods1.getId());
                 cartItemDTOList.stream().forEach(e2 -> {
@@ -205,17 +206,18 @@ public class PayOrderServiceImpl implements PayOrderService {
                     e2.setGoodsSkuDTO(goodsSkuDTO);
                     if (goodsSkuDTO.getTaxexAndDues() != null) {
                         e.setTaxesFees(e.getTaxesFees().add(goodsSkuDTO.getTaxexAndDues()));
+                        BigDecimal salePrice = goodsSkuDTO.getSalePrice().multiply(new BigDecimal(e2.getQuantity()));
+                        e.setTotalAmount(e.getTotalAmount().add(salePrice));
                     }
                 });
                 goods1.setCartItemDTOS(cartItemDTOList);
             });
             e.setFreight(maxFreight);
             e.setGoodsDTOList(goods);
-
         });
         ConfirmOrderResult.CalcAmount calcAmount = calcCartAmount(cartItemDTOS);
         BigDecimal taxesFee = orderResults.stream().filter(e -> e.getTaxesFees() != null).map(StoreOrderResult::getTaxesFees).reduce(BigDecimal.ZERO, BigDecimal::add);
-        calcAmount.setTaxesFees(taxesFee);
+        calcAmount.setTaxesFees(taxesFee == null ? BigDecimal.ZERO : taxesFee);
         result.setCalcAmount(calcAmount);
         result.setOrderResults(orderResults);
 
@@ -228,8 +230,12 @@ public class PayOrderServiceImpl implements PayOrderService {
         //获取购物车及优惠信息
 
         LoginUserModel currentLoginUser = CommonUtil.getCurrentLoginUser();
-        ConfirmOrderResult orderResult = this.generateConfirmOrder(orderParam.getCartIds());
         List<CartItemDTO> cartPromotionItemList = cartItemService.listPromotion(currentLoginUser.getId(), orderParam.getCartIds());
+        if (CollectionUtils.isEmpty(cartPromotionItemList)) {
+            throw new MerchantsException(400, "找不到购物信息");
+        }
+        ConfirmOrderResult orderResult = this.generateConfirmOrder(orderParam.getCartIds());
+
         List<StoreOrderResult> orderResults = orderResult.getOrderResults();
         Map<Long, StoreNoteDTO> storeNoteDTOMap = new HashMap<>();
         if (!CollectionUtils.isEmpty(orderParam.getStoreNoteDTOS())) {
@@ -239,7 +245,19 @@ public class PayOrderServiceImpl implements PayOrderService {
             throw new MerchantsException(400, "找不到购物信息");
         }
         for (StoreOrderResult result : orderResults) {
-            List<GoodsDTO> goodsDTOList = result.getGoodsDTOList();
+            List<GoodsDTO> goodsDTOList = new ArrayList<>();
+            if(!CollectionUtils.isEmpty(result.getGoodsDTOList())){
+                result.getGoodsDTOList().stream().forEach(e->{
+                    List<CartItemDTO> cartItemDTOS = e.getCartItemDTOS();
+                    cartItemDTOS.stream().forEach(cartItemDTO -> {
+                        GoodsDTO goodsDTO=e;
+                        List<CartItemDTO> list=new ArrayList<>();
+                        list.add(cartItemDTO);
+                        goodsDTO.setCartItemDTOS(list);
+                        goodsDTOList.add(goodsDTO);
+                    });
+                });
+            }
             //生成下单商品信息
             OrderItem orderItem = new OrderItem();
             orderItem.setProductStoreId(result.getId());
@@ -255,13 +273,14 @@ public class PayOrderServiceImpl implements PayOrderService {
             orderItem.setMemberName(currentLoginUser.getUser_name());
             orderItem.setMemberPhone(currentLoginUser.getUser_name());
             orderItem.setFreightAmount(result.getFreight());
-            orderItem.setTotalAmount(result.getFreight());
+            orderItem.setTotalAmount(result.getTotalAmount());
             orderItem.setTaxesFees(result.getTaxesFees());
             orderItem.setPromotionAmount(BigDecimal.ZERO);
             orderItem.setConfirmStatus(0);
             orderItem.setStatus(0);
             orderItem.setDeleteStatus(0);
             orderItem.setDeliveryState(0);
+            orderItem.setPayAmount(result.getTotalAmount().add(result.getTaxesFees()));
             orderItemList.add(orderItem);
         }
         //DOTO 缓存redis锁
@@ -271,7 +290,7 @@ public class PayOrderServiceImpl implements PayOrderService {
                 throw new MerchantsException(400, "库存不足,无法下单");
             }
             //计算order_item的实付金额
-            handleRealAmount(orderItemList);
+//            handleRealAmount(orderItemList);
             //进行库存锁定
             lockStock(cartPromotionItemList);
         }
@@ -569,7 +588,7 @@ public class PayOrderServiceImpl implements PayOrderService {
         String key = REDIS_DATABASE + ":" + REDIS_KEY_ORDER_ID + date;
         Long increment = redisService.incrByString(key, 1 + "");
         sb.append(date);
-        sb.append(String.format("%02d", order.getPayType()));
+//        sb.append(String.format("%02d", order.getPayType()));
         String incrementStr = increment.toString();
         if (incrementStr.length() <= 6) {
             sb.append(String.format("%06d", increment));
@@ -588,7 +607,7 @@ public class PayOrderServiceImpl implements PayOrderService {
         String key = REDIS_DATABASE + ":" + REDIS_KEY_SUB_ORDER_ID + date;
         Long increment = redisService.incrByString(key, 1 + "");
         sb.append(date);
-        sb.append(String.format("%02d", order.getPayType()));
+//        sb.append(String.format("%02d", order.getPayType()));
         String incrementStr = increment.toString();
         if (incrementStr.length() <= 6) {
             sb.append(String.format("%06d", increment));
@@ -607,27 +626,27 @@ public class PayOrderServiceImpl implements PayOrderService {
     }
 
 
-    private void handleRealAmount(List<OrderItem> orderItemList) {
-        for (OrderItem orderItem : orderItemList) {
-            //原价-促销优惠-优惠券抵扣-积分抵扣
-            String productInfo = orderItem.getProductInfo();
-            if (!StringUtils.isBlank(productInfo)) {
-                List<GoodsDTO> goodsDTOS = CommonUtil.jsonStringConvertToList(productInfo, GoodsDTO[].class);
-                if (!CollectionUtils.isEmpty(goodsDTOS)) {
-                    goodsDTOS.stream().forEach(goodsDTO -> {
-                        List<CartItemDTO> cartItemDTOS = goodsDTO.getCartItemDTOS();
-                        if (!CollectionUtils.isEmpty(cartItemDTOS)) {
-                            cartItemDTOS.stream().forEach(cartItemDTO -> {
-                                BigDecimal realAmount = cartItemDTO.getPrice();
-                                orderItem.setPayAmount((orderItem.getPayAmount() == null ? BigDecimal.ZERO : orderItem.getPayAmount()).add(realAmount));
-                            });
-                        }
-                    });
-                }
-            }
-
-        }
-    }
+//    private void handleRealAmount(List<OrderItem> orderItemList) {
+//        for (OrderItem orderItem : orderItemList) {
+//            //原价-促销优惠-优惠券抵扣-积分抵扣
+//            String productInfo = orderItem.getProductInfo();
+//            if (!StringUtils.isBlank(productInfo)) {
+//                List<GoodsDTO> goodsDTOS = CommonUtil.jsonStringConvertToList(productInfo, GoodsDTO[].class);
+//                if (!CollectionUtils.isEmpty(goodsDTOS)) {
+//                    goodsDTOS.stream().forEach(goodsDTO -> {
+//                        List<CartItemDTO> cartItemDTOS = goodsDTO.getCartItemDTOS();
+//                        if (!CollectionUtils.isEmpty(cartItemDTOS)) {
+//                            cartItemDTOS.stream().forEach(cartItemDTO -> {
+//                                BigDecimal realAmount = cartItemDTO.getPrice().multiply(BigDecimal.valueOf(cartItemDTO.getQuantity()));
+//                                orderItem.setTotalAmount((orderItem.getPayAmount() == null ? BigDecimal.ZERO : orderItem.getPayAmount()).add(realAmount));
+//                            });
+//                        }
+//                    });
+//                }
+//            }
+//
+//        }
+//    }
 
 
     /**
@@ -690,7 +709,7 @@ public class PayOrderServiceImpl implements PayOrderService {
         }
         for (CartItemDTO cartPromotionItem : cartPromotionItemList) {
             GoodsSku goodsSku1 = goodsMap.get(cartPromotionItem.getProductSkuId());
-            if (goodsSku1 == null || goodsSku1.getStock() == null || goodsSku1.getStock() - cartPromotionItem.getQuantity() <= 0) {
+            if (goodsSku1 == null || goodsSku1.getStock() == null || goodsSku1.getStock() - cartPromotionItem.getQuantity() < 0) {
                 return false;
             }
         }
@@ -739,6 +758,6 @@ public class PayOrderServiceImpl implements PayOrderService {
             calcAmount.setPayAmount(totalAmount.add(calcAmount.getFreightAmount()).add(calcAmount.getTaxesFees()).subtract(calcAmount.getPromotionAmount()));
             return calcAmount;
         }
-        return null;
+        return calcAmount;
     }
 }

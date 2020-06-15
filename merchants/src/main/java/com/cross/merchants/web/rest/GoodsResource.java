@@ -93,6 +93,7 @@ public class GoodsResource {
         goodsDTO.setDeleteFlag(false);
         goodsDTO.setSaleState(false);
         goodsDTO.setCreateTime(Instant.now());
+        goodsDTO.setSaleVolume(0);
         goodsDTO.setProposer(CommonUtil.getCurrentLoginUser().getId());
         GoodsDTO result = goodsService.save(goodsDTO);
         return R.ok(result);
@@ -492,6 +493,7 @@ public class GoodsResource {
     public R<List<GoodsDTO>> getAllGoodsListByConditionByC(Pageable pageable,
                                                            @ApiParam("一级商品品类id") @RequestParam(required = false) Long oneCategoryId,
                                                            @ApiParam("二级商品品类id") @RequestParam(required = false) Long twoCategoryId,
+                                                           @ApiParam("品牌Id") @RequestParam(required = false) Long brandId,
                                                            @ApiParam("三商品品类id") @RequestParam(required = false) Long thirdCategoryId,
                                                            @ApiParam("排序字段 1 综合 2 销量 3 新品 4 价格") @RequestParam(required = false) Integer sortType,
                                                            @ApiParam("排序方式 1 正序 2 倒序") @RequestParam(required = false) Integer order,
@@ -507,7 +509,7 @@ public class GoodsResource {
         if (twoCategoryId == null && thirdCategoryId != null) {
             twoCategoryId = thirdCategoryId;
         }
-        Page<GoodsDTO> page = goodsService.getAllGoodsByConditionByC(pageable, oneCategoryId, twoCategoryId, thirdCategoryId, minPrice, maxPrice, sortType, order);
+        Page<GoodsDTO> page = goodsService.getAllGoodsByConditionByC(pageable, oneCategoryId, twoCategoryId, thirdCategoryId, minPrice, maxPrice, sortType, order,brandId);
         if (!CollectionUtils.isEmpty(page.getContent())) {
             List<Long> categoryIds = page.getContent().stream().filter(e -> e.getCategoryId() != null).map(GoodsDTO::getCategoryId).collect(Collectors.toList());
             if (!CollectionUtils.isEmpty(categoryIds)) {

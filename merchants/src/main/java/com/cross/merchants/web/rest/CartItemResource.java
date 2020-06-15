@@ -24,10 +24,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.net.URISyntaxException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -80,6 +77,7 @@ public class CartItemResource {
         List<CartItemDTO> cartItemList = cartItemService.list(CommonUtil.getCurrentLoginUser().getId());
         List<StoreInfoVO> storeInfoVOList = new ArrayList<>();
         if (!CollectionUtils.isEmpty(cartItemList)) {
+            cartItemList=cartItemList.stream().sorted(Comparator.comparing(CartItemDTO::getCreateDate).reversed()).collect(Collectors.toList());
             Map<Long, List<CartItemDTO>> cartMap = cartItemList.stream().collect(Collectors.groupingBy(CartItemDTO::getStoreId));
             List<Long> storeIds = cartItemList.stream().map(CartItemDTO::getStoreId).distinct().collect(Collectors.toList());
             List<StoreInfoDTO> storeInfoDTOList = storeInfoService.findAllByIdIn(storeIds);
@@ -95,7 +93,7 @@ public class CartItemResource {
         return R.ok(storeInfoVOList);
     }
 
-    @ApiOperation("获取某个会员的购物车列表")
+    @ApiOperation("根据购物车IDs获取某个会员的购物车列表")
     @RequestMapping(value = "/list/promotion", method = RequestMethod.GET)
     @ResponseBody
     public R<List<CartItemDTO>> listPromotion(@RequestParam(required = false) List<String> cartIds) {

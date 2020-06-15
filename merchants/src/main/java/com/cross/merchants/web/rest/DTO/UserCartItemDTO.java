@@ -38,11 +38,19 @@ public class UserCartItemDTO implements Serializable {
     @ApiModelProperty(value = "购买数量")
     private Integer quantity;
 
+    @ApiModelProperty(value = "商品销售属性标签ID")
+    private List<Long> goodsPropertyTagIds;
 
 
-    @ApiModelProperty(value = "商品销售属性")
-    private List<GoodsPropertyVO> productAttr;
 
+
+    public List<Long> getGoodsPropertyTagIds() {
+        return goodsPropertyTagIds;
+    }
+
+    public void setGoodsPropertyTagIds(List<Long> goodsPropertyTagIds) {
+        this.goodsPropertyTagIds = goodsPropertyTagIds;
+    }
 
     public Long getUserId() {
         return userId;
@@ -84,11 +92,4 @@ public class UserCartItemDTO implements Serializable {
         this.quantity = quantity;
     }
 
-    public List<GoodsPropertyVO> getProductAttr() {
-        return productAttr;
-    }
-
-    public void setProductAttr(List<GoodsPropertyVO> productAttr) {
-        this.productAttr = productAttr;
-    }
 }

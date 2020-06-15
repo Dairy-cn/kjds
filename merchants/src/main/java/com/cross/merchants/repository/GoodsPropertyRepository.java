@@ -20,7 +20,7 @@ public interface GoodsPropertyRepository extends JpaRepository<GoodsProperty, Lo
 
     List<GoodsProperty> findAllByGoodsIdInAndDeleteFlag(List<Long> goodsId, Boolean delete);
 
-
+    List<GoodsProperty> findAllByIdInAndGoodsIdAndDeleteFlag(List<Long> ids,Long goodsId, Boolean delete);
 
 
     @Query(value = "UPDATE `goods_property` SET delete_flag= true WHERE id in :ids", nativeQuery = true)

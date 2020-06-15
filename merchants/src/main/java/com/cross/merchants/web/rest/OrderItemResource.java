@@ -116,11 +116,18 @@ public class OrderItemResource {
      * @param id the id of the orderItemDTO to retrieve.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the orderItemDTO, or with status {@code 404 (Not Found)}.
      */
-//    @GetMapping("/order-items/{id}")
-    public ResponseEntity<OrderItemDTO> getOrderItem(@PathVariable Long id) {
+    @GetMapping("/order-items/{id}")
+    @ApiOperation("根据分订单Id获取详情")
+    public R<OrderItemDTO> getOrderItem(@PathVariable Long id) {
         log.debug("REST request to get OrderItem : {}", id);
         Optional<OrderItemDTO> orderItemDTO = orderItemService.findOne(id);
-        return ResponseUtil.wrapOrNotFound(orderItemDTO);
+        if (!orderItemDTO.isPresent()) {
+            return R.error("订单找不到");
+        }
+        if (!orderItemDTO.get().getMemberId().equals(CommonUtil.getCurrentLoginUser().getMasterId())) {
+            return R.error("你无权操作");
+        }
+        return R.ok(orderItemDTO.get());
     }
 
     /**
@@ -148,7 +155,7 @@ public class OrderItemResource {
                                                             @ApiParam("发货状态 0 未发货 1 已发货") @RequestParam(required = false) Integer deliveryState
     ) {
         log.debug("REST request to get a page of OrderItems");
-        Page<OrderItemDTO> page = orderItemService.findAllCondition(pageable, orderStatus, storeId, startTime, endTime, keyWord, deliveryState,null);
+        Page<OrderItemDTO> page = orderItemService.findAllCondition(pageable, orderStatus, storeId, startTime, endTime, keyWord, deliveryState, null);
         return R.ok(page.getContent(), page.getTotalElements());
     }
 
@@ -156,7 +163,7 @@ public class OrderItemResource {
     @ApiOperation("商户订单---订单管理---订单查询/发货订单")
     public R<List<OrderItemDTO>> getAllOrderItemsByMerchant(Pageable pageable,
                                                             @ApiParam(" 订单状态：0->待付款；1->待发货；2->已发货；3->已完成；4->已关闭；5->无效订单") @RequestParam(required = false) Integer orderStatus,
-                                                            @ApiParam(value = "商户",required = true) @RequestParam(required = true) Long storeId,
+                                                            @ApiParam(value = "商户", required = true) @RequestParam(required = true) Long storeId,
                                                             @ApiParam("下单开始时间 eg 2017-11-27T03:16:03Z") @RequestParam(required = false) Instant startTime,
                                                             @ApiParam("下单结束时间 eg 2017-11-27T03:16:03Z ") @RequestParam(required = false) Instant endTime,
                                                             @ApiParam("订单关键字查询") @RequestParam(required = false) String keyWord,
@@ -164,7 +171,7 @@ public class OrderItemResource {
                                                             @ApiParam("发货状态 0 未发货 1 已发货") @RequestParam(required = false) Integer deliveryState
     ) {
         log.debug("REST request to get a page of OrderItems");
-        Page<OrderItemDTO> page = orderItemService.findAllCondition(pageable, orderStatus, storeId, startTime, endTime, keyWord, deliveryState,goodsName);
+        Page<OrderItemDTO> page = orderItemService.findAllCondition(pageable, orderStatus, storeId, startTime, endTime, keyWord, deliveryState, goodsName);
         return R.ok(page.getContent(), page.getTotalElements());
     }
 
@@ -206,19 +213,20 @@ public class OrderItemResource {
         orderItemService.confirmReceiveOrder(orderId);
         return R.ok(null);
     }
+
     @GetMapping("/my-order")
     @ApiOperation("c端---我的订单")
     @ResponseBody
     public R<List<OrderItemDTO>> getMyOrder(Pageable pageable,
-                                                            @ApiParam(" 订单状态：0->待付款；1->待发货；2->已发货；3->已完成；4->已关闭；5->无效订单") @RequestParam(required = false) Integer orderStatus,
+                                            @ApiParam(" 订单状态：0->待付款；1->待发货；2->已发货；3->已完成；4->已关闭；5->无效订单") @RequestParam(required = false) Integer orderStatus,
 //                                                            @ApiParam(value = "商户",required = true) @RequestParam(required = true) Long storeId,
 //                                                            @ApiParam("下单开始时间 eg 2017-11-27T03:16:03Z") @RequestParam(required = false) Instant startTime,
 //                                                            @ApiParam("下单结束时间 eg 2017-11-27T03:16:03Z ") @RequestParam(required = false) Instant endTime,
-                                                            @ApiParam("订单关键字查询") @RequestParam(required = false) String keyWord,
-                                                            @ApiParam("发货状态 0 未发货 1 已发货") @RequestParam(required = false) Integer deliveryState
+                                            @ApiParam("订单关键字查询") @RequestParam(required = false) String keyWord,
+                                            @ApiParam("发货状态 0 未发货 1 已发货") @RequestParam(required = false) Integer deliveryState
     ) {
         log.debug("REST request to get a page of OrderItems");
-        Long id= CommonUtil.getCurrentLoginUser().getId();
+        Long id = CommonUtil.getCurrentLoginUser().getId();
         Page<OrderItemDTO> page = orderItemService.getMyOrder(pageable, orderStatus, id, null, null, keyWord, deliveryState);
         return R.ok(page.getContent(), page.getTotalElements());
     }

@@ -57,19 +57,19 @@ public class TranscationServiceImpl implements TranscationService {
     private SystemInfoRepository systemInfoRepository;
 
     @Override
-    public String weixinQrcodePay(Long orderId,HttpServletRequest request) throws Exception {
+    public String weixinQrcodePay(Long orderId, HttpServletRequest request) throws Exception {
         //先查询订单
         PayOrder orderMaster = payOrderRepository.getOne(orderId);
         if (orderMaster == null) {
-            throw new MerchantsException(400,"订单不存在");
+            throw new MerchantsException(400, "订单不存在");
         }
-        if(orderMaster.getStatus()==null || orderMaster.getStatus()!=0){
-            throw new MerchantsException(400,"订单状态异常");
+        if (orderMaster.getStatus() == null || orderMaster.getStatus() != 0) {
+            throw new MerchantsException(400, "订单状态异常");
         }
 //        //发起支付
         SystemInfo systemInfo = systemInfoRepository.getOne(1l);
-        System.out.println("systemInfo"+systemInfo);
-        MyWeiXinConfig myWeiXinConfig = new MyWeiXinConfig(systemInfo.getPlatAppId(), systemInfo.getPlatAppSecret(), systemInfo.getPlatAppNo(),systemInfo.getMerchantApiKey());
+        System.out.println("systemInfo" + systemInfo);
+        MyWeiXinConfig myWeiXinConfig = new MyWeiXinConfig(systemInfo.getPlatAppId(), systemInfo.getPlatAppSecret(), systemInfo.getPlatAppNo(), systemInfo.getMerchantApiKey());
         WXPay wxPay = new WXPay(myWeiXinConfig, null, true, false);
         Map<String, String> data = new HashMap<>(8);
         SystemInfo one = systemInfoRepository.getOne(1L);
@@ -100,10 +100,10 @@ public class TranscationServiceImpl implements TranscationService {
         //先查询订单
         PayOrder orderMaster = payOrderRepository.getOne(orderId);
         if (orderMaster == null) {
-            throw new MerchantsException(400,"订单不存在");
+            throw new MerchantsException(400, "订单不存在");
         }
-        if(orderMaster.getStatus()==null || orderMaster.getStatus()!=0){
-            throw new MerchantsException(400,"订单状态异常");
+        if (orderMaster.getStatus() == null || orderMaster.getStatus() != 0) {
+            throw new MerchantsException(400, "订单状态异常");
         }
         SystemInfo one = systemInfoRepository.getOne(1L);
         //发起支付
@@ -111,19 +111,19 @@ public class TranscationServiceImpl implements TranscationService {
         AlipayTradePrecreateModel model = new AlipayTradePrecreateModel();
         model.setBody(one.getPlatformName());
         model.setOutTradeNo(orderMaster.getOrderSn()); //订单号
-        model.setSubject("付款给"+one.getPlatformName());
+        model.setSubject("付款给" + one.getPlatformName());
         model.setTimeoutExpress("30m");
         model.setQrCodeTimeoutExpress("30m");
         model.setTotalAmount(orderMaster.getPayAmount().toString());
         request.setBizModel(model);
 //        request.setReturnUrl(urlConfig.getGlgas() + "/glgas/user/payGas");
         request.setNotifyUrl(aliNotifyUrl);
-        AlipayTradePrecreateResponse response1 = new AlipayConfig(one.getAliAppPublicKey(),one.getAliAppPrivteKey(),one.getAliAppId()).getClient().execute(request);
+        AlipayTradePrecreateResponse response1 = new AlipayConfig(one.getAliAppPublicKey(), one.getAliAppPrivteKey(), one.getAliAppId()).getClient().execute(request);
         String c = response1.getBody();
         Map m = JSONObject.parseObject(c, Map.class);
         c = m.get("alipay_trade_precreate_response").toString();
         m = JSONObject.parseObject(c, Map.class);
-        return m.get("qr_code").toString();
+        return m.get("qr_code") == null ? "" : m.get("qr_code").toString();
     }
 
     @Override
@@ -169,10 +169,10 @@ public class TranscationServiceImpl implements TranscationService {
 
         WXPay wxPay = null;
         try {
-            wxPay = new WXPay(new MyWeiXinConfig(one.getAliAppId(),one.getPlatAppSecret(),one.getPlatAppNo(),one.getMerchantApiKey()), null, true, false);
+            wxPay = new WXPay(new MyWeiXinConfig(one.getAliAppId(), one.getPlatAppSecret(), one.getPlatAppNo(), one.getMerchantApiKey()), null, true, false);
         } catch (Exception e) {
             e.printStackTrace();
-            throw new MerchantsException(400,"微信配置文件错误");
+            throw new MerchantsException(400, "微信配置文件错误");
         }
 
         if (!StringUtils.isBlank(transactionId)) {
@@ -190,7 +190,7 @@ public class TranscationServiceImpl implements TranscationService {
             response = wxPay.orderQuery(request);
         } catch (Exception e) {
             // TODO Auto-generated catch block
-            throw new MerchantsException(400,"订单查询失败");
+            throw new MerchantsException(400, "订单查询失败");
         }
         if (response != null) {
             String return_code = response.get("return_code");
@@ -203,9 +203,9 @@ public class TranscationServiceImpl implements TranscationService {
 
             } else if ("REVOKED".equals(response.get("trade_state"))) {
                 return "FAIL";
-            }else if("NOTPAY".equals(response.get("trade_state"))){
+            } else if ("NOTPAY".equals(response.get("trade_state"))) {
                 return "NOTPAY";
-            }else {
+            } else {
                 //
             }
 

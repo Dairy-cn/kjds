@@ -23,4 +23,7 @@ public interface GoodsPropertyTagRepository extends JpaRepository<GoodsPropertyT
     @Query(value = "UPDATE `goods_property_tag` SET delete_flag= true WHERE id in :ids", nativeQuery = true)
     @Modifying
     int deleteByIdIn(@Param("ids") List<Long> ids);
+
+    List<GoodsPropertyTag> findAllByIdInAndDeleteFlag(List<Long> ids, Boolean flage);
+
 }

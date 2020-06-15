@@ -1,7 +1,9 @@
 package com.cross.merchants.web.rest;
 
 import com.alipay.api.AlipayApiException;
+import com.cross.merchants.service.PayOrderService;
 import com.cross.merchants.service.TranscationService;
+import com.cross.merchants.service.dto.PayOrderDTO;
 import com.cross.utils.R;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -15,6 +17,9 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
 
 /*************************************************************
  * Description:
@@ -34,6 +39,9 @@ public class TransactionResource {
     @Autowired
     private FastDfsResource fastDfsResource;
 
+    @Autowired
+    private PayOrderService payOrderService;
+
     @GetMapping("/pay/qrcode/{orderId}")
     @ApiOperation("根据订单id和支付方式生成支付二维码")
     public R qrcodePay(@ApiParam("订单id") @PathVariable Long orderId,
@@ -42,6 +50,12 @@ public class TransactionResource {
         if (payType == null) {
             return R.error("支付方式不能为空");
         }
+        Optional<PayOrderDTO> orderDTO = payOrderService.findOne(orderId);
+        if(!orderDTO.isPresent()){
+            return R.error("订单不存在");
+        }
+        Map<String,Object> map=new HashMap<>();
+        map.put("order",orderDTO);
         String payUrl = "";
         if (payType == 1) {
             payUrl = transcationService.aliQrcodePay(orderId);
@@ -52,9 +66,10 @@ public class TransactionResource {
             R r = fastDfsResource.generateQrCode(1, payUrl, request);
             if (r.isFlag()) {
                 String data = (String) r.getData();
-                return R.ok(data);
+                map.put("payQr",data);
+                return R.ok(map);
             } else {
-                return r;
+                return R.error("创建支付二维码失败");
             }
         }
         return R.error("创建支付二维码失败");
